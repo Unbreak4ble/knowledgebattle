@@ -1,0 +1,18 @@
+<div class="room-list">
+    <div class="room-list-head">
+        <a>Rooms</a>
+    </div>
+    <div class="room-list-rooms">
+        @for(room of random_rooms; track room){
+            <div class="rooms-room">
+                <div class="rooms-room-head">
+                    <a>{{ room.name }}</a>
+                    <a class="pin_code">{{ room.pin_code }}</a>
+                </div>
+                <div class="rooms-room-body">
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
