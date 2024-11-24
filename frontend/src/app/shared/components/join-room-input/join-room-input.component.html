@@ -1,1 +1,14 @@
-<p>join-room-input works!</p>
+<div class="join-room-input">
+    <div class="join-room-input-head">
+        <a class="title">Join Room</a>
+    </div>
+    <div class="join-room-input-body">
+        <input type="text" placeholder="PIN"/>
+        <button (click)="onSubmit()">Join</button>
+    </div>
+    <div class="join-room-input-message">
+        @if(not_found){
+            <a>Room not found</a>
+        }
+    </div>
+</div>

@@ -5,7 +5,7 @@
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    background: #00000020;
+    background: #EDEADE;
 
     .room-list-head {
         width: 100%;
@@ -23,21 +23,20 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
         overflow-x: auto;
         overflow-y: hidden;
 
         .rooms-room {
-            width: 95%;
+            width: 100%;
             height: 50px;
-            border-radius: 10px;
             background: #00000020;
             display: flex;
+            overflow: hidden;
             flex-direction: column;
             cursor: pointer;
 
             .rooms-room-head {
-                padding: 10px;
+                padding: 5px 10px;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
@@ -46,6 +45,30 @@
                 .pin_code {
                     color: black;
                 }
+            }
+
+            .rooms-room-body {
+                display: flex;
+                padding: 0px 10px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                user-select: none;
+
+                .players_count {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 2px;
+
+                    .delim {
+                        color: grey;
+                    }
+                }
+            }
+
+            &:hover {
+                background: #00000030;
             }
         }
     }
