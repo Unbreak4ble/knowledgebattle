@@ -4,6 +4,7 @@ import { RoomListComponent } from './components/room-list/room-list.component';
 import { PlayersListComponent } from './components/players-list/players-list.component';
 import { CreateRoomInputComponent } from './components/create-room-input/create-room-input.component';
 import { JoinRoomInputComponent } from './components/join-room-input/join-room-input.component';
+import { MessageBoxComponent } from './components/message-box/message-box.component';
 
 
 @NgModule({
@@ -15,14 +16,16 @@ import { JoinRoomInputComponent } from './components/join-room-input/join-room-i
     RoomListComponent,
     PlayersListComponent,
     CreateRoomInputComponent,
-    JoinRoomInputComponent
+    JoinRoomInputComponent,
+    MessageBoxComponent
   ],
   // to be used along imports
   exports: [
     RoomListComponent,
     PlayersListComponent,
     CreateRoomInputComponent,
-    JoinRoomInputComponent
+    JoinRoomInputComponent,
+    MessageBoxComponent
   ]
 })
 export class SharedModule { }

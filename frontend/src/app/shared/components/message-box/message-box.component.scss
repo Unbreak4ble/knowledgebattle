@@ -1,0 +1,53 @@
+.message-box {
+    left: 0;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 90%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+    z-index: 99999;
+
+    .message-box-content {
+        display: flex;
+        flex-direction:  column;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        max-width: 50%;
+
+        .message-box-head {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px;
+            background: #00000010;
+            user-select: none;
+            position: relative;
+
+            .message-box-progress-bar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 0%;
+                height: 100%;
+                background: #00000050;
+            }
+
+            .message-box-title {
+                font-size: 50px;
+            }
+        }
+
+        .message-box-body {
+            padding: 10px;
+            .message-box-text {
+
+                font-size: 25px;
+            }
+        }
+    }
+}
