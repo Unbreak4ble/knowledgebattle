@@ -1,0 +1,9 @@
+<div class="questions-carousel">
+    <div class="questions-carousel-content">
+        <div class="questions-carousel-questions">
+            @for(question of questions; track question){
+                <app-question [question]="question"></app-question>
+            }
+        </div>
+    </div>
+</div>

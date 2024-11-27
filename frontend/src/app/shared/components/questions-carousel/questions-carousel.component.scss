@@ -1,0 +1,21 @@
+
+.questions-carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+
+    .questions-carousel-content {
+        padding: 10px;
+
+        .questions-carousel-questions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+    }
+}

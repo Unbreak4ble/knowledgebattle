@@ -34,7 +34,7 @@
                 top: 0;
                 width: 0%;
                 height: 100%;
-                background: #00000050;
+                background: #00000020;
             }
 
             .message-box-title {
@@ -44,6 +44,10 @@
 
         .message-box-body {
             padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
             .message-box-text {
 
                 font-size: 25px;

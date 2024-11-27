@@ -1,0 +1,16 @@
+@if(question != null){
+    <div class="question">
+        <div class="question-head">
+            <a class="question-num">{{ question.id }}</a>
+            <span class="question-text">{{ question.text }}</span>
+        </div>
+        <div class="question-alternatives">
+            @for(alternative of question.alternatives; track alternative; let index = $index){
+                <div class="question-alternative" (click)="onAlternativePick(index)">
+                    <input class="question-alternative-check" id="alternative_{{question.id}}_{{index}}" type="radio" name="alternative_{{ question.id }}" value="{{ index }}">
+                    <a class="question-alternative-text">{{ alternative.text }}</a>
+                </div>
+            }
+        </div>
+    </div>
+}
