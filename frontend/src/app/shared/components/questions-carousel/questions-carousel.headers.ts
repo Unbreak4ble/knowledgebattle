@@ -24,7 +24,7 @@ export const questions:IQuestion[] = [
         ]
     },
     {
-        id: 3,
+        id: 2,
         text: "guess the letter",
         alternatives: [
             {
@@ -45,7 +45,7 @@ export const questions:IQuestion[] = [
         ]
     },
     {
-        id: 4,
+        id: 3,
         text: "guess the symbol",
         alternatives: [
             {
