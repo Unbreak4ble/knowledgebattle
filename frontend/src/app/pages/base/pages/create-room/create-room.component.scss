@@ -1,0 +1,38 @@
+
+.create-room {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+
+    .create-room-content {
+        padding: 10px;
+        display: flex;
+        min-width: calc(100% - 10px*2);
+        min-height: 90vh;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+
+        & > * {
+            border-radius: 10px;
+            position: relative;
+            height: calc(100vh - 10px*2);;
+            background: white;
+        }
+
+        .create-room-configs {
+            width: 25%;
+        }
+
+        .create-room-questions {
+            width: 25%;
+        }
+
+        .create-room-question {
+            width: 50%;
+        }
+    }
+}

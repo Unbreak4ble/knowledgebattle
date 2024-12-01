@@ -53,7 +53,7 @@ export class QuestionsCarouselComponent {
         percent: 10
       },
     ];
-    //this.question_component?.setResult(results);
+    this.question_component?.setResult(results);
   }
 
   jumpTo(index:number){
