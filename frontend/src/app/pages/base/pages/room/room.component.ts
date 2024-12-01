@@ -4,6 +4,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageBoxComponent } from '../../../../shared/components/message-box/message-box.component';
 import { IRoom } from '../../../../core/interfaces/room/room.interface';
+import { QuestionsCarouselComponent } from '../../../../shared/components/questions-carousel/questions-carousel.component';
 
 @Component({
   selector: 'app-room',
@@ -14,6 +15,7 @@ import { IRoom } from '../../../../core/interfaces/room/room.interface';
 })
 export class RoomComponent {
   @ViewChild("messagebox") messageBoxComponent:MessageBoxComponent|null = null;
+  @ViewChild("questions_carousel") questionsCarouselComponent:QuestionsCarouselComponent|null = null;
   pin:number|null = null;
   room_info:IRoom|null = null;
 

@@ -1,0 +1,14 @@
+
+.players-count {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    background: white;
+    padding: 5px;
+
+    .players-count-content {
+        font-size: 20px;
+    }
+}
