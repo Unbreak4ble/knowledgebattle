@@ -9,6 +9,7 @@ import { QuestionComponent } from './components/question/question.component';
 import { QuestionsCarouselComponent } from './components/questions-carousel/questions-carousel.component';
 import { PlayersCountComponent } from './components/players-count/players-count.component';
 import { QuestionsStepformComponent } from './components/questions-stepform/questions-stepform.component';
+import { MakeQuestionComponent } from './components/make-question/make-question.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { QuestionsStepformComponent } from './components/questions-stepform/ques
     QuestionsCarouselComponent,
     PlayersCountComponent,
     QuestionsStepformComponent,
+    MakeQuestionComponent,
   ],
   // to be used along imports
   exports: [
@@ -38,6 +40,7 @@ import { QuestionsStepformComponent } from './components/questions-stepform/ques
     QuestionsCarouselComponent,
     PlayersCountComponent,
     QuestionsStepformComponent,
+    MakeQuestionComponent,
   ]
 })
 export class SharedModule { }

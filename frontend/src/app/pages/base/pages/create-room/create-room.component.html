@@ -1,13 +1,27 @@
 <div class="create-room">
     <div class="create-room-content">
         <div class="create-room-configs">
-            
+
         </div>
         <div class="create-room-questions">
-
+            <div class="create-room-questions-head">
+                <button class="create-room-questions-head-create">New</button>
+            </div>
+            <div class="create-room-questions-list">
+                @for(question of questions; track question){
+                    <div class="create-room-questions-question">
+                        <div class="create-room-questions-question-number">
+                            <a>{{ question.id }}</a>
+                        </div>
+                        <div class="create-room-questions-question-text">
+                            <a>{{ question.text }}</a>
+                        </div> 
+                    </div>
+                }
+            </div>
         </div>
         <div class="create-room-question">
-
+            <app-make-question></app-make-question>
         </div>
     </div>
 </div>
