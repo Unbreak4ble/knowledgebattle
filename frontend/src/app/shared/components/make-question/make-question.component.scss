@@ -1,0 +1,99 @@
+
+.make-question {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+
+    .make-question-head {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .make-question-number {
+            color: grey;
+            font-size: 20px;
+        }
+    }
+
+    .make-question-textarea {
+        font-size: 20px;
+        overflow: hidden;
+        outline: none;
+        border: none;
+        resize: none;
+        background: transparent;
+        height: 2ch;
+        width: calc(100% - 10px*2);
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+    }
+
+    .make-question-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+
+        .make-question-alternatives {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 10px;
+
+            .make-question-alternative {
+                width: calc(100% - 10px*2);
+                border-radius: 10px;
+                padding: 5px;
+                font-size: 20px;
+                background: #00000010;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+
+                span {
+                    white-space: break-spaces;
+                }
+
+                .make-question-alternative-remove {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    color: red;
+                    border-radius: 5px;
+                    padding: 5px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #ff000020;
+                    }
+                }
+            }
+        }
+
+        .make-question-add {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+
+            .make-question-add-button {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border-radius: 5px;
+                padding: 5px;
+
+                &:hover {
+                    background: #00000010;
+                }
+            }
+        }
+    }
+}

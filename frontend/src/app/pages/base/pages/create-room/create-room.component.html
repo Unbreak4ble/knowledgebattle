@@ -5,23 +5,28 @@
         </div>
         <div class="create-room-questions">
             <div class="create-room-questions-head">
-                <button class="create-room-questions-head-create">New</button>
+                <button class="create-room-questions-head-create" (click)="createQuestion()">New</button>
             </div>
             <div class="create-room-questions-list">
-                @for(question of questions; track question){
-                    <div class="create-room-questions-question">
+                @for(question of questions; track question; let idx=$index){
+                    <div class="create-room-questions-question" (click)="viewQuestion(question)">
                         <div class="create-room-questions-question-number">
                             <a>{{ question.id }}</a>
                         </div>
                         <div class="create-room-questions-question-text">
                             <a>{{ question.text }}</a>
                         </div> 
+                        <div class="create-room-questions-question-remove" (click)="deleteQuestion(idx)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+                            </svg>
+                        </div>
                     </div>
                 }
             </div>
         </div>
         <div class="create-room-question">
-            <app-make-question></app-make-question>
+            <app-make-question #make_question></app-make-question>
         </div>
     </div>
 </div>

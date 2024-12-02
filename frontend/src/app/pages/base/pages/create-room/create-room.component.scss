@@ -25,6 +25,8 @@
 
         .create-room-configs {
             width: 25%;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .create-room-questions {
@@ -52,6 +54,7 @@
                 gap: 10px;
 
                 .create-room-questions-question {
+                    position: relative;
                     background: #00000010;
                     border-radius: 10px;
                     display: flex;
@@ -71,12 +74,30 @@
                     .create-room-questions-question-text {
                         font-size: 20px;
                     }
+
+                    .create-room-questions-question-remove {
+                        position: absolute;
+                        right: 1px;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        color: red;
+                        border-radius: 5px;
+                        padding: 5px;
+                        cursor: pointer;
+    
+                        &:hover {
+                            background: #ff000020;
+                        }
+                    }
                 }
             }
         }
 
         .create-room-question {
             width: 50%;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     }
 }
