@@ -73,6 +73,11 @@
                     
                     .create-room-questions-question-text {
                         font-size: 20px;
+                        row-gap: 5px;
+
+                        .t3dots {
+                            color: grey;
+                        }
                     }
 
                     .create-room-questions-question-remove {

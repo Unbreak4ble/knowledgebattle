@@ -29,18 +29,29 @@ export class MakeQuestionComponent {
     this.handleTextAreaEvents();
   }
 
-  setQuestion(question:IQuestion){
+  async setQuestion(question:IQuestion){
+    this.question = null; // reset DOM
+    await new Promise(resolve => setTimeout(resolve, 10));
     this.question = question;
     this.alternatives = question.alternatives;
     this.id = question.id;
+    await new Promise(resolve => setTimeout(resolve, 10));
     this.setText(question.text);
+    this.setupEvents();
   }
 
-  handleTextareaChange(element_id:string){
+  async handleAlternativeTextareaChange(element_id:string){
     const element:any = document.getElementById(element_id);
 
     element.style['height'] = 'auto';
     element.style['height'] = (element.scrollHeight) + 'px';
+
+    const id = Number(element_id.match(/\-([0-9]+)/gim)?.[0].replaceAll('-', '') || 0);
+
+    await new Promise(resolve => setTimeout(resolve, 1));
+    
+    if(this.question?.alternatives[id])
+      (this.question?.alternatives)[id].text = element.value;
   }
 
   handleTextAreaEvents(reset:boolean = false){

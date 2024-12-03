@@ -56,6 +56,7 @@ export class CreateRoomComponent {
   }
 
   deleteQuestion(index:number){
+    this.questions[index].id = -1;
     this.questions.splice(index, 1);
     this.fixIds();
   }

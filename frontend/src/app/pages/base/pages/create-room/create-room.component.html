@@ -14,7 +14,10 @@
                             <a>{{ question.id }}</a>
                         </div>
                         <div class="create-room-questions-question-text">
-                            <a>{{ question.text }}</a>
+                            <a>{{ question.text.slice(0, 64) }}</a>
+                            @if(question.text.length > 64){
+                                <a class="t3dots">...</a>
+                            }
                         </div> 
                         <div class="create-room-questions-question-remove" (click)="deleteQuestion(idx)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">

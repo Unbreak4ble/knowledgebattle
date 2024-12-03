@@ -1,29 +1,33 @@
-<div class="make-question">
-    <div class="make-question-head">
-        <a class="make-question-number">{{ id }}</a>
-        <textarea id="make-question-text" class="make-question-textarea" placeholder="question title"></textarea>
-    </div>
-    <div class="make-question-body">
-        <div class="make-question-alternatives">
-            @for(alternative of alternatives; track alternative; let idx=$index){
-                <div class="make-question-alternative">
-                    <div class="make-question-alternative-remove" (click)="removeAlternative(idx)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+@if(question){
+    @if(question.id >= 0){
+        <div class="make-question">
+            <div class="make-question-head">
+                <a class="make-question-number">{{ question ? question.id : id }}</a>
+                <textarea id="make-question-text" class="make-question-textarea" placeholder="question title"></textarea>
+            </div>
+            <div class="make-question-body">
+                <div class="make-question-alternatives">
+                    @for(alternative of alternatives; track alternative; let idx=$index){
+                        <div class="make-question-alternative">
+                            <div class="make-question-alternative-remove" (click)="removeAlternative(idx)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+                                </svg>
+                            </div>
+                            <!--<span>{{ alternative.text }}</span>-->
+                            <textarea id="make-question-alternative-{{idx}}" class="make-question-textarea" placeholder="alternative text" (keydown)="handleAlternativeTextareaChange('make-question-alternative-'+idx)">{{ alternative.text }}</textarea>
+                        </div>
+                    }
+                </div>
+                <div class="make-question-add">
+                    <div class="make-question-add-button" (click)="addAlternative()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
                         </svg>
                     </div>
-                    <!--<span>{{ alternative.text }}</span>-->
-                    <textarea id="make-question-alternative-{{idx}}" class="make-question-textarea" placeholder="alternative text" (keydown)="handleTextareaChange('make-question-alternative-'+idx)">{{ alternative.text }}</textarea>
+                    <textarea id="make-question-add-text" class="make-question-textarea" placeholder="alternative text"></textarea>
                 </div>
-            }
-        </div>
-        <div class="make-question-add">
-            <div class="make-question-add-button" (click)="addAlternative()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                </svg>
             </div>
-            <textarea id="make-question-add-text" class="make-question-textarea" placeholder="alternative text"></textarea>
         </div>
-    </div>
-</div>
+    }
+}
