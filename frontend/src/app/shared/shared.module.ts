@@ -11,6 +11,8 @@ import { PlayersCountComponent } from './components/players-count/players-count.
 import { QuestionsStepformComponent } from './components/questions-stepform/questions-stepform.component';
 import { MakeQuestionComponent } from './components/make-question/make-question.component';
 import { TextareaComponent } from './components/textarea/textarea.component';
+import { QuestionsListComponent } from './components/questions-list/questions-list.component';
+import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.component';
 
 
 @NgModule({
@@ -26,10 +28,12 @@ import { TextareaComponent } from './components/textarea/textarea.component';
     MessageBoxComponent,
     QuestionComponent,
     QuestionsCarouselComponent,
+    QuestionsListComponent,
     PlayersCountComponent,
     QuestionsStepformComponent,
     MakeQuestionComponent,
     TextareaComponent,
+    ToggleSwitchComponent,
   ],
   // to be used along imports
   exports: [
@@ -41,9 +45,11 @@ import { TextareaComponent } from './components/textarea/textarea.component';
     QuestionComponent,
     QuestionsCarouselComponent,
     PlayersCountComponent,
+    QuestionsListComponent,
     QuestionsStepformComponent,
     MakeQuestionComponent,
     TextareaComponent,
+    ToggleSwitchComponent,
   ]
 })
 export class SharedModule { }
