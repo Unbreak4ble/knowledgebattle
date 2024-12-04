@@ -15,13 +15,9 @@ export class CreateRoomComponent {
   questions: IQuestion[] = [
     {
       id: 1,
-      text: "hello",
-      alternatives: []
-    },{
-      id: 2,
-      text: "eae",
+      text: "untitled",
       alternatives: [
-        {text: 'eae'}
+        {text: 'untitled alternative'}
       ]
     }
   ];
@@ -36,11 +32,6 @@ export class CreateRoomComponent {
 
   viewQuestion(question:IQuestion){
     this.makeQuestionComponent?.setQuestion(question);
-    /*
-    this.makeQuestionComponent?.setId(question.id);
-    this.makeQuestionComponent?.setAlternatives([...question.alternatives]);
-    this.makeQuestionComponent?.setText(question.text);
-    */
   }
 
   fixIds(){

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IAlternative } from '../../../core/interfaces/question/alternative.interface';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
+import { TextareaComponent } from '../textarea/textarea.component';
 
 @Component({
   selector: 'app-make-question',
@@ -8,6 +9,8 @@ import { IQuestion } from '../../../core/interfaces/question/question.interface'
   styleUrl: './make-question.component.scss'
 })
 export class MakeQuestionComponent {
+  //@ViewChildren('alternatives-input') textareas: QueryList<TextareaComponent>|null = null;
+  @ViewChild('add_alternative_text') textarea_add: TextareaComponent|undefined;
   id: Number = 0;
   alternatives: IAlternative[] = [];
   onchange: ((data:any) => void)|null =  null;
@@ -26,7 +29,7 @@ export class MakeQuestionComponent {
   }
 
   setupEvents(){
-    this.handleTextAreaEvents();
+
   }
 
   async setQuestion(question:IQuestion){
@@ -40,50 +43,24 @@ export class MakeQuestionComponent {
     this.setupEvents();
   }
 
-  async handleAlternativeTextareaChange(element_id:string){
-    const element:any = document.getElementById(element_id);
+  handleTextInput(event:any){
+    if(!this.question) return;
 
-    element.style['height'] = 'auto';
-    element.style['height'] = (element.scrollHeight) + 'px';
-
-    const id = Number(element_id.match(/\-([0-9]+)/gim)?.[0].replaceAll('-', '') || 0);
-
-    await new Promise(resolve => setTimeout(resolve, 1));
-    
-    if(this.question?.alternatives[id])
-      (this.question?.alternatives)[id].text = element.value;
+    this.question.text = event.value;
   }
 
-  handleTextAreaEvents(reset:boolean = false){
-    const elements:any = document.getElementsByClassName('make-question-textarea');
-    [...elements].forEach(element => {
-      element.addEventListener('input', () => {
-        element.style['height'] = 'auto';
-        element.style['height'] = element.scrollHeight + 'px';
-      });
-    });
-
-    const text_element:any = document.getElementById('make-question-text');
-    text_element?.addEventListener('input', ()=>{
-      //this.onchange?.({type: 'text', content: text_element.value});
-      if(this.question) this.question.text = text_element.value;
-    });
-
-    const alternative_text_element:any = document.getElementById('make-question-add-text');
-    alternative_text_element?.addEventListener('input', ()=>{
-      //this.onchange?.({type: 'add_alternative_text', content: alternative_text_element.value});
-      if(this.question) this.question.alternatives = this.alternatives;
-    });
+  handleAlternativeTextInput(event:any){
+    const id = Number(event.id.match(/\-([0-9]+)/gim)?.[0].replaceAll('-', '') || 0);
+    
+    if(this.question?.alternatives[id])
+      (this.question?.alternatives)[id].text = event.value;
   }
 
   addAlternative(){
-    const element:any = document.getElementById('make-question-add-text');
+    if(!this.textarea_add) return;
 
-    if(element == null) return;
-
-    const text = element.value;
-    element.value = '';
-    element.style['height'] = 'auto';
+    const text = this.textarea_add.text || "";
+    this.textarea_add.reset_input();
 
     if(text.length == 0) return;
 

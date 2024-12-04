@@ -3,7 +3,8 @@
         <div class="make-question">
             <div class="make-question-head">
                 <a class="make-question-number">{{ question ? question.id : id }}</a>
-                <textarea id="make-question-text" class="make-question-textarea" placeholder="question title"></textarea>
+                <!-- <textarea id="make-question-text" class="make-question-textarea" placeholder="question title"></textarea> -->
+                <app-textarea [text]="question.text" font-size="30px" placeholder="question text" (onvalue)='handleTextInput($event)'></app-textarea>
             </div>
             <div class="make-question-body">
                 <div class="make-question-alternatives">
@@ -14,8 +15,8 @@
                                     <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
                                 </svg>
                             </div>
-                            <!--<span>{{ alternative.text }}</span>-->
-                            <textarea id="make-question-alternative-{{idx}}" class="make-question-textarea" placeholder="alternative text" (keydown)="handleAlternativeTextareaChange('make-question-alternative-'+idx)">{{ alternative.text }}</textarea>
+                            <!--<textarea id="make-question-alternative-{{idx}}" class="make-question-textarea" placeholder="alternative text" (keydown)="handleAlternativeTextareaChange('make-question-alternative-'+idx)">{{ alternative.text }}</textarea>-->
+                            <app-textarea style="width: 100%;" [id]="'alternative-'+idx" [text]="alternative.text" font-size="25px" placeholder="alternative text" (onvalue)='handleAlternativeTextInput($event)'></app-textarea>
                         </div>
                     }
                 </div>
@@ -25,7 +26,8 @@
                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
                         </svg>
                     </div>
-                    <textarea id="make-question-add-text" class="make-question-textarea" placeholder="alternative text"></textarea>
+                    <!-- <textarea id="make-question-add-text" class="make-question-textarea" placeholder="alternative text"></textarea> -->
+                    <app-textarea style="width: 100%;" #add_alternative_text font-size="25px" placeholder="alternative text"></app-textarea>
                 </div>
             </div>
         </div>
