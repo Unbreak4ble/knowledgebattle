@@ -1,0 +1,40 @@
+
+@media only screen and (max-width: 1000px) {
+    .create-room-configs {
+        width: 40% !important;
+    }
+
+    .create-room-questions {
+        flex-direction: column !important;
+        width: 60% !important;
+
+        &>* {
+            width: 100% !important;
+        }
+
+        .create-room-questions-list {
+            height: 25% !important;
+        }
+
+        .create-room-questions-question {
+            height: 75% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .create-room-content {
+        flex-direction: column !important;
+        justify-content: center !important;
+    }
+
+    .create-room-configs {
+        width: 97% !important;
+        height: 30vh !important;
+    }
+
+    .create-room-questions {
+        width: 100% !important;
+        height: 100vh !important;
+    }
+}

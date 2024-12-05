@@ -1,3 +1,4 @@
+@import './create-room.component.media.scss';
 
 .create-room {
     display: flex;
@@ -32,6 +33,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 10px;
 
             .create-room-configs-title {
                 font-size: 20px;
@@ -42,19 +44,35 @@
 
             .create-room-configs-options {
                 width: 99%;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
             }
         }
 
         .create-room-questions {
-            width: 25%;
+            width: 75%;
             overflow-y: auto;
             overflow-x: hidden;
-        }
+            display: flex;
+            flex-direction: row;
+            background: transparent;
+            gap: 10px;
 
-        .create-room-question {
-            width: 50%;
-            overflow-y: auto;
-            overflow-x: hidden;
+            &>*{
+                background: white;
+                border-radius: 10px;
+                overflow: hidden;
+                overflow-y: auto;
+            }
+
+            .create-room-questions-list {
+                width: 25%;
+            }
+
+            .create-room-questions-question {
+                width: 75%;
+            }
         }
     }
 }

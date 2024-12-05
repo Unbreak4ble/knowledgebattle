@@ -3,14 +3,17 @@
         <div class="create-room-configs">
             <input type="text" class="create-room-configs-title" placeholder="room title"/>
             <div class="create-room-configs-options">
-                <app-toggle-switch>Result poll</app-toggle-switch>
+                @for(option of options; track option){
+                    <app-toggle-switch #options [id]="option.id">{{ option.text }}</app-toggle-switch>
+                }
+            </div>
+            <div class="create-room-configs-bottom">
+                <button (click)="create()">Create</button>
             </div>
         </div>
         <div class="create-room-questions">
-            <app-questions-list #questions_list></app-questions-list>
-        </div>
-        <div class="create-room-question">
-            <app-make-question #make_question></app-make-question>
+            <app-questions-list class="create-room-questions-list" #questions_list></app-questions-list>
+            <app-make-question class="create-room-questions-question" #make_question></app-make-question>
         </div>
     </div>
 </div>

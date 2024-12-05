@@ -9,6 +9,7 @@ import * as uuid from 'uuid';
 export class ToggleSwitchComponent {
   readonly uuid:string = 'id_'+uuid.v4();
   @Input('text') text:string = '';
+  @Input('id') id:string = '';
   _document:Element|null = null;
   checked:boolean = false;
 

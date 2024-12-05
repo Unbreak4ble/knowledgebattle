@@ -1,8 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IQuestion } from '../../../../core/interfaces/question/question.interface';
 import { SharedModule } from '../../../../shared/shared.module';
 import { MakeQuestionComponent } from '../../../../shared/components/make-question/make-question.component';
 import { QuestionsListComponent } from '../../../../shared/components/questions-list/questions-list.component';
+import { ToggleSwitchComponent } from '../../../../shared/components/toggle-switch/toggle-switch.component';
+import { options } from './create-room.header';
 
 @Component({
   selector: 'app-create-room',
@@ -14,6 +16,8 @@ import { QuestionsListComponent } from '../../../../shared/components/questions-
 export class CreateRoomComponent {
   @ViewChild('make_question') makeQuestionComponent:MakeQuestionComponent|null = null;
   @ViewChild('questions_list') questionsListComponent:QuestionsListComponent|null = null;
+  @ViewChildren('options') optionComponents:QueryList<ToggleSwitchComponent>|undefined;
+  readonly options = options;
   questions: IQuestion[] = [
     {
       id: 1,
@@ -42,5 +46,19 @@ export class CreateRoomComponent {
 
   viewQuestion(question:IQuestion){
     this.makeQuestionComponent?.setQuestion(question);
+  }
+
+  create(){
+    const configs = {};
+    const questions = this.questionsListComponent?.questions || [];
+
+
+
+    const final_payload = {
+      ...configs,
+      questions: questions
+    };
+
+    console.log(final_payload);
   }
 }
