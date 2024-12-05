@@ -1,0 +1,69 @@
+networks:
+  infra-interface:
+    external: true
+
+services:
+  kong_gateway:
+    image: kong/kong-gateway:2.7.2.0-alpine
+    restart: always
+    ports:
+      - target: 8000
+        published: 80
+        mode: host
+      - target: 8443
+        published: 443
+        mode: host
+    environment:
+       - "KONG_DATABASE=off"
+       - "KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yml"
+       - "KONG_PROXY_ACCESS_LOG=/dev/stdout"
+       - "KONG_ADMIN_ACCESS_LOG=/dev/stdout"
+       - "KONG_PROXY_ERROR_LOG=/dev/stderr"
+       - "KONG_ADMIN_ERROR_LOG=/dev/stderr"
+       - "KONG_ADMIN_LISTEN=0.0.0.0:8001"
+       - "KONG_PROXY_LISTEN=0.0.0.0:8000"
+       - "KONG_ADMIN_GUI_URL=http://localhost:8002"
+       - "KONG_TRUSTED_IPS=0.0.0.0/0,::/0"
+       - "KONG_REAL_IP_HEADER=X-Forwarded-For"
+       - "KONG_REAL_IP_RECURSIVE=on"
+    container_name: kong-dbless
+    hostname: kong
+    networks:
+      - infra-interface
+    volumes:
+      - "./gateway:/kong/declarative/"
+
+  redisdb:
+    image: redis:7.4.1
+    hostname: redisdb
+    container_name: redisdb
+    restart: unless-stopped
+    networks:
+      - infra-interface
+    volumes:
+      - "./database/redis:/data"
+
+  mongodb:
+    image: mongo:8.0.3
+    restart: always
+    ports:
+      - "27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    container_name: mongodb
+    hostname: mongodb
+    networks:
+      - infra-interface
+    volumes:
+      - "./database/mongo:/data/db"
+
+  web:
+    build: ./frontend
+    hostname: docker.web
+    container_name: web
+    restart: always
+    networks:
+      - infra-interface
+    volumes:
+      - "./frontend/src:/home/src"

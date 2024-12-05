@@ -1,0 +1,23 @@
+_format_version: "1.1"
+_transform: true
+
+services:
+- host: docker.web
+  name: web
+  port: 8080
+  protocol: http
+  routes:
+  - name: web
+    paths:
+    - /
+    strip_path: true
+
+- host: docker.api.room
+  name: room
+  port: 8080
+  protocol: http
+  routes:
+  - name: room
+    paths:
+    - /api/room
+    strip_path: true

@@ -38,6 +38,8 @@ export class CreateRoomComponent {
 
   setup(){
     this.initEvents();
+
+    this.questionsListComponent?.setQuestions(this.questions);
   }
 
   initEvents(){
@@ -48,11 +50,29 @@ export class CreateRoomComponent {
     this.makeQuestionComponent?.setQuestion(question);
   }
 
+  getConfig(){
+    const result:any = {
+      text: '',
+      settings: []
+    };
+
+    const text_element:any = document.querySelector('.create-room-configs-title');
+
+    result.text = text_element?.value || '';
+
+    for(const opt of this.optionComponents || []){
+      result.settings.push({
+        id: opt.id,
+        checked: opt.checked
+      });
+    }
+
+    return result;
+  }
+
   create(){
-    const configs = {};
+    const configs = this.getConfig();
     const questions = this.questionsListComponent?.questions || [];
-
-
 
     const final_payload = {
       ...configs,

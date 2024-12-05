@@ -1,6 +1,9 @@
 <div class="questions-list">
     <div class="questions-list-head">
-        <button class="questions-list-head-create" (click)="createQuestion()">new question</button>
+        <div class="questions-list-head-count">
+            <a>{{ questions.length }}</a>
+        </div>
+        <button class="global-button" (click)="createQuestion()">new question</button>
     </div>
     <div class="questions-list-list">
         @for(question of questions; track question; let idx=$index){

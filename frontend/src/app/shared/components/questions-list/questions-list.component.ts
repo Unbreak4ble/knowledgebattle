@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 
 @Component({
@@ -12,7 +12,7 @@ export class QuestionsListComponent {
   _viewQuestion: ((question: IQuestion) => void)|undefined;
   _deleteQuestion: ((index:number) => void)|undefined;
 
-  constructor(){
+  constructor(private changeDetectRf: ChangeDetectorRef){
 
   }
 
@@ -48,5 +48,10 @@ export class QuestionsListComponent {
     this.questions[index].id = -1;
     this.questions.splice(index, 1);
     this.fixIds();
+  }
+
+  setQuestions(questions:IQuestion[]){
+    this.questions = questions;
+    this.changeDetectRf.detectChanges();
   }
 }

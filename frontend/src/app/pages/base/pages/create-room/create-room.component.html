@@ -1,14 +1,14 @@
 <div class="create-room">
     <div class="create-room-content">
         <div class="create-room-configs">
-            <input type="text" class="create-room-configs-title" placeholder="room title"/>
             <div class="create-room-configs-options">
+                <input type="text" class="create-room-configs-title" placeholder="room title"/>
                 @for(option of options; track option){
                     <app-toggle-switch #options [id]="option.id">{{ option.text }}</app-toggle-switch>
                 }
             </div>
             <div class="create-room-configs-bottom">
-                <button (click)="create()">Create</button>
+                <button (click)="create()" class="global-button">Create</button>
             </div>
         </div>
         <div class="create-room-questions">
