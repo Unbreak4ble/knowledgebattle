@@ -67,3 +67,11 @@ services:
       - infra-interface
     volumes:
       - "./frontend/src:/home/src"
+
+  room_api:
+    build: ./backend/api/room
+    hostname: docker.api.room
+    container_name: room_api
+    restart: always
+    networks:
+      - infra-interface

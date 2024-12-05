@@ -5,6 +5,7 @@ import { MakeQuestionComponent } from '../../../../shared/components/make-questi
 import { QuestionsListComponent } from '../../../../shared/components/questions-list/questions-list.component';
 import { ToggleSwitchComponent } from '../../../../shared/components/toggle-switch/toggle-switch.component';
 import { options } from './create-room.header';
+import { RoomService } from '../../../../core/services/room/room.service';
 
 @Component({
   selector: 'app-create-room',
@@ -28,7 +29,7 @@ export class CreateRoomComponent {
     }
   ];
 
-  constructor(){
+  constructor(private roomService: RoomService){
 
   }
 
@@ -63,22 +64,30 @@ export class CreateRoomComponent {
     for(const opt of this.optionComponents || []){
       result.settings.push({
         id: opt.id,
-        checked: opt.checked
+        allow: opt.checked
       });
     }
 
     return result;
   }
 
-  create(){
+  async create(){
     const configs = this.getConfig();
     const questions = this.questionsListComponent?.questions || [];
 
-    const final_payload = {
+    const payload = {
       ...configs,
       questions: questions
     };
 
-    console.log(final_payload);
+    const response = await this.roomService.createRoom(payload);
+
+    console.log("created room: ", response);
+
+    if(response == null) return;
+
+    this.roomService.saveToken(response.pin, response.token);
+
+    this.roomService.gotoRoom(response.pin);
   }
 }
