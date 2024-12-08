@@ -1,13 +1,14 @@
 const express = require('express');
-const { joinController } = require('./controllers/join.controller');
+const router = require('./routes/index.route');
+const expressWs = require('express-ws');
 
 const app = express();
 
-joinController(app);
+expressWs(app);
 
-app.get('/ping', (req,res) => {
-	res.send('pong');
-})
+app.use(express.json());
+
+app.use('/', router);
 
 app.listen(8080, () => {
 	console.log('room api is running');

@@ -35,7 +35,7 @@ services:
 
   redisdb:
     image: redis:7.4.1
-    hostname: redisdb
+    hostname: docker.db.redis
     container_name: redisdb
     restart: unless-stopped
     networks:
@@ -52,7 +52,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
     container_name: mongodb
-    hostname: mongodb
+    hostname: docker.db.mongo
     networks:
       - infra-interface
     volumes:

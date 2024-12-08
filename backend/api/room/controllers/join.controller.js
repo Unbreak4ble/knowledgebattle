@@ -1,12 +1,11 @@
 const expressWs = require('express-ws');
-const express = require('express');
 
-function joinController(app){
-    expressWs(app);
+function joinController(router){
+    expressWs(router);
 
-    //const router = express.Router();
+    router.get('/', (req,res)=>res.send('working'));
 
-    app.ws('/join', (ws, req) => {
+    router.ws('/', (ws, req) => {
         console.log('new user');
         ws.on('message', msg => {
             console.log(msg)
