@@ -1,11 +1,11 @@
 
 export const options: any[] = [
     {
-        id: '1',
+        id: 'visibility.result_poll',
         text: 'Result poll'
     },
     {
-        id: '2',
+        id: 'privacy.public',
         text: 'Public'
     },
 ]

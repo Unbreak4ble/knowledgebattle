@@ -34,7 +34,7 @@ services:
       - "./gateway:/kong/declarative/"
 
   redisdb:
-    image: redis:7.4.1
+    image: redis/redis-stack:7.4.0-v0
     hostname: docker.db.redis
     container_name: redisdb
     restart: unless-stopped

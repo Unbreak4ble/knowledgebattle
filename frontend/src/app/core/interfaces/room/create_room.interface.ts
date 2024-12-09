@@ -5,6 +5,6 @@ export interface ICreateRoom {
     settings: {
         id: string;
         allow:boolean;
-    };
+    }[];
     questions: IQuestion[];
 }

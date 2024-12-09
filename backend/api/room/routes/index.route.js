@@ -4,6 +4,7 @@ const updateRouter = require('./update.route');
 const joinRouter = require('./join.route');
 const fetchRouter = require('./fetch.route');
 const deleteRouter = require('./delete.route');
+const listRouter = require('./list.route');
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use('/join', joinRouter);
 router.use('/update', updateRouter);
 router.use('/fetch', fetchRouter);
 router.use('/delete', deleteRouter);
+router.use('/list', listRouter);
 
 module.exports = router;
