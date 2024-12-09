@@ -1,0 +1,17 @@
+
+@media screen and (max-width: 700px) {
+    .home-screen {
+        .home-content {
+            flex-direction: column !important;
+
+            .left {
+                flex-direction: row !important;
+            }
+
+            .right {
+                width: 90% !important;
+                scale: 0.9;
+            }
+        }
+    }
+}

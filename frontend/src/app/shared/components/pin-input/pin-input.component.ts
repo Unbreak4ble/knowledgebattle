@@ -44,6 +44,8 @@ export class PinInputComponent {
       const element:any = document.getElementById(input_id);
       const value = element.value;
 
+      element.setAttribute('maxlength', this.max_input_length);
+
       setInterval(() => {
         if(document.activeElement == element)
           element.selectionStart = element.selectionEnd = element.value.length
@@ -67,33 +69,30 @@ export class PinInputComponent {
         }).bind(this));
       }).bind(this));
       
-      element.addEventListener('keydown', (evt:any) => {
+      element.addEventListener('keyup', (evt:any) => {
         let length = element.value.length;
         const value = element.value + evt.key;
-        if(evt.key.length == 1){
-          const key = evt.key;
-          
-          if(!/^\d+$/gim.test(key))
+        
+        if(evt.key.length == 1){          
+          if(!/^\d+$/gim.test(evt.key))
             return evt.preventDefault();
           else
-            ++length;
+            length+=1;
         }
 
-        if(length > this.max_input_length){
+        if(length >= this.max_input_length){
           evt.preventDefault();
 
           if(index < inputs_length){
             const next_element:any = document.getElementById(inputs_id[index+1]);
 
-            next_element.value += evt.key;
             next_element.focus();
           }
         }else if(length == 0 && index > 0){
           document.getElementById(inputs_id[index-1])?.focus();
         }
 
-        if(length > this.max_input_length && index == inputs_length){
-          console.log('fill');
+        if(element.value.length >= this.max_input_length && index == inputs_length){
           this.onfill.emit(value);
         }
 
