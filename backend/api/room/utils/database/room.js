@@ -37,6 +37,18 @@ async function get(id){
     return data;
 }
 
+async function getByPin(pin){
+    const connection = await redis.connect();
+
+    const index = await connection.json.ARRINDEX('rooms', '$.pin', pin);
+
+    const data = await connection.json.GET('rooms', `$.[${index}]`);
+
+    await connection.quit();
+
+    return data;
+}
+
 async function update(id, room){
 
 }
@@ -57,6 +69,7 @@ module.exports = {
     listPublic,
     create,
     get,
+    getByPin,
     update,
     remove
 }

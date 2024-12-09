@@ -1,7 +1,6 @@
 
 function base64URLencode(str) {
-  const utf8Arr = new TextEncoder().encode(str);
-  const base64Encoded = btoa(utf8Arr);
+  const base64Encoded = btoa(str);
   return base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 

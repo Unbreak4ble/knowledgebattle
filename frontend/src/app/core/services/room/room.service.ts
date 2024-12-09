@@ -13,15 +13,34 @@ export class RoomService {
   constructor(private storageService: StorageService) { }
 
   gotoRoom(pin:number){
-    window.location.href = "/";
+    window.location.href = "/room?pin="+pin;
   }
 
-  saveToken(pin:number, token:string){
-    this.storageService.set('token_'+pin, token);
+  gotoAdminRoom(id:string){
+    window.location.href = "/room/admin?id="+id;
   }
 
-  loadToken(pin:number){
-    return this.storageService.get('token_'+pin);
+  saveToken(id:string, token:string){
+    this.storageService.set('token_'+id, token);
+  }
+
+  loadToken(id:string){
+    return this.storageService.get('token_'+id);
+  }
+
+  async getRoomById(id:string): Promise<IRoom|null> {
+    const payload = {
+      method: 'GET',
+      headers: {
+        'authorization': this.loadToken(id) || ""
+      }
+    };
+
+    const response = await fetch('/api/room/fetch/'+id, payload);
+
+    if(response.status != 200) return null;
+
+    return await response.json();
   }
 
   async getRoom(pin:number): Promise<IRoom|null> {

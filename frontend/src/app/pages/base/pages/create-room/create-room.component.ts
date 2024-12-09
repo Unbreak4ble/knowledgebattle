@@ -86,8 +86,8 @@ export class CreateRoomComponent {
 
     if(response == null) return;
 
-    this.roomService.saveToken(response.pin, response.token);
+    this.roomService.saveToken(response.id, response.token);
 
-    this.roomService.gotoRoom(response.pin);
+    this.roomService.gotoAdminRoom(response.id);
   }
 }

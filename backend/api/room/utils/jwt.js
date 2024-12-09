@@ -1,19 +1,20 @@
 const b64 = require('./base64');
 const crypto = require('crypto');
 
-function encode(header, payload, key){
-    const header_b64 = b64.base64URLencode(header);
-    const payload_b64 = b64.base64URLencode(payload);
+function encode(header={"alg": "HS256", "typ": "JWT"}, payload, key){
+    const header_b64 = b64.base64URLencode(JSON.stringify(header));
+    const payload_b64 = b64.base64URLencode(JSON.stringify(payload));
     const key_raw = new Buffer(key, 'utf8');
     const signature_b64 = crypto.createHmac('sha256', key_raw).update(header_b64+'.'+payload_b64).digest('base64url');
 
+    console.log(payload, payload_b64);
     return [header_b64, payload_b64, signature_b64].join('.');
 }
 
 function decode(token){
     const [header, payload] = token.split('.');
 
-    return [b64.base64URLdecode(header), b64.base64URLdecode(payload)];
+    return [JSON.parse(b64.base64URLdecode(header)), JSON.parse(b64.base64URLdecode(payload))];
 }
 
 function verify(token, key){

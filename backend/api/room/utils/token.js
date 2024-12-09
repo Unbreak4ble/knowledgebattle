@@ -8,7 +8,7 @@ function validateToken(token){
 }
 
 function createToken(room_id){
-    return jwt.encode({}, {id: room_id}, secret);
+    return jwt.encode({"alg": "HS256", "typ": "JWT"}, {id: room_id}, secret);
 }
 
 module.exports = {
