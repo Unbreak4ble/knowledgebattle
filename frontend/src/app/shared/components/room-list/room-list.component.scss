@@ -45,6 +45,24 @@
                 .pin_code {
                     color: black;
                 }
+
+                .rooms-room-head-name {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 5px;
+
+                    .rooms-room-head-name-owner-mark {
+                        color: #2e6847;
+
+                        &:before {
+                            content: '(';
+                        }
+                        &:after {
+                            content: ')';
+                        }
+                    }
+                }
             }
 
             .rooms-room-body {

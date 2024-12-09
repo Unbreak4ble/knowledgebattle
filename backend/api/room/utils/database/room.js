@@ -38,14 +38,14 @@ async function create(room){
 
 async function get(id){
     const connection = await redis.connect();
-
-    const index = await connection.json.ARRINDEX('rooms', '$.id', id);
-
-    const data = await connection.json.GET('rooms', `$.[${index}]`);
+    
+    const data = await connection.json.GET('rooms', {
+        path: `$[?(@.id == '${id}')]`
+    });
 
     await connection.quit();
 
-    return data;
+    return data[0];
 }
 
 async function getByPin(pin){

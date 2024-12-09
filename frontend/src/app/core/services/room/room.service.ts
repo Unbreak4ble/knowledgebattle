@@ -78,4 +78,10 @@ export class RoomService {
 
     return await response.json();
   }
+
+  getOwnedRoomsIds():string[] {
+    const ids = this.storageService.listKeys().filter(x => x.includes('token_')).map(x => x.replace('token_', ''));
+
+    return ids;
+  }
 }

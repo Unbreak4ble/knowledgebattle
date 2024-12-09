@@ -3,10 +3,32 @@
         <a>Rooms</a>
     </div>
     <div class="room-list-rooms">
+        @for(room of owned_rooms; track room){
+            <div class="rooms-room" (click)="manageRoom(room.id)">
+                <div class="rooms-room-head">
+                    <div class="rooms-room-head-name">
+                        <a class="rooms-room-head-name-owner-mark">owner</a>
+                        <a>{{ room.name }}</a>
+                    </div>
+                    <a class="pin_code">{{ room.pin }}</a>
+                </div>
+                <div class="rooms-room-body">
+                    <div></div>
+                    <div class="players_count">
+                        <a>{{ room.players_count }}</a>
+                        <a class="delim">/</a>
+                        <a>{{ room.max_players }}</a>
+                    </div>
+                </div>
+            </div>
+        }
+
         @for(room of random_rooms; track room){
             <div class="rooms-room" (click)="join(room.pin)">
                 <div class="rooms-room-head">
-                    <a>{{ room.name }}</a>
+                    <div class="rooms-room-head-name">
+                        <a>{{ room.name }}</a>
+                    </div>
                     <a class="pin_code">{{ room.pin }}</a>
                 </div>
                 <div class="rooms-room-body">

@@ -68,21 +68,30 @@ export class PinInputComponent {
           }
         }).bind(this));
       }).bind(this));
-      
+
       element.addEventListener('keyup', (evt:any) => {
+        element.value = (element.value.match(/\d+/gim) || []).join('').slice(0, this.max_input_length);
+      });
+      
+      element.addEventListener('keydown', (evt:any) => {
         let length = element.value.length;
         const value = element.value + evt.key;
-        
-        if(evt.key.length == 1){          
-          if(!/^\d+$/gim.test(evt.key))
-            return evt.preventDefault();
-          else
+
+        if(!(evt.keyCode >= 0x30 && evt.keyCode <= 0x39 || evt.keyCode == 0x8)){
+          return evt.preventDefault();
+        }
+
+        if(evt.key.length == 1){
+          if(/^\d+$/gim.test(evt.key)){
             length+=1;
+          }
+
+          if(length >= this.max_input_length && index == inputs_length){
+            this.onfill.emit(value);
+          }
         }
 
         if(length >= this.max_input_length){
-          evt.preventDefault();
-
           if(index < inputs_length){
             const next_element:any = document.getElementById(inputs_id[index+1]);
 
@@ -90,10 +99,6 @@ export class PinInputComponent {
           }
         }else if(length == 0 && index > 0){
           document.getElementById(inputs_id[index-1])?.focus();
-        }
-
-        if(element.value.length >= this.max_input_length && index == inputs_length){
-          this.onfill.emit(value);
         }
 
         this.onvalue.emit(value);

@@ -19,6 +19,10 @@ export class StorageService {
     return this.storage.getItem(key);
   }
 
+  listKeys(){
+    return Object.keys(localStorage);
+  }
+
   remove(key:string){
     this.storage.removeItem(key);
   }
