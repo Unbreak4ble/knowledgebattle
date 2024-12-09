@@ -1,6 +1,15 @@
 const redis = require('./base/redis');
 
-async function listPublic(max=100){
+function hideProperties(room){
+    if(!room) return room;
+
+    room.questions = undefined;
+    room.settings = undefined;
+
+    return room;
+}
+
+async function listPublic(max=100, hide=true){
     const connection = await redis.connect();
 
     const data = await connection.json.GET('rooms', {
@@ -9,7 +18,9 @@ async function listPublic(max=100){
 
     await connection.quit();
 
-    return (data || []).slice(0, max);
+    const sliced = (data || []).slice(0, max);
+
+    return hide ? sliced.map(x => hideProperties(x)) : sliced;
 }
 
 async function create(room){
@@ -40,13 +51,13 @@ async function get(id){
 async function getByPin(pin){
     const connection = await redis.connect();
 
-    const index = await connection.json.ARRINDEX('rooms', '$.pin', pin);
-
-    const data = await connection.json.GET('rooms', `$.[${index}]`);
+    const data = await connection.json.GET('rooms', {
+        path: `$[?(@.pin == ${pin})]`
+    });
 
     await connection.quit();
 
-    return data;
+    return data[0];
 }
 
 async function update(id, room){
@@ -66,6 +77,7 @@ async function remove(id){
 }
 
 module.exports = {
+    hideProperties,
     listPublic,
     create,
     get,

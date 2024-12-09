@@ -44,7 +44,11 @@ export class RoomService {
   }
 
   async getRoom(pin:number): Promise<IRoom|null> {
-    return null;
+    const response = await fetch('/api/room/fetch/pin/'+pin);
+
+    if(response.status != 200) return null;
+
+    return await response.json();
   }
 
   async joinRoom(pin: number): Promise<IRoomConnection|null>{

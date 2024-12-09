@@ -1,5 +1,5 @@
 const express = require('express');
-const { get, getByPin } = require('../utils/database/room');
+const { get, getByPin, hideProperties } = require('../utils/database/room');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 
 const router = express.Router();
@@ -19,15 +19,12 @@ router.get('/pin/:pin', async (req,res)=>{
 
     if(!pin) return res.status(400).json({error: 'missing pin path'});
 
-    const room = await getByPin(pin);
+    const room = hideProperties(await getByPin(pin));
     
-    if(room){
-        room.questions = undefined;
-        room.settings = undefined;
-        room.pin = undefined;
-    }
-    
-    res.json(room);
+    if(room)
+        res.send(room);
+    else
+        res.status(404).send();
 });
 
 module.exports = router;
