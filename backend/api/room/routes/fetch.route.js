@@ -1,5 +1,4 @@
 const express = require('express');
-const { joinController } = require('../controllers/join.controller');
 const { get } = require('../utils/database/room');
 
 const router = express.Router();

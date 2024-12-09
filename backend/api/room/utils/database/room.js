@@ -3,8 +3,9 @@ const redis = require('./base/redis');
 async function listPublic(max=100){
     const connection = await redis.connect();
 
-    const data = await connection.json.GET('rooms', `$[?(@.settings[?(@.id == 'privacy.public' && @.allow == true)])]`);
-    //const data = await connection.call('JSON.GET', 'rooms', `$[?(@.settings[?(@.id == 'privacy.public' && @.allow == true)])]`);
+    const data = await connection.json.GET('rooms', {
+        path: `$[?(@.settings[?(@.id == 'privacy.public' && @.allow == true)])]`
+    });
 
     await connection.quit();
 

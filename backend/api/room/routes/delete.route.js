@@ -1,5 +1,4 @@
 const express = require('express');
-const { joinController } = require('../controllers/join.controller');
 const { remove } = require('../utils/database/room');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 

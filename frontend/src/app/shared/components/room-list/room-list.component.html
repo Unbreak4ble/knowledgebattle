@@ -4,10 +4,10 @@
     </div>
     <div class="room-list-rooms">
         @for(room of random_rooms; track room){
-            <div class="rooms-room">
+            <div class="rooms-room" (click)="join(room.pin)">
                 <div class="rooms-room-head">
                     <a>{{ room.name }}</a>
-                    <a class="pin_code">{{ room.pin_code }}</a>
+                    <a class="pin_code">{{ room.pin }}</a>
                 </div>
                 <div class="rooms-room-body">
                     <div></div>

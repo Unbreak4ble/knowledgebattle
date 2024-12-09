@@ -49,6 +49,10 @@ export class RoomService {
   }
 
   async fetchRandomRooms(max:number = 64): Promise<IRoom[]> {
-    return [];
+    const response = await fetch('/api/room/list');
+
+    if(response.status != 200) return [];
+
+    return await response.json();
   }
 }

@@ -1,33 +1,24 @@
-const Joi = require('joi');
 const { createToken } = require('../utils/token');
 const uuid = require('uuid');
 const { create } = require('../utils/database/room');
-
-const roomSchema = Joi.object({
-    text: Joi.string().max(64).min(2),
-    questions: Joi.array().items(Joi.object({
-        id: Joi.number(),
-        text: Joi.string(),
-        alternatives: Joi.array().items(Joi.object({
-            text: Joi.string().min(1)
-        }))
-    })),
-    settings: Joi.array()
-});
+const { roomSchema } = require('../models/room.model');
 
 async function createRoom(data){
     const val = roomSchema.validate(data);
     if(val.error) return;
 
     const id = uuid.v4().replaceAll('-', '');
-    const pin = Math.floor(100000 + Math.random()*900000);
+    const pin = Math.floor(100000000 + Math.random()*900000000);
 
     const room = {
         id: id,
         pin: pin,
-        title: data.text,
+        name: data.text,
         questions: data.questions,
-        settings: data.settings
+        settings: data.settings,
+        creation_timestamp: Math.floor(new Date().getTime()/1000),
+        max_players: 100,
+        players_count: 0,
     };
 
     if(!await create(room)) return;
