@@ -1,6 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RoomService } from '../../../core/services/room/room.service';
+import { PinInputComponent } from '../pin-input/pin-input.component';
 
 @Component({
   selector: 'app-join-room-input',
@@ -8,6 +9,7 @@ import { RoomService } from '../../../core/services/room/room.service';
   styleUrl: './join-room-input.component.scss'
 })
 export class JoinRoomInputComponent {
+  @ViewChild('pin_input') pinInputComponent: PinInputComponent|undefined;
   not_found:boolean = false;
 
   constructor(@Inject(DOCUMENT) private _document: Document, private roomService: RoomService){
@@ -15,27 +17,11 @@ export class JoinRoomInputComponent {
   }
 
   ngAfterViewInit(){
-    this.setupRules();
-  }
 
-  setupRules(){
-    this.setupInputRules();
-  }
-
-  setupInputRules(){
-    const element =  this._document.querySelector("input");
-
-    element?.addEventListener('keypress', (evt) => {
-      const key = evt.key;
-      
-      if(!/^\d+$/gim.test(key)) evt.preventDefault();
-    })
   }
 
   async onSubmit(){
-    const element = this._document.querySelector("input");
-
-    const pin = Number(element?.value || 0);
+    const pin = this.pinInputComponent?.value || 0;
 
     const room = await this.roomService.getRoom(pin);
 

@@ -82,8 +82,6 @@ export class CreateRoomComponent {
 
     const response = await this.roomService.createRoom(payload);
 
-    console.log("created room: ", response);
-
     if(response == null) return;
 
     this.roomService.saveToken(response.id, response.token);

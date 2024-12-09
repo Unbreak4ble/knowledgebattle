@@ -3,7 +3,7 @@
         <a class="title">Join Room</a>
     </div>
     <div class="join-room-input-body">
-        <input type="text" placeholder="PIN"/>
+        <app-pin-input #pin_input [inputs]="3" [chars]="3"></app-pin-input>
         <button (click)="onSubmit()">Join</button>
     </div>
     <div class="join-room-input-message">

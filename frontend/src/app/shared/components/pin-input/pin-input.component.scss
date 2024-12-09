@@ -1,0 +1,45 @@
+@keyframes focusFlicker {
+    from {
+        border-bottom: 3px solid white;
+    }
+
+    49% {
+        border-bottom: 3px solid white;
+    }
+
+    51% {
+        border-bottom: 3px solid transparent;
+    }
+
+    to {
+        border-bottom: 3px solid transparent;
+    }
+}
+
+.pin-input {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    background: transparent;
+
+    .pin-input-input {
+        outline: none;
+        border: none;
+        padding: 0px 5px;
+        border-radius: 10px;
+        background: #00000010;
+        font-size: 25px;
+        border-bottom: 3px solid transparent;
+        width: calc(3em - 10px*3);
+
+        &:focus {
+            border-radius: 10px 10px 0px 0px;
+            background: #00000020;
+            caret-color: transparent;
+            animation-name: focusFlicker;
+            animation-duration: 1s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+    }
+}
