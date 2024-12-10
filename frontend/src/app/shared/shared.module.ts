@@ -14,6 +14,7 @@ import { TextareaComponent } from './components/textarea/textarea.component';
 import { QuestionsListComponent } from './components/questions-list/questions-list.component';
 import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.component';
 import { PinInputComponent } from './components/pin-input/pin-input.component';
+import { QuestionsListLiveComponent } from './components/questions-list-live/questions-list-live.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { PinInputComponent } from './components/pin-input/pin-input.component';
     TextareaComponent,
     ToggleSwitchComponent,
     PinInputComponent,
+    QuestionsListLiveComponent,
   ],
   // to be used along imports
   exports: [
@@ -53,6 +55,7 @@ import { PinInputComponent } from './components/pin-input/pin-input.component';
     TextareaComponent,
     ToggleSwitchComponent,
     PinInputComponent,
+    QuestionsListLiveComponent,
   ]
 })
 export class SharedModule { }

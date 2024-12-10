@@ -7,8 +7,18 @@
         </div>
         }
         <div class="message-box-body">
-            <a class="message-box-text">{{ message }}</a>
+            @if(!input_mode){
+                <a class="message-box-text">{{ message }}</a>
+            }
+            @if(input_mode){
+                <input class="message-box-input"/>
+            }
         </div>
+        @if(input_mode){
+            <div class="message-box-confirm-input-button" (click)="submitInput()">
+                <a>submit</a>
+            </div>
+        }
         @if(prompt_mode){
             <div class="message-box-confirm-prompt">
                 <div class="message-box-confirm-prompt-no" (click)="selectPrompt(false)">

@@ -33,11 +33,29 @@ export class RoomComponent {
     });*/
   }
 
-  setupRoomConnection(){
+  async setupRoomConnection(){
     const pin = this.route.snapshot.queryParams?.['pin'];
 
     this.pin = pin;
 
+    const room = await this.roomService.getRoom(pin);
+
+    if(room == null){
+      return this.messageboxService.getComponent()?.show('Error', 'Room not found with pin '+pin, 60*60*24);
+    }
+
+    const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
+
+    if(!username) return;
+
+    const connection = await this.roomService.joinRoom(pin);
     
+    if(connection == null){
+      return this.messageboxService.getComponent()?.show('Error', 'Failed to connect to the room', 60*60*24);
+    }
+
+    this.roomService.sendRequest(username);
+    
+    this.messageboxService.getComponent()?.show('Success', 'Connected to the room');
   }
 }

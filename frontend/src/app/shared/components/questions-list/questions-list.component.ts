@@ -12,7 +12,6 @@ export class QuestionsListComponent {
   messageBoxComponent:MessageBoxComponent|null = null;
   questions: IQuestion[] = [];
   admin_mode:boolean = false;
-  @Input('live') live_mode:boolean = false;
   @Output('submit') onSubmit: EventEmitter<IQuestion[]> = new EventEmitter();
   _createQuestion: (() => void)|undefined;
   _viewQuestion: ((question: IQuestion) => void)|undefined;

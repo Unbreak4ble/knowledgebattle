@@ -7,6 +7,7 @@ import { QuestionsListComponent } from '../../../../shared/components/questions-
 import { MakeQuestionComponent } from '../../../../shared/components/make-question/make-question.component';
 import { IQuestion } from '../../../../core/interfaces/question/question.interface';
 import { SharedModule } from '../../../../shared/shared.module';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-room-admin',
@@ -31,7 +32,7 @@ export class RoomAdminComponent {
     }
   ];
 
-  constructor(private roomService: RoomService, private messageboxService:MessageboxService){
+  constructor(private roomService: RoomService, private messageboxService:MessageboxService, private route:ActivatedRoute){
 
   }
 
@@ -98,5 +99,30 @@ export class RoomAdminComponent {
 
   onSubmit(questions:IQuestion[]){
     alert(questions.length);
+  }
+
+
+  async setupRoomConnection(){
+    const id = this.route.snapshot.queryParams?.['id'];
+
+    const room = await this.roomService.getRoomById(id);
+
+    if(room == null){
+      return this.messageboxService.getComponent()?.show('Error', 'Room not found with id '+id, 60*60*24);
+    }
+
+    const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
+
+    if(!username) return;
+
+    const connection = await this.roomService.joinRoom(room.pin);
+    
+    if(connection == null){
+      return this.messageboxService.getComponent()?.show('Error', 'Failed to connect to the room', 60*60*24);
+    }
+
+    this.roomService.sendRequestAsAdmin(username, id);
+    
+    this.messageboxService.getComponent()?.show('Success', 'Connected to the room');
   }
 }

@@ -1,5 +1,4 @@
 <div class="questions-list">
-    @if(!live_mode){
     <div class="questions-list-head">
         <div class="questions-list-head-count">
             <a>{{ questions.length }}</a>
@@ -9,15 +8,6 @@
             <button class="global-button" (click)="submitQuestions()">submit</button>
         }
     </div>
-    }
-    @if(live_mode){
-        @if(questions.length == 0){
-            <div class="questions-list-head-live">
-                <a class="questions-list-head-message">Waiting for questions ...</a>
-                <a class="questions-list-head-message">NOTE: Once you submit questions, you can't remove them. Review the questions first, then submit.</a>
-            </div>
-        }
-    }
     <div class="questions-list-list">
         @for(question of questions; track question; let idx=$index){
             <div class="questions-list-question" (click)="viewQuestion(question)">
@@ -30,13 +20,11 @@
                         <a class="t3dots">...</a>
                     }
                 </div>
-                @if(!live_mode){
                 <div class="questions-list-question-remove" (click)="deleteQuestion(idx)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
                     </svg>
                 </div>
-                }
             </div>
         }
     </div>

@@ -1,0 +1,23 @@
+<div class="questions-list-live">
+    @if(questions.length == 0){
+        <div class="questions-list-live-head">
+            <a class="questions-list-live-head-message">Waiting for questions ...</a>
+            <a class="questions-list-live-head-message">NOTE: Once you submit questions, you can't remove them. Review the questions first, then submit.</a>
+        </div>
+    }
+    <div class="questions-list-live-list">
+        @for(question of questions; track question; let idx=$index){
+            <div class="questions-list-live-question" (click)="viewQuestion(question)">
+                <div class="questions-list-live-question-number">
+                    <a>{{ question.id }}</a>
+                </div>
+                <div class="questions-list-live-question-text">
+                    <a>{{ question.text.slice(0, 64) }}</a>
+                    @if(question.text.length > 64){
+                        <a class="t3dots">...</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

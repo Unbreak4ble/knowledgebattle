@@ -13,7 +13,9 @@ export class MessageBoxComponent {
   timeout_seconds:number = 3;
   _interval:any = null;
   prompt_mode:boolean = false;
+  input_mode:boolean = false;
   prompt_callback:((result:any)=>void)|null = null;
+  submitInput:()=>void = ()=>{};
   _document:Document = new Document();
 
   constructor(
@@ -46,7 +48,8 @@ export class MessageBoxComponent {
     element_content.classList.remove('message-box-content-show');
   }
 
-  private startProgressBar(){
+  private async startProgressBar(){
+    await new Promise(resolve => setTimeout(resolve, 10));
     const element:any = this._document.querySelector('.message-box-progress-bar');
 
     if(!element) return;
@@ -73,6 +76,7 @@ export class MessageBoxComponent {
   }
 
   show(title:string, message:string, timeout_seconds:number=0){
+    this.input_mode = false;
     this.prompt_mode = false;
     this.prompt_callback = null;
     this.title = title;
@@ -93,6 +97,7 @@ export class MessageBoxComponent {
     const timeout_seconds=60*60*24;
     this.prompt_callback = callback;
     this.prompt_mode = true;
+    this.input_mode = false;
     this.title = title;
     this.message = message;
     if(timeout_seconds > 0){
@@ -105,6 +110,29 @@ export class MessageBoxComponent {
     this.displayModal();
 
     this.cdRef.detectChanges();
+  }
+
+  async showInput(title:string, plaeholder:string):Promise<string|null> {
+    this.input_mode = true;
+    this.prompt_mode = false;
+    this.title = title;
+
+    this.displayModal();
+    this.cdRef.detectChanges();
+
+    await new Promise(((resolve:any) => this.submitInput = () => resolve()).bind(this));
+
+    const element:any = document.querySelector('.message-box-input');
+
+    if(element == null) return null;
+
+    const value = element.value;
+
+    element.value = '';
+
+    this.hide();
+
+    return value;
   }
 
   selectPrompt(yes:boolean){

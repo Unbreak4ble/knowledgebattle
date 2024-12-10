@@ -9,6 +9,9 @@ import { StorageService } from '../storage/storage.service';
   providedIn: 'root'
 })
 export class RoomService {
+  _ws:WebSocket|null = null;
+  _connected_pin:number|null = null;
+  listeners:((msg:any)=>void)[] = [];
 
   constructor(private storageService: StorageService) { }
 
@@ -52,7 +55,52 @@ export class RoomService {
   }
 
   async joinRoom(pin: number): Promise<IRoomConnection|null>{
-    return null;
+    this._connected_pin = pin;
+    this._ws = new WebSocket('/api/room/join');
+
+    this._ws.addEventListener('message', (msg:any)=>{
+      this.listeners.forEach(listener => listener?.(msg));
+    });
+
+    const connection:IRoomConnection = {
+      pin: pin,
+      websocket: this._ws
+    };
+
+    const result = await new Promise(((resolve:any) => {
+      this._ws?.addEventListener('open', ()=>{
+        resolve(true);
+      });
+      this._ws?.addEventListener('close', ()=>{
+        resolve(false);
+      });
+      this._ws?.addEventListener('error', ()=>{
+        resolve(false);
+      });
+    }).bind(this));
+
+    return result ? connection : null;
+  }
+
+  sendRoom(data:any){
+    try{
+      this._ws?.send(JSON.stringify(data));
+    }catch{
+      this._ws?.send(data);
+    }
+  }
+
+  sendRequest(username:string){
+    this.sendRoom({name: username, token: null});
+  }
+
+  sendRequestAsAdmin(username:string, id:string){
+    const token = this.loadToken(id);
+    this.sendRoom({name: username, token: token});
+  }
+
+  subscribeRoom(onmessage:(msg:any)=>void):void{
+    this.listeners.push(onmessage);
   }
 
   async createRoom(parameters:ICreateRoom): Promise<CreateRoomResponse|null> {
