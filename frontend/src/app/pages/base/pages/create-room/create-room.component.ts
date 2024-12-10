@@ -28,7 +28,8 @@ export class CreateRoomComponent {
       text: "untitled",
       alternatives: [
         {text: 'untitled alternative'}
-      ]
+      ],
+      finished: false
     }
   ];
 

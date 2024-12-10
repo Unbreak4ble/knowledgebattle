@@ -28,7 +28,8 @@ export class RoomAdminComponent {
       text: "untitled",
       alternatives: [
         {text: 'untitled alternative'}
-      ]
+      ],
+      finished: false
     }
   ];
 
@@ -49,6 +50,8 @@ export class RoomAdminComponent {
     this.questionsListComponent?.setAdminMode(true);
 
     this.options = await this.roomService.loadOptions();
+
+    this.setupRoomConnection();
   }
 
   initEvents(){
@@ -79,22 +82,8 @@ export class RoomAdminComponent {
     return result;
   }
 
-  async create(){
-    const configs = this.getConfig();
-    const questions = this.questionsListComponent?.questions || [];
-
-    const payload = {
-      ...configs,
-      questions: questions
-    };
-
-    const response = await this.roomService.createRoom(payload);
-
-    if(response == null) return;
-
-    this.roomService.saveToken(response.id, response.token);
-
-    this.roomService.gotoAdminRoom(response.id);
+  async start(){
+    
   }
 
   onSubmit(questions:IQuestion[]){
@@ -111,7 +100,8 @@ export class RoomAdminComponent {
       return this.messageboxService.getComponent()?.show('Error', 'Room not found with id '+id, 60*60*24);
     }
 
-    const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
+    //const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
+    const username = 'admin';
 
     if(!username) return;
 
@@ -122,7 +112,5 @@ export class RoomAdminComponent {
     }
 
     this.roomService.sendRequestAsAdmin(username, id);
-    
-    this.messageboxService.getComponent()?.show('Success', 'Connected to the room');
   }
 }

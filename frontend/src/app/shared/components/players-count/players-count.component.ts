@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { RoomService } from '../../../core/services/room/room.service';
 
 @Component({
   selector: 'app-players-count',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './players-count.component.scss'
 })
 export class PlayersCountComponent {
-  count:Number = 0;
+  @Input('live') live_mode:boolean = true;
+  count:number = 0;
+
+  constructor(public roomService: RoomService){
+
+  }
 }

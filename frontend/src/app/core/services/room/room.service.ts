@@ -12,6 +12,7 @@ export class RoomService {
   _ws:WebSocket|null = null;
   _connected_pin:number|null = null;
   listeners:((msg:any)=>void)[] = [];
+  live_room_data:any = {};
 
   constructor(private storageService: StorageService) { }
 
@@ -56,10 +57,10 @@ export class RoomService {
 
   async joinRoom(pin: number): Promise<IRoomConnection|null>{
     this._connected_pin = pin;
-    this._ws = new WebSocket('/api/room/join');
+    this._ws = new WebSocket('/api/room/join/'+pin);
 
     this._ws.addEventListener('message', (msg:any)=>{
-      this.listeners.forEach(listener => listener?.(msg));
+      this.listeners.forEach(listener => listener?.(JSON.parse(msg.data)));
     });
 
     const connection:IRoomConnection = {
@@ -79,7 +80,22 @@ export class RoomService {
       });
     }).bind(this));
 
+    await new Promise((resolve:any) => this.subscribeRoom((msg:any) => {
+      if(msg.type == 'request') return resolve();
+    }));
+
+    this.setupCommonListeners();
+
     return result ? connection : null;
+  }
+
+  setupCommonListeners(){
+    this.subscribeRoom((msg) => {
+      if(msg.type != 'players') return;
+
+      this.live_room_data.players = msg.data;
+      this.live_room_data.players_count = msg.data.length;
+    });
   }
 
   sendRoom(data:any){

@@ -12,6 +12,9 @@ function hideProperties(room){
 async function listPublic(max=100, hide=true){
     const connection = await redis.connect();
 
+    if(!await connection.json.GET('rooms', '$'))
+        await connection.json.SET('rooms', '$', []);
+
     const data = await connection.json.GET('rooms', {
         path: `$[?(@.settings[?(@.id == 'privacy.public' && @.allow == true)])]`
     });
@@ -38,6 +41,9 @@ async function create(room){
 
 async function get(id){
     const connection = await redis.connect();
+
+    if(!await connection.json.GET('rooms', '$'))
+        await connection.json.SET('rooms', '$', []);
     
     const data = await connection.json.GET('rooms', {
         path: `$[?(@.id == '${id}')]`
@@ -50,6 +56,9 @@ async function get(id){
 
 async function getByPin(pin){
     const connection = await redis.connect();
+
+    if(!await connection.json.GET('rooms', '$'))
+        await connection.json.SET('rooms', '$', []);
 
     const data = await connection.json.GET('rooms', {
         path: `$[?(@.pin == ${pin})]`
@@ -67,7 +76,17 @@ async function update(id, room){
 async function remove(id){
     const connection = await redis.connect();
 
-    const index = await connection.json.ARRINDEX('rooms', '$.id', id);
+    if(!await connection.json.GET('rooms', '$'))
+        await connection.json.SET('rooms', '$', []);
+
+    const data = await get(id);
+
+    if(data == null){
+        await connection.quit();
+        return;
+    }
+
+    const index = (await connection.json.ARRINDEX('rooms', '$', data))[0];
 
     if(index >= 0){
         await connection.json.ARRPOP('rooms', '$', index);
