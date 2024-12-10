@@ -1,3 +1,13 @@
+@keyframes upScale {
+    from {
+        scale: 0.1;
+    }
+
+    to {
+        scale: 1;
+    }
+}
+
 .message-box {
     left: 0;
     top: 0;
@@ -15,8 +25,15 @@
     scroll-behavior: none;
     touch-action: none;
 
+    .message-box-content-show {
+        display: flex !important;
+        animation-name: upScale;
+        animation-duration: 100ms;
+        animation-timing-function: linear;
+    }
+
     .message-box-content {
-        display: flex;
+        display: none;
         flex-direction:  column;
         background: white;
         border-radius: 10px;

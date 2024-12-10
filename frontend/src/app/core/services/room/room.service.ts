@@ -84,4 +84,17 @@ export class RoomService {
 
     return ids;
   }
+
+  async loadOptions(): Promise<any[]> {
+    return [
+      {
+          id: 'visibility.result_poll',
+          text: 'Result poll'
+      },
+      {
+          id: 'privacy.public',
+          text: 'Public'
+      },
+    ]
+  }
 }

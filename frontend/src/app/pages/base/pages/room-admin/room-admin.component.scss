@@ -1,0 +1,91 @@
+@import './room-admin.component.media.scss';
+
+.room-admin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+
+    .room-admin-content {
+        padding: 10px;
+        display: flex;
+        min-width: calc(100% - 10px*2);
+        min-height: 90vh;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+
+        .room-admin-board {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: transparent;
+
+            & > * {
+                border-radius: 10px;
+                position: relative;
+                height: calc(100vh - 10px*2);;
+                background: white;
+            }
+
+            .room-admin-configs {
+                width: calc(25% - 10px*2);
+                height: calc(100vh - 10px*2*2);
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+
+                .room-admin-configs-title {
+                    font-size: 20px;
+                    border: none;
+                    border-bottom: 1px solid black;
+                    width: 10em;
+                    outline: none;
+                }
+
+                .room-admin-configs-options {
+                    width: 99%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                }
+            }
+
+            .room-admin-live-manager {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 75%;
+                background: transparent;
+
+
+                & > * {
+                    border-radius: 10px;
+                    position: relative;
+                    height: calc(100vh - 10px*2);
+                    width: calc(33% - 5px);
+                    background: white;
+                }
+            }
+        }
+
+        .room-admin-question {
+            width: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: row;
+            background: white;
+            border-radius: 10px;
+        }
+    }
+}

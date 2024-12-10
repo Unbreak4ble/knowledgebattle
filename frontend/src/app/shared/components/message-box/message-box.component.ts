@@ -28,18 +28,22 @@ export class MessageBoxComponent {
 
   private displayModal(){
     const element:any = this._document.querySelector('.message-box');
+    const element_content:any = this._document.querySelector('.message-box-content');
 
-    if(!element) return;
+    if(!(element && element_content)) return;
 
     element.style['display'] = "flex";
+    element_content.classList.add('message-box-content-show');
   }
 
   private hideModal(){
     const element:any = this._document.querySelector('.message-box');
+    const element_content:any = this._document.querySelector('.message-box-content');
 
-    if(!element) return;
+    if(!(element && element_content)) return;
 
     element.style['display'] = "none";
+    element_content.classList.remove('message-box-content-show');
   }
 
   private startProgressBar(){

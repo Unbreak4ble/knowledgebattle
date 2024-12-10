@@ -1,1 +1,25 @@
-<p>room-admin works!</p>
+<div class="room-admin">
+    <div class="room-admin-content">
+        <div class="room-admin-board">
+            <div class="room-admin-configs">
+                <div class="room-admin-configs-options">
+                    <input type="text" class="room-admin-configs-title" placeholder="room title"/>
+                    @for(option of options; track option){
+                        <app-toggle-switch #options [id]="option.id">{{ option.text }}</app-toggle-switch>
+                    }
+                </div>
+                <div class="room-admin-configs-bottom">
+                    <button (click)="create()" class="global-button">Create</button>
+                </div>
+            </div>
+            <div class="room-admin-live-manager">
+                <app-questions-list (submit)="onSubmit($event)" class="room-admin-questions-list" #questions_list></app-questions-list>
+                <app-questions-list [live]="true" class="room-admin-questions-list" #questions_list_live></app-questions-list>
+                <app-players-list></app-players-list>
+            </div>
+        </div>
+        <div class="room-admin-question">
+            <app-make-question class="room-admin-questions-question" #make_question></app-make-question>
+        </div>
+    </div>
+</div>

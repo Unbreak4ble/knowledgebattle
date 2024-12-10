@@ -21,7 +21,7 @@ export class CreateRoomComponent {
   @ViewChild('make_question') makeQuestionComponent:MakeQuestionComponent|null = null;
   @ViewChild('questions_list') questionsListComponent:QuestionsListComponent|null = null;
   @ViewChildren('options') optionComponents:QueryList<ToggleSwitchComponent>|undefined;
-  readonly options = options;
+  options:any[] = [];
   questions: IQuestion[] = [
     {
       id: 1,
@@ -42,10 +42,12 @@ export class CreateRoomComponent {
     this.setup();
   }
 
-  setup(){
+  async setup(){
     this.initEvents();
 
     this.questionsListComponent?.setQuestions(this.questions);
+
+    this.options = await this.roomService.loadOptions();
   }
 
   initEvents(){

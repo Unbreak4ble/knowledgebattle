@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { MessageBoxComponent } from '../message-box/message-box.component';
 import { MessageboxService } from '../../../core/services/messagebox/messagebox.service';
@@ -11,6 +11,9 @@ import { MessageboxService } from '../../../core/services/messagebox/messagebox.
 export class QuestionsListComponent {
   messageBoxComponent:MessageBoxComponent|null = null;
   questions: IQuestion[] = [];
+  admin_mode:boolean = false;
+  @Input('live') live_mode:boolean = false;
+  @Output('submit') onSubmit: EventEmitter<IQuestion[]> = new EventEmitter();
   _createQuestion: (() => void)|undefined;
   _viewQuestion: ((question: IQuestion) => void)|undefined;
   _deleteQuestion: ((index:number) => void)|undefined;
@@ -41,13 +44,17 @@ export class QuestionsListComponent {
     });
   }
 
+  submitQuestions(){
+    this.onSubmit.emit(this.questions);
+  }
+
   viewQuestion(question: IQuestion){
     this._viewQuestion?.(question);
   }
 
   async deleteQuestion(index:number){
 
-    const result = await new Promise(resolve => this.messageBoxComponent?.confirm("prompt", "Do you really want to delete #"+(index+1)+" question ?", resolve));
+    const result = await new Promise(resolve => this.messageBoxComponent?.confirm("", "Do you really want to delete #"+(index+1)+" question ?", resolve));
 
     if(!result) return;
 
@@ -61,5 +68,9 @@ export class QuestionsListComponent {
   setQuestions(questions:IQuestion[]){
     this.questions = questions;
     this.changeDetectRf.detectChanges();
+  }
+
+  setAdminMode(enable:boolean){
+    this.admin_mode = enable;
   }
 }

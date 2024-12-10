@@ -9,6 +9,22 @@
     flex-direction: column;
     align-items: center;
 
+
+    .questions-list-head-live {
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 90%;
+        gap: 10px;
+
+        .questions-list-head-message {
+            color: grey;
+            font-size: 20px;
+        }
+    }
+
     .questions-list-head {
         user-select: none;
         display: flex;
