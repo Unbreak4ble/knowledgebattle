@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageBoxComponent } from '../../../../shared/components/message-box/message-box.component';
 import { IRoom } from '../../../../core/interfaces/room/room.interface';
 import { QuestionsCarouselComponent } from '../../../../shared/components/questions-carousel/questions-carousel.component';
+import { MessageboxService } from '../../../../core/services/messagebox/messagebox.service';
 
 @Component({
   selector: 'app-room',
@@ -14,17 +15,22 @@ import { QuestionsCarouselComponent } from '../../../../shared/components/questi
   styleUrl: './room.component.scss'
 })
 export class RoomComponent {
-  @ViewChild("messagebox") messageBoxComponent:MessageBoxComponent|null = null;
+  messageBoxComponent:MessageBoxComponent|null = null;
   @ViewChild("questions_carousel") questionsCarouselComponent:QuestionsCarouselComponent|null = null;
   pin:number|null = null;
   room_info:IRoom|null = null;
 
-  constructor(private roomService: RoomService, private router: Router, private route:ActivatedRoute){
+  constructor(private roomService: RoomService, private router: Router, private route:ActivatedRoute, private messageboxService: MessageboxService){
     this.setupRoomConnection();
   }
 
   ngAfterViewInit(){
+    this.messageBoxComponent = this.messageboxService.getComponent();
     //this.messageBoxComponent?.show("pin code", "room not found");
+    /*
+    this.messageBoxComponent?.confirm("choose the truth", "truth only", result => {
+      console.log('chose: ', result);
+    });*/
   }
 
   setupRoomConnection(){

@@ -19,6 +19,7 @@ async function createRoom(data){
         creation_timestamp: Math.floor(new Date().getTime()/1000),
         max_players: 100,
         players_count: 0,
+        active: false // the owner can active it on admin page
     };
 
     if(!await create(room)) return;

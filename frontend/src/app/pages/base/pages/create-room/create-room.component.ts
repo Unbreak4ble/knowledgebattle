@@ -6,6 +6,8 @@ import { QuestionsListComponent } from '../../../../shared/components/questions-
 import { ToggleSwitchComponent } from '../../../../shared/components/toggle-switch/toggle-switch.component';
 import { options } from './create-room.header';
 import { RoomService } from '../../../../core/services/room/room.service';
+import { MessageboxService } from '../../../../core/services/messagebox/messagebox.service';
+import { MessageBoxComponent } from '../../../../shared/components/message-box/message-box.component';
 
 @Component({
   selector: 'app-create-room',
@@ -15,6 +17,7 @@ import { RoomService } from '../../../../core/services/room/room.service';
   styleUrl: './create-room.component.scss'
 })
 export class CreateRoomComponent {
+  messageBoxComponent:MessageBoxComponent|null = null;
   @ViewChild('make_question') makeQuestionComponent:MakeQuestionComponent|null = null;
   @ViewChild('questions_list') questionsListComponent:QuestionsListComponent|null = null;
   @ViewChildren('options') optionComponents:QueryList<ToggleSwitchComponent>|undefined;
@@ -29,11 +32,13 @@ export class CreateRoomComponent {
     }
   ];
 
-  constructor(private roomService: RoomService){
+  constructor(private roomService: RoomService, private messageboxService:MessageboxService){
 
   }
 
   ngAfterViewInit(){
+    this.messageBoxComponent = this.messageboxService.getComponent();
+    
     this.setup();
   }
 

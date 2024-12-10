@@ -12,12 +12,18 @@ export class MessageBoxComponent {
   message:string = "";
   timeout_seconds:number = 3;
   _interval:any = null;
-  _document = document;
+  prompt_mode:boolean = false;
+  prompt_callback:((result:any)=>void)|null = null;
+  _document:Document = new Document();
 
   constructor(
     //@Inject(DOCUMENT) private _document: Document, 
     private cdRef: ChangeDetectorRef){
       
+  }
+
+  ngOnInit(){
+    this._document = document;
   }
 
   private displayModal(){
@@ -63,6 +69,8 @@ export class MessageBoxComponent {
   }
 
   show(title:string, message:string, timeout_seconds:number=0){
+    this.prompt_mode = false;
+    this.prompt_callback = null;
     this.title = title;
     this.message = message;
     if(timeout_seconds > 0){
@@ -75,6 +83,29 @@ export class MessageBoxComponent {
     this.displayModal();
 
     this.cdRef.detectChanges();
+  }
+
+  confirm(title:string, message:string, callback: (result:any) => void){
+    const timeout_seconds=60*60*24;
+    this.prompt_callback = callback;
+    this.prompt_mode = true;
+    this.title = title;
+    this.message = message;
+    if(timeout_seconds > 0){
+      this.timeout_seconds = timeout_seconds;
+    }else{
+      this.timeout_seconds = message.length*this.average_read/1000;
+    }
+
+    this.startProgressBar();
+    this.displayModal();
+
+    this.cdRef.detectChanges();
+  }
+
+  selectPrompt(yes:boolean){
+    this.prompt_callback?.(yes);
+    this.hide();
   }
 
   hide(){

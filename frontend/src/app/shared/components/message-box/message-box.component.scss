@@ -3,13 +3,17 @@
     top: 0;
     position: fixed;
     width: 100%;
-    height: 90%;
+    height: 100%;
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1px);
+    background: #000000a0;
     z-index: 99999;
+    overflow: hidden;
+    scroll-behavior: none;
+    touch-action: none;
 
     .message-box-content {
         display: flex;
@@ -17,7 +21,7 @@
         background: white;
         border-radius: 10px;
         overflow: hidden;
-        max-width: 50%;
+        max-width: 80%;
 
         .message-box-head {
             display: flex;
@@ -38,7 +42,7 @@
             }
 
             .message-box-title {
-                font-size: 50px;
+                font-size: 40px;
             }
         }
 
@@ -51,6 +55,41 @@
             .message-box-text {
 
                 font-size: 25px;
+            }
+        }
+
+        .message-box-confirm-prompt {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+
+            &>*{
+                width: 50%;
+                padding: 10px;
+                font-size: 25px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+                user-select: none;
+            }
+            
+            .message-box-confirm-prompt-yes {
+                background: #23dc5550;
+
+                &:hover {
+                    background: #23dc55b0;
+                }
+            }
+
+            .message-box-confirm-prompt-no {
+                background: #f70a0850;
+
+                &:hover {
+                    background: #f70a08a0;
+                }
             }
         }
     }

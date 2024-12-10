@@ -9,4 +9,5 @@ export interface IRoom {
     players_count: number;
     max_players: number;
     creation_timestamp: number; //seconds
+    active: boolean;
 }

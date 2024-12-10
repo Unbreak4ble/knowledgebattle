@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
+import { MessageBoxComponent } from '../message-box/message-box.component';
+import { MessageboxService } from '../../../core/services/messagebox/messagebox.service';
 
 @Component({
   selector: 'app-questions-list',
@@ -7,17 +9,18 @@ import { IQuestion } from '../../../core/interfaces/question/question.interface'
   styleUrl: './questions-list.component.scss'
 })
 export class QuestionsListComponent {
+  messageBoxComponent:MessageBoxComponent|null = null;
   questions: IQuestion[] = [];
   _createQuestion: (() => void)|undefined;
   _viewQuestion: ((question: IQuestion) => void)|undefined;
   _deleteQuestion: ((index:number) => void)|undefined;
 
-  constructor(private changeDetectRf: ChangeDetectorRef){
+  constructor(private changeDetectRf: ChangeDetectorRef, private messageboxService:MessageboxService){
 
   }
 
   ngAfterViewInit(){
-
+    this.messageBoxComponent = this.messageboxService.getComponent();
   }
 
   onCreateQuestion = (callback: () => void) => this._createQuestion = callback;
@@ -42,7 +45,12 @@ export class QuestionsListComponent {
     this._viewQuestion?.(question);
   }
 
-  deleteQuestion(index:number){
+  async deleteQuestion(index:number){
+
+    const result = await new Promise(resolve => this.messageBoxComponent?.confirm("prompt", "Do you really want to delete #"+(index+1)+" question ?", resolve));
+
+    if(!result) return;
+
     this._deleteQuestion?.(index);
 
     this.questions[index].id = -1;
