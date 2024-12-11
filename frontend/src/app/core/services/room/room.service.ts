@@ -4,17 +4,20 @@ import { IRoom } from '../../interfaces/room/room.interface';
 import { IRoomConnection } from '../../interfaces/room/room_connection.interface';
 import { CreateRoomResponse } from '../../interfaces/room/create_room_response.interface';
 import { StorageService } from '../storage/storage.service';
+import { RoomCommands } from './commands';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
+export class RoomService extends RoomCommands {
   _ws:WebSocket|null = null;
   _connected_pin:number|null = null;
   listeners:((msg:any)=>void)[] = [];
   live_room_data:any = {};
 
-  constructor(private storageService: StorageService) { }
+  constructor(private storageService: StorageService) {
+    super();
+  }
 
   gotoRoom(pin:number){
     window.location.href = "/room?pin="+pin;
@@ -85,6 +88,7 @@ export class RoomService {
     }));
 
     this.setupCommonListeners();
+    this.setupCommands(this._ws);
 
     return result ? connection : null;
   }
@@ -152,7 +156,7 @@ export class RoomService {
   async loadOptions(): Promise<any[]> {
     return [
       {
-          id: 'visibility.result_poll',
+          id: 'ingame.visibility.result_poll',
           text: 'Result poll'
       },
       {
@@ -160,8 +164,12 @@ export class RoomService {
           text: 'Public'
       },
       {
-          id: 'time.wait_for_all',
-          text: 'Wait for all'
+          id: 'ingame.time.wait_for_all',
+          text: 'Wait for all to finish'
+      },
+      {
+          id: 'ingame.allow_join',
+          text: 'Allow join during game'
       },
     ]
   }

@@ -16,6 +16,22 @@ async function listPlayers(room_id){
     return data;
 }
 
+async function resetGlobalPlayersList(){
+    const key_prefix = 'rooms_players_';
+
+    const connection = await redis.connect();
+
+    const keys = await connection.KEYS('*');
+
+    const filtered_keys = keys.filter(x => x.startsWith(key_prefix));
+
+    for(const key of filtered_keys){
+        await connection.DEL(key);
+    }
+
+    await connection.quit();
+}
+
 async function resetPlayersList(room_id){
     if(!(room_id && room_id.length > 0)) return;
     const key = 'rooms_players_'+room_id;
@@ -82,4 +98,5 @@ module.exports = {
     removePlayer,
     getPlayerById,
     resetPlayersList,
+    resetGlobalPlayersList
 }

@@ -83,7 +83,7 @@ export class RoomAdminComponent {
   }
 
   async start(){
-    
+    this.roomService.sendStart();
   }
 
   onSubmit(questions:IQuestion[]){
