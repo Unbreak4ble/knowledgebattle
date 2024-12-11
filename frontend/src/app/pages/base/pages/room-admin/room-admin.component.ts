@@ -8,6 +8,7 @@ import { MakeQuestionComponent } from '../../../../shared/components/make-questi
 import { IQuestion } from '../../../../core/interfaces/question/question.interface';
 import { SharedModule } from '../../../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
+import { QuestionsListLiveComponent } from '../../../../shared/components/questions-list-live/questions-list-live.component';
 
 @Component({
   selector: 'app-room-admin',
@@ -20,6 +21,7 @@ export class RoomAdminComponent {
   messageBoxComponent:MessageBoxComponent|null = null;
   @ViewChild('make_question') makeQuestionComponent:MakeQuestionComponent|null = null;
   @ViewChild('questions_list') questionsListComponent:QuestionsListComponent|null = null;
+  @ViewChild('questions_list_live') questionsListLiveComponent:QuestionsListLiveComponent|null = null;
   @ViewChildren('options') optionComponents:QueryList<ToggleSwitchComponent>|null = null;
   options:any[] = [];
   questions: IQuestion[] = [
@@ -87,7 +89,7 @@ export class RoomAdminComponent {
   }
 
   onSubmit(questions:IQuestion[]){
-    alert(questions.length);
+    this.roomService.sendNewQuestion(questions);
   }
 
 

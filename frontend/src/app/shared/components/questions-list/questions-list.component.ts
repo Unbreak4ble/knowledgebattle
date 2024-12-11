@@ -46,6 +46,8 @@ export class QuestionsListComponent {
 
   submitQuestions(){
     this.onSubmit.emit(this.questions);
+    this.questions = [];
+    this.changeDetectRf.detectChanges();
   }
 
   viewQuestion(question: IQuestion){
@@ -63,6 +65,7 @@ export class QuestionsListComponent {
     this.questions[index].id = -1;
     this.questions.splice(index, 1);
     this.fixIds();
+    this.changeDetectRf.detectChanges();
   }
 
   setQuestions(questions:IQuestion[]){
@@ -72,5 +75,6 @@ export class QuestionsListComponent {
 
   setAdminMode(enable:boolean){
     this.admin_mode = enable;
+    this.changeDetectRf.detectChanges();
   }
 }

@@ -12,7 +12,9 @@ import { RoomCommands } from './commands';
 export class RoomService extends RoomCommands {
   _ws:WebSocket|null = null;
   _connected_pin:number|null = null;
-  listeners:((msg:any)=>void)[] = [];
+  _connected_id:string|null = null;
+  private listeners:((msg:any)=>void)[] = [];
+  private join_listeners:(()=>void)[] = [];
   live_room_data:any = {};
 
   constructor(private storageService: StorageService) {
@@ -58,8 +60,23 @@ export class RoomService extends RoomCommands {
     return await response.json();
   }
 
+  async waitForJoin(){
+    await new Promise((resolve:any) => this.join_listeners.push(resolve));
+  }
+
+  private emitJoinEvent(){
+    for(const listener of this.join_listeners){
+      listener();
+    }
+  }
+
   async joinRoom(pin: number): Promise<IRoomConnection|null>{
+    const room = await this.getRoom(pin);
+
+    if(room == null) return null;
+
     this._connected_pin = pin;
+    this._connected_id = room?.id;
     this._ws = new WebSocket('/api/room/join/'+pin);
 
     this._ws.addEventListener('message', (msg:any)=>{
@@ -87,6 +104,7 @@ export class RoomService extends RoomCommands {
       if(msg.type == 'request') return resolve();
     }));
 
+    this.emitJoinEvent();
     this.setupCommonListeners();
     this.setupCommands(this._ws);
 

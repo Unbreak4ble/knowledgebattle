@@ -1,12 +1,12 @@
-import { CommandTypes } from "../../interfaces/room/commands.interface";
+import { RequestCommandTypes } from "../../interfaces/room/commands.interface";
 
 
-export function convertToString(command: CommandTypes): string|null {
+export function convertRequestToString(command: RequestCommandTypes): string|null {
     const commands:any = {
-        [CommandTypes.START]: 'start',
-        [CommandTypes.STOP]: 'stop',
-        [CommandTypes.UPDATE_RULES]: 'update_rules',
-        [CommandTypes.NEW_QUESTION]: 'new_question',
+        [RequestCommandTypes.START]: 'start',
+        [RequestCommandTypes.STOP]: 'stop',
+        [RequestCommandTypes.UPDATE_RULES]: 'update_rules',
+        [RequestCommandTypes.NEW_QUESTION]: 'new_question',
     };
 
     return commands[command];

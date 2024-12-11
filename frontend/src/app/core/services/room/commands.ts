@@ -1,5 +1,6 @@
-import { convertToString } from "../../helpers/room/commands.helper";
-import { CommandTypes } from "../../interfaces/room/commands.interface";
+import { convertRequestToString } from "../../helpers/room/commands.helper";
+import { IQuestion } from "../../interfaces/question/question.interface";
+import { RequestCommandTypes } from "../../interfaces/room/commands.interface";
 import { RoomService } from "./room.service";
 
 
@@ -12,14 +13,14 @@ export class RoomCommands {
         this._cmd_ws = ws;
     }
 
-    sendRawCommand(type:string, data:any){
+    private sendRawCommand(type:string, data:any){
         if(!this._cmd_ws) return;
 
         this._cmd_ws.send(JSON.stringify({type: type, data: data}));
     }
     
-    sendCommand(command:CommandTypes, data:any=null){
-        const cmd_str = convertToString(command);
+    private sendCommand(command:RequestCommandTypes, data:any=null){
+        const cmd_str = convertRequestToString(command);
 
         if(!cmd_str) return;
 
@@ -27,6 +28,14 @@ export class RoomCommands {
     }
 
     sendStart(){
-        this.sendCommand(CommandTypes.START);
+        this.sendCommand(RequestCommandTypes.START);
+    }
+
+    sendNewQuestion(questions:IQuestion[]){
+        const data = {
+            questions: questions
+        };
+        
+        this.sendCommand(RequestCommandTypes.NEW_QUESTION, data);
     }
 }
