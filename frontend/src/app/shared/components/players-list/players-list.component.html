@@ -1,1 +1,20 @@
-<p>players-list works!</p>
+<div class="players-list">
+    <div class="players-list-head">
+        <div class="players-list-head-count">
+            <app-players-count></app-players-count>
+        </div>
+        <a>Players</a>
+    </div>
+    <div class="players-list-list">
+        @for(player of roomService.live_room_data.players; track player){
+            <div class="players-list-player">
+                <div class="players-list-player-head">
+                    <a class="players-list-player-name">{{ player.name }}</a>
+                </div>
+                <div class="players-list-player-body">
+                    <a class="players-list-player-id">{{ player.id }}</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

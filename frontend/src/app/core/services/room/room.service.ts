@@ -159,6 +159,10 @@ export class RoomService {
           id: 'privacy.public',
           text: 'Public'
       },
+      {
+          id: 'time.wait_for_all',
+          text: 'Wait for all'
+      },
     ]
   }
 }

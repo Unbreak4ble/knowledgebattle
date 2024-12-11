@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RoomService } from '../../../core/services/room/room.service';
 
 @Component({
   selector: 'app-players-list',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './players-list.component.scss'
 })
 export class PlayersListComponent {
+  players:any[] = [];
 
+  constructor(public roomService: RoomService){
+
+  }
 }
