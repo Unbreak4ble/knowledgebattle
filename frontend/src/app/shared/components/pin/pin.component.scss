@@ -4,9 +4,16 @@
     flex-direction: row;
     gap: 5px;
 
-    .pin-code {
-        padding: 1px 5px;
-        background: #00000010;
-        border-radius: 5px;
+    .pin-codes {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        gap: 3px;
+
+        .pin-code {
+            padding: 1px 5px;
+            background: #00000010;
+            border-radius: 5px;
+        }
     }
 }

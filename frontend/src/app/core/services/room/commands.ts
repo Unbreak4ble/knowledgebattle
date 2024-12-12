@@ -39,6 +39,14 @@ export class RoomCommands {
         this.sendCommand(RequestCommandTypes.KICK_ALL);
     }
 
+    sendUpdateRule(data:any){
+        this.sendCommand(RequestCommandTypes.UPDATE_RULE, data);
+    }
+
+    sendUpdatePin(){
+        this.sendCommand(RequestCommandTypes.UPDATE_PIN);
+    }
+
     sendNewQuestion(questions:IQuestion[]){
         const data = {
             questions: questions

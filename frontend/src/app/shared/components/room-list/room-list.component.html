@@ -29,7 +29,7 @@
                     <div class="rooms-room-head-name">
                         <a>{{ room.name }}</a>
                     </div>
-                    <a class="pin_code">{{ room.pin }}</a>
+                    <app-pin [pin]="room.pin" [font-size]="15"></app-pin>
                 </div>
                 <div class="rooms-room-body">
                     <div></div>

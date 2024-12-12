@@ -76,12 +76,14 @@ async function updateSet(id, key, value){
 
     if(index < 0){
         await connection.quit();
-        return;
+        return false;
     }
 
     await connection.json.SET('rooms', '$.['+index+'].'+key, value);
 
     await connection.quit();
+    
+    return true;
 }
 
 async function updateInsert(id, key, value){

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as uuid from 'uuid';
 
 @Component({
@@ -12,6 +12,7 @@ export class ToggleSwitchComponent {
   @Input('id') id:string = '';
   _document:Element|null = null;
   @Input('checked') checked:boolean = false;
+  @Output('check') oncheck:EventEmitter<any> = new EventEmitter();
 
   constructor(){
 
@@ -36,5 +37,7 @@ export class ToggleSwitchComponent {
     if(element == null) return;
 
     element.checked = this.checked = !element.checked;
+    
+    this.oncheck.emit({id: this.id, value: element.checked})
   }
 }

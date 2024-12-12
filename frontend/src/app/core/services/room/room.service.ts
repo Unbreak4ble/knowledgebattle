@@ -199,6 +199,19 @@ export class RoomService extends RoomCommands {
 
       return true;
     });
+
+    // update pin event
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'update_pin') return false;
+      if(msg.data?.pin == null) return false;
+
+      this._connected_pin = msg.data?.pin;
+
+      if(this.connected_room)
+        this.connected_room.pin = this._connected_pin || 0;
+
+      return true;
+    });
   }
 
   sendRoom(data:any){

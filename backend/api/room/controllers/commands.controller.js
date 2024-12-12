@@ -1,7 +1,7 @@
 const { fixQuestionsIds } = require("../fixers/room");
 const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
 const { get } = require("../utils/database/room");
-const { appendQuestions } = require("../utils/room");
+const { appendQuestions, updateSetting, generatePin, updatePin } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
 
 function loadAdminCommands(data){
@@ -56,13 +56,32 @@ function loadAdminCommands(data){
 
             data.connection?.send(JSON.stringify({type: 'new_question', data: { questions: questions }}));
         },
-        'update_rules': (payload) => {
-            const rules = payload.rules;
+        'update_rule': async (payload) => {
+            if(!(payload.id && payload.allow)) return;
 
             const response = {
-                type: 'rules_updated',
-                data: rules
+                type: 'update_rule',
+                data: {
+                    id: payload.id,
+                    allow: payload.allow
+                }
             };
+            
+            await updateSetting(data.room_id, payload);
+
+            sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+        },
+        'update_pin': async (payload) => {
+            const new_pin = generatePin();
+
+            const response = {
+                type: 'update_pin',
+                data: {
+                    pin: new_pin
+                }
+            };
+
+            await updatePin(data.room_id, new_pin);
 
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
         },

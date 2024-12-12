@@ -2,13 +2,14 @@ const { createToken } = require('../utils/token');
 const uuid = require('uuid');
 const { create } = require('../utils/database/room');
 const { roomSchema } = require('../models/room.model');
+const { generatePin } = require('../utils/room');
 
 async function createRoom(data){
     const val = roomSchema.validate(data);
     if(val.error) return;
 
     const id = uuid.v4().replaceAll('-', '');
-    const pin = Math.floor(100000000 + Math.random()*900000000);
+    const pin = generatePin();
 
     const room = {
         id: id,

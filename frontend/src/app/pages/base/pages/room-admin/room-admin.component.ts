@@ -112,6 +112,13 @@ export class RoomAdminComponent {
     this.roomService.sendNewQuestion(questions);
   }
 
+  onOptionChange(data:any){
+    this.roomService.sendUpdateRule({id: data.id, allow: data.value});
+  }
+
+  onNewPin(event:any){
+    this.roomService.sendUpdatePin();
+  }
 
   async setupRoomConnection(){
     const id = this.route.snapshot.queryParams?.['id'];

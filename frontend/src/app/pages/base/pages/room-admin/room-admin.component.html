@@ -4,12 +4,12 @@
             <div class="room-admin-configs">
                 <div class="room-admin-configs-options">
                     @if(roomService._connected_pin){
-                        <app-pin [pin]="roomService._connected_pin"></app-pin>
+                        <app-pin [live]="true" [gen_button]="true" (generate)="onNewPin($event)"></app-pin>
                     }
                     @if(roomService.connected_room){
                         <a class="room-admin-configs-title">{{ roomService.connected_room.name }}</a>
                         @for(option of options; track option; let idx=$index){
-                            <app-toggle-switch #options [id]="option.id" [checked]="roomService.connected_room.settings[idx].allow">{{ option.text }}</app-toggle-switch>
+                            <app-toggle-switch #options [id]="option.id" [checked]="roomService.connected_room.settings[idx].allow" (check)="onOptionChange($event)">{{ option.text }}</app-toggle-switch>
                         }
                     }
                 </div>

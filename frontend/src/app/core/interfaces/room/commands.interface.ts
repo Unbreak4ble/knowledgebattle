@@ -4,7 +4,8 @@ export enum RequestCommandTypes {
     STOP,
     KICK_ALL,
     KICK,
-    UPDATE_RULES,
+    UPDATE_RULE,
+    UPDATE_PIN,
     NEW_QUESTION,
 };
 
@@ -12,7 +13,8 @@ export enum ResponseCommandTypes {
     START,
     STOP,
     KICK,
-    UPDATE_RULES,
+    UPDATE_RULE,
+    UPDATE_PIN,
     NEW_QUESTION,
     RECOGNITION,
     REQUEST_FAILED,

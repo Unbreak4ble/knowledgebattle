@@ -7,7 +7,8 @@ export function convertRequestToString(command: RequestCommandTypes): string|nul
         [RequestCommandTypes.STOP]: 'stop',
         [RequestCommandTypes.KICK]: 'kick',
         [RequestCommandTypes.KICK_ALL]: 'kick_all',
-        [RequestCommandTypes.UPDATE_RULES]: 'update_rules',
+        [RequestCommandTypes.UPDATE_RULE]: 'update_rule',
+        [RequestCommandTypes.UPDATE_PIN]: 'update_pin',
         [RequestCommandTypes.NEW_QUESTION]: 'new_question',
     };
 
@@ -20,7 +21,8 @@ export function convertResponseToString(command: ResponseCommandTypes): string|n
         [ResponseCommandTypes.START]: 'start',
         [ResponseCommandTypes.STOP]: 'stop',
         [ResponseCommandTypes.KICK]: 'kick',
-        [ResponseCommandTypes.UPDATE_RULES]: 'update_rules',
+        [ResponseCommandTypes.UPDATE_RULE]: 'update_rule',
+        [ResponseCommandTypes.UPDATE_PIN]: 'update_pin',
         [ResponseCommandTypes.NEW_QUESTION]: 'new_question',
         [ResponseCommandTypes.REQUEST_FAILED]: 'request_failed',
     };
