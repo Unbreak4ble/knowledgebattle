@@ -1,5 +1,5 @@
 const { fixQuestionsIds } = require("../fixers/room");
-const { sendBroadcast } = require("../helpers/websocket/websocket.helper");
+const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
 const { get } = require("../utils/database/room");
 const { appendQuestions } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
@@ -21,6 +21,21 @@ function loadAdminCommands(data){
                 data: null
             };
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+        },
+        'kick_all': async (payload) => {
+            const response = {
+                type: 'kick',
+                data: {
+                    message: payload?.reason || "Kicked for no reason"
+                }
+            };
+
+            await sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+
+            await new Promise(resolve => setTimeout(resolve, 10));
+
+            await kickBroadcast(data.wss, data.room_id);
+
         },
         'new_question': async (payload) => {
             const questions = payload.questions;

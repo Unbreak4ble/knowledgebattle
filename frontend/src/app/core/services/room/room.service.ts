@@ -5,6 +5,7 @@ import { IRoomConnection } from '../../interfaces/room/room_connection.interface
 import { CreateRoomResponse } from '../../interfaces/room/create_room_response.interface';
 import { StorageService } from '../storage/storage.service';
 import { RoomCommands } from './commands';
+import { MessageboxService } from '../messagebox/messagebox.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,14 @@ export class RoomService extends RoomCommands {
   user:any = null;
   private listeners:{once:boolean, finished:boolean, callback: ((msg:any)=>Promise<boolean>)}[] = [];
   private join_listeners:(()=>void)[] = [];
-  live_room_data:any = {};
+  live_room_data:any = {
+    players: [],
+    players_count: 0,
+    started: false,
+    start_question_timeout: 0,
+  };
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: StorageService, private messageBoxService: MessageboxService) {
     super();
   }
 
@@ -36,6 +42,10 @@ export class RoomService extends RoomCommands {
 
   loadToken(id:string){
     return this.storageService.get('token_'+id);
+  }
+
+  deleteToken(id:string){
+    this.storageService.remove('token_'+id);
   }
 
   async getRoomById(id:string): Promise<IRoom|null> {
@@ -59,6 +69,26 @@ export class RoomService extends RoomCommands {
     if(response.status != 200) return null;
 
     return await response.json();
+  }
+
+  async deleteRoom(id:string): Promise<boolean> {
+    const payload = {
+      method: 'DELETE',
+      headers: {
+        'authorization': this.loadToken(id) || ""
+      }
+    };
+    const response = await fetch('/api/room/delete/'+id, payload);
+
+    if(response.status != 200) return false;
+
+    this.deleteToken(id);
+
+    if(this._ws){
+      this.sendKickAll();
+    }
+
+    return true;
   }
 
   async waitForJoin(){
@@ -114,6 +144,10 @@ export class RoomService extends RoomCommands {
       });
     }).bind(this));
 
+    if(!result){
+      return this._ws = null;
+    }
+
     await new Promise((resolve:any) => this.subscribeRoom((msg:any) => {
       if(msg.type == 'request') return resolve();
     }));
@@ -126,11 +160,41 @@ export class RoomService extends RoomCommands {
   }
 
   setupCommonListeners(){
+    // players event
     this.subscribeRoom(async (msg) => {
       if(msg.type != 'players') return false;
 
       this.live_room_data.players = msg.data;
       this.live_room_data.players_count = msg.data.length;
+      return true;
+    });
+
+    // start event
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'start') return false;
+
+      this.live_room_data.started = true;
+      this.live_room_data.start_question_timeout = msg.data.timeout;
+      return true;
+    });
+
+    // stop event
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'stop') return false;
+
+      this.live_room_data.started = false;
+      return true;
+    });
+
+    // kick event
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'kick') return false;
+
+      this.live_room_data.started = false;
+      this._ws = null;
+
+      this.messageBoxService.getComponent()?.show('Ops', 'You got kicked', 60*60);
+
       return true;
     });
   }

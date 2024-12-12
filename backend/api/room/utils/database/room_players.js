@@ -42,6 +42,16 @@ async function resetPlayersList(room_id){
     await connection.quit();
 }
 
+async function deletePlayersList(room_id){
+    if(!(room_id && room_id.length > 0)) return;
+    const key = 'rooms_players_'+room_id;
+    const connection = await redis.connect();
+
+    await connection.json.DEL(key);
+
+    await connection.quit();
+}
+
 async function addPlayer(room_id, player_data){
     if(!(room_id && room_id.length > 0)) return;
     const key = 'rooms_players_'+room_id;
@@ -98,5 +108,6 @@ module.exports = {
     removePlayer,
     getPlayerById,
     resetPlayersList,
-    resetGlobalPlayersList
+    resetGlobalPlayersList,
+    deletePlayersList,
 }

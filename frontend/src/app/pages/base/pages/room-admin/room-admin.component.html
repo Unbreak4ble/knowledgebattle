@@ -9,7 +9,13 @@
                     }
                 </div>
                 <div class="room-admin-configs-bottom">
-                    <button (click)="start()" class="global-button">Start</button>
+                    @if(!roomService.live_room_data.started){
+                        <button (click)="start()" class="global-button">Start</button>
+                        <button (click)="remove()" class="global-button">Delete</button>
+                    }
+                    @if(roomService.live_room_data.started){
+                        <button (click)="stop()" class="global-button">Stop</button>
+                    }
                 </div>
             </div>
             <div class="room-admin-live-manager">

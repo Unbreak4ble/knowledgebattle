@@ -1,6 +1,6 @@
 const express = require('express');
-const { remove } = require('../utils/database/room');
 const { authMiddleware } = require('../middlewares/auth.middleware');
+const { fullDeleteRoom } = require('../utils/room');
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.delete('/:id', authMiddleware, async (req,res)=>{
 
     if(!id) return res.status(400).json({error: 'missing id path'});
 
-    await remove(id);
+    await fullDeleteRoom(id);
     
     res.send('deleted');
 });

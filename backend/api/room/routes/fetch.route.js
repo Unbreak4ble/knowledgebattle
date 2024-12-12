@@ -10,8 +10,11 @@ router.get('/:id', authMiddleware, async (req,res)=>{
     if(!id) return res.status(400).json({error: 'missing id path'});
 
     const room = await get(id);
-    
-    res.json(room);
+
+    if(room)
+        res.json(room);
+    else
+        res.status(404).send();
 });
 
 router.get('/pin/:pin', async (req,res)=>{

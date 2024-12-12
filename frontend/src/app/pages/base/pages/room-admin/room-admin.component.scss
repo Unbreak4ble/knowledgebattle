@@ -57,6 +57,12 @@
                     flex-direction: column;
                     gap: 5px;
                 }
+
+                .room-admin-configs-bottom {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 10px;
+                }
             }
 
             .room-admin-live-manager {

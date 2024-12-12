@@ -7,7 +7,10 @@ router.post('/', async (req,res)=>{
     const body = req.body;
     const data = await createRoom(body);
 
-    res.send(data);
+    if(data)
+        res.send(data);
+    else
+        res.status(404).send();
 });
 
 module.exports = router;

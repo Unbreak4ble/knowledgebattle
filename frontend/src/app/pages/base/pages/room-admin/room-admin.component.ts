@@ -35,7 +35,7 @@ export class RoomAdminComponent {
     }
   ];
 
-  constructor(private roomService: RoomService, private messageboxService:MessageboxService, private route:ActivatedRoute){
+  constructor(public roomService: RoomService, private messageboxService:MessageboxService, private route:ActivatedRoute){
 
   }
 
@@ -86,6 +86,26 @@ export class RoomAdminComponent {
 
   async start(){
     this.roomService.sendStart();
+  }
+
+  async stop(){
+    this.roomService.sendStop();
+  }
+
+  async remove(){
+    if(!this.roomService._connected_id) return;
+
+    const confirmed = await new Promise((resolve:any) => this.messageboxService.getComponent()?.confirm("Make sure", "Do you really want to delete this room?", (yes)=>{
+      resolve(yes);
+    }));
+
+    if(!confirmed) return;
+
+    const result = await this.roomService.deleteRoom(this.roomService._connected_id);
+
+    if(!result) return;
+
+    window.location.href = '/';
   }
 
   onSubmit(questions:IQuestion[]){

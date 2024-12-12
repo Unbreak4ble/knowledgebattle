@@ -87,8 +87,10 @@ function handlePeriodicUserResponses(data){
 }
 
 function handlePeriodicResponses(data){
+    // global periodic responses
     sendPeriodicPlayers(data);
 
+    // class periodic responses
     if(data.userinfo.isAdmin){
         handlePeriodicAdminResponses(data);
     }else{

@@ -90,7 +90,9 @@ export class CreateRoomComponent {
 
     const response = await this.roomService.createRoom(payload);
 
-    if(response == null) return;
+    if(response == null){
+      return this.messageboxService.getComponent()?.show('Operation failed', 'Failed to create room');
+    }
 
     this.roomService.saveToken(response.id, response.token);
 

@@ -31,6 +31,14 @@ export class RoomCommands {
         this.sendCommand(RequestCommandTypes.START);
     }
 
+    sendStop(){
+        this.sendCommand(RequestCommandTypes.STOP);
+    }
+
+    sendKickAll(){
+        this.sendCommand(RequestCommandTypes.KICK_ALL);
+    }
+
     sendNewQuestion(questions:IQuestion[]){
         const data = {
             questions: questions
