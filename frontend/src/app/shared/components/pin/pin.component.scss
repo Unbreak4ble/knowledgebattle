@@ -2,12 +2,14 @@
 .pin {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 5px;
 
     .pin-codes {
         position: relative;
         display: flex;
         flex-direction: row;
+        align-items: center;
         gap: 3px;
 
         .pin-code {

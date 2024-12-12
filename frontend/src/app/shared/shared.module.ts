@@ -16,6 +16,7 @@ import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.
 import { PinInputComponent } from './components/pin-input/pin-input.component';
 import { QuestionsListLiveComponent } from './components/questions-list-live/questions-list-live.component';
 import { PinComponent } from './components/pin/pin.component';
+import { LiveQuestionViewComponent } from './components/live-question-view/live-question-view.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { PinComponent } from './components/pin/pin.component';
     PinInputComponent,
     QuestionsListLiveComponent,
     PinComponent,
+    LiveQuestionViewComponent,
   ],
   // to be used along imports
   exports: [
@@ -59,6 +61,7 @@ import { PinComponent } from './components/pin/pin.component';
     PinInputComponent,
     QuestionsListLiveComponent,
     PinComponent,
+    LiveQuestionViewComponent,
   ]
 })
 export class SharedModule { }

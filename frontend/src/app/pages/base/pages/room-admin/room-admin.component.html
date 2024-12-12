@@ -30,7 +30,12 @@
             </div>
         </div>
         <div class="room-admin-question">
-            <app-make-question class="room-admin-questions-question" #make_question></app-make-question>
+            @if(!view_live){
+                <app-make-question class="room-admin-questions-question" #make_question></app-make-question>
+            }
+            @if(view_live){
+                <app-live-question-view class="room-admin-questions-question" #live_question></app-live-question-view>
+            }
         </div>
     </div>
 </div>

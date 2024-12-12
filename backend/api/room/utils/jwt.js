@@ -7,7 +7,6 @@ function encode(header={"alg": "HS256", "typ": "JWT"}, payload, key){
     const key_raw = new Buffer(key, 'utf8');
     const signature_b64 = crypto.createHmac('sha256', key_raw).update(header_b64+'.'+payload_b64).digest('base64url');
 
-    console.log(payload, payload_b64);
     return [header_b64, payload_b64, signature_b64].join('.');
 }
 

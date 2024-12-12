@@ -9,6 +9,7 @@ import { IQuestion } from '../../../../core/interfaces/question/question.interfa
 import { SharedModule } from '../../../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { QuestionsListLiveComponent } from '../../../../shared/components/questions-list-live/questions-list-live.component';
+import { LiveQuestionViewComponent } from '../../../../shared/components/live-question-view/live-question-view.component';
 
 @Component({
   selector: 'app-room-admin',
@@ -20,9 +21,11 @@ import { QuestionsListLiveComponent } from '../../../../shared/components/questi
 export class RoomAdminComponent {
   messageBoxComponent:MessageBoxComponent|null = null;
   @ViewChild('make_question') makeQuestionComponent:MakeQuestionComponent|null = null;
+  @ViewChild('live_question') liveQuestionComponent:LiveQuestionViewComponent|null = null;
   @ViewChild('questions_list') questionsListComponent:QuestionsListComponent|null = null;
   @ViewChild('questions_list_live') questionsListLiveComponent:QuestionsListLiveComponent|null = null;
   @ViewChildren('options') optionComponents:QueryList<ToggleSwitchComponent>|null = null;
+  view_live:boolean = false;
   options:any[] = [];
   questions: IQuestion[] = [
     {
@@ -58,9 +61,22 @@ export class RoomAdminComponent {
 
   initEvents(){
     this.questionsListComponent?.onViewQuestion(this.viewQuestion.bind(this));
+    this.questionsListLiveComponent?.onViewQuestion(this.viewLiveQuestion.bind(this));
   }
 
-  viewQuestion(question:IQuestion){
+  async viewLiveQuestion(question:IQuestion){
+    this.view_live = true;
+
+    await new Promise((resolve:any) => setTimeout(resolve, 10));
+
+    this.liveQuestionComponent?.setQuestion(question);
+  }
+
+  async viewQuestion(question:IQuestion){
+    this.view_live = false;
+
+    await new Promise((resolve:any) => setTimeout(resolve, 10));
+
     this.makeQuestionComponent?.setQuestion(question);
   }
 

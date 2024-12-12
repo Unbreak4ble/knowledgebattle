@@ -96,8 +96,6 @@ async function updateInsert(id, key, value){
         return;
     }
 
-    console.log(id, key, index, value);
-
     await connection.json.ARRINSERT('rooms', '$.['+index+'].'+key, value);
 
     await connection.quit();
