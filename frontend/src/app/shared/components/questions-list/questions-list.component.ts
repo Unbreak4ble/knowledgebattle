@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { MessageBoxComponent } from '../message-box/message-box.component';
 import { MessageboxService } from '../../../core/services/messagebox/messagebox.service';
+import { RoomService } from '../../../core/services/room/room.service';
 
 @Component({
   selector: 'app-questions-list',
@@ -17,7 +18,7 @@ export class QuestionsListComponent {
   _viewQuestion: ((question: IQuestion) => void)|undefined;
   _deleteQuestion: ((index:number) => void)|undefined;
 
-  constructor(private changeDetectRf: ChangeDetectorRef, private messageboxService:MessageboxService){
+  constructor(private changeDetectRf: ChangeDetectorRef, private messageboxService:MessageboxService, private roomService: RoomService){
 
   }
 
@@ -46,8 +47,20 @@ export class QuestionsListComponent {
 
   submitQuestions(){
     this.onSubmit.emit(this.questions);
+    const questions_backup = [...this.questions];
+    this.roomService.subscribeRoom(async (msg:any)=>{
+      if(!(msg.type == 'request_failed' && msg.data.type == 'new_question')) return false;
+      
+      this.questions = questions_backup;
+
+      this.messageBoxComponent?.show('Operation failed', msg.data.message || "unknown error");
+      
+      this.changeDetectRf.detectChanges();
+
+      return true;
+    }, true);
+
     this.questions = [];
-    this.changeDetectRf.detectChanges();
   }
 
   viewQuestion(question: IQuestion){

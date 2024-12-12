@@ -1,5 +1,8 @@
+const { fixQuestionsIds } = require("../fixers/room");
 const { sendBroadcast } = require("../helpers/websocket/websocket.helper");
+const { get } = require("../utils/database/room");
 const { appendQuestions } = require("../utils/room");
+const { validateQuestionsRequest } = require("../validators/room");
 
 function loadAdminCommands(data){
     return {
@@ -22,9 +25,19 @@ function loadAdminCommands(data){
         'new_question': async (payload) => {
             const questions = payload.questions;
 
-            console.log('new questions received', data.room_id, questions.length, data.connection);
+            if(!validateQuestionsRequest(questions)) {
+                return data.connection?.send(JSON.stringify({type: 'request_failed', data: { type: 'new_question', from: data.userinfo.id, message: "Invalid questions list" }}));
+            }
+
+            const room = await get(data.room_id);
+
+            if(room == null) {
+                return data.connection?.send(JSON.stringify({type: 'request_failed', data: { type: 'new_question', from: data.userinfo.id, message: "Room not found" }}));
+            }
+
+            const fixed_questions = fixQuestionsIds([...room.questions, ...questions]).slice(room.questions.length, room.questions.length+questions.length);
             
-            await appendQuestions(data.room_id, questions);
+            await appendQuestions(data.room_id, fixed_questions);
 
             data.connection?.send(JSON.stringify({type: 'new_question', data: { questions: questions }}));
         },

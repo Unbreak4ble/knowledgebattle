@@ -35,16 +35,16 @@ export class QuestionsListLiveComponent {
 
     this.questions = room.questions;
 
-    console.log('joined');
-
-    this.roomService.subscribeRoom((msg)=>{
-      if(msg.type != 'new_question') return
+    this.roomService.subscribeRoom(async (msg)=>{
+      if(msg.type != 'new_question') return false;
 
       const new_questions = msg.data?.questions || [];
 
       this.questions = this.questions.concat(new_questions);
 
       this.changeDetectRf.detectChanges();
+
+      return true;
     });
   }
 

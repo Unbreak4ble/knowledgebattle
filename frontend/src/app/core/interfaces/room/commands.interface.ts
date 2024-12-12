@@ -11,4 +11,6 @@ export enum ResponseCommandTypes {
     STOP,
     UPDATE_RULES,
     NEW_QUESTION,
+    RECOGNITION,
+    REQUEST_FAILED,
 };

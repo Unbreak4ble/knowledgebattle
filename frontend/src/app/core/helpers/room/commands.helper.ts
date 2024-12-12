@@ -1,4 +1,4 @@
-import { RequestCommandTypes } from "../../interfaces/room/commands.interface";
+import { RequestCommandTypes, ResponseCommandTypes } from "../../interfaces/room/commands.interface";
 
 
 export function convertRequestToString(command: RequestCommandTypes): string|null {
@@ -7,6 +7,19 @@ export function convertRequestToString(command: RequestCommandTypes): string|nul
         [RequestCommandTypes.STOP]: 'stop',
         [RequestCommandTypes.UPDATE_RULES]: 'update_rules',
         [RequestCommandTypes.NEW_QUESTION]: 'new_question',
+    };
+
+    return commands[command];
+}
+
+
+export function convertResponseToString(command: ResponseCommandTypes): string|null {
+    const commands:any = {
+        [ResponseCommandTypes.START]: 'start',
+        [ResponseCommandTypes.STOP]: 'stop',
+        [ResponseCommandTypes.UPDATE_RULES]: 'update_rules',
+        [ResponseCommandTypes.NEW_QUESTION]: 'new_question',
+        [ResponseCommandTypes.REQUEST_FAILED]: 'request_failed',
     };
 
     return commands[command];

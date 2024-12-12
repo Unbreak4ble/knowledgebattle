@@ -69,8 +69,71 @@ async function getByPin(pin){
     return data[0];
 }
 
-async function update(id, room){
+async function updateSet(id, key, value){
+    const connection = await redis.connect();
 
+    const index = await getIndex(id);
+
+    if(index < 0){
+        await connection.quit();
+        return;
+    }
+
+    await connection.json.SET('rooms', '$.['+index+'].'+key, value);
+
+    await connection.quit();
+}
+
+async function updateInsert(id, key, value){
+    const connection = await redis.connect();
+
+    const index = await getIndex(id);
+
+    if(index < 0){
+        await connection.quit();
+        return;
+    }
+
+    console.log(id, key, index, value);
+
+    await connection.json.ARRINSERT('rooms', '$.['+index+'].'+key, value);
+
+    await connection.quit();
+}
+
+async function updateAppend(id, key, value){
+    const connection = await redis.connect();
+
+    const index = await getIndex(id);
+
+    if(index < 0){
+        await connection.quit();
+        return;
+    }
+
+    await connection.json.ARRAPPEND('rooms', '$.['+index+'].'+key, value);
+
+    await connection.quit();
+}
+
+async function getIndex(id){
+    const connection = await redis.connect();
+
+    if(!await connection.json.GET('rooms', '$'))
+        await connection.json.SET('rooms', '$', []);
+
+    const data = await get(id);
+
+    if(data == null){
+        await connection.quit();
+        return;
+    }
+
+    const index = (await connection.json.ARRINDEX('rooms', '$', data))[0];
+
+    await connection.quit();
+
+    return index;
 }
 
 async function remove(id){
@@ -101,6 +164,8 @@ module.exports = {
     create,
     get,
     getByPin,
-    update,
+    updateSet,
+    updateInsert,
+    updateAppend,
     remove
 }

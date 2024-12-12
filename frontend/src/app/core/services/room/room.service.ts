@@ -13,7 +13,8 @@ export class RoomService extends RoomCommands {
   _ws:WebSocket|null = null;
   _connected_pin:number|null = null;
   _connected_id:string|null = null;
-  private listeners:((msg:any)=>void)[] = [];
+  user:any = null;
+  private listeners:{once:boolean, finished:boolean, callback: ((msg:any)=>Promise<boolean>)}[] = [];
   private join_listeners:(()=>void)[] = [];
   live_room_data:any = {};
 
@@ -68,6 +69,8 @@ export class RoomService extends RoomCommands {
     for(const listener of this.join_listeners){
       listener();
     }
+    
+    this.join_listeners = [];
   }
 
   async joinRoom(pin: number): Promise<IRoomConnection|null>{
@@ -79,14 +82,25 @@ export class RoomService extends RoomCommands {
     this._connected_id = room?.id;
     this._ws = new WebSocket('/api/room/join/'+pin);
 
-    this._ws.addEventListener('message', (msg:any)=>{
-      this.listeners.forEach(listener => listener?.(JSON.parse(msg.data)));
+    this._ws.addEventListener('message', async (msg:any)=>{
+      for(let i=0; i<this.listeners.length; i++){
+        this.listeners[i].finished = await this.listeners[i].callback?.(JSON.parse(msg.data));
+      }
+
+      this.listeners = this.listeners.filter(x => !(x.once && x.finished));
     });
 
     const connection:IRoomConnection = {
       pin: pin,
       websocket: this._ws
     };
+
+    this.subscribeRoom(async (msg:any)=>{
+      if(msg.type != 'recognition') return false;
+
+      this.user = msg.data;
+      return true;
+    }, true);
 
     const result = await new Promise(((resolve:any) => {
       this._ws?.addEventListener('open', ()=>{
@@ -112,11 +126,12 @@ export class RoomService extends RoomCommands {
   }
 
   setupCommonListeners(){
-    this.subscribeRoom((msg) => {
-      if(msg.type != 'players') return;
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'players') return false;
 
       this.live_room_data.players = msg.data;
       this.live_room_data.players_count = msg.data.length;
+      return true;
     });
   }
 
@@ -137,8 +152,8 @@ export class RoomService extends RoomCommands {
     this.sendRoom({name: username, token: token});
   }
 
-  subscribeRoom(onmessage:(msg:any)=>void):void{
-    this.listeners.push(onmessage);
+  subscribeRoom(onmessage:(msg:any)=>Promise<boolean>, once:boolean=false):void{
+    this.listeners.push({once: once, callback: onmessage, finished: false});
   }
 
   async createRoom(parameters:ICreateRoom): Promise<CreateRoomResponse|null> {

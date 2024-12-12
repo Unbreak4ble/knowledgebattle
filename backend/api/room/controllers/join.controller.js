@@ -33,14 +33,14 @@ async function handleDataRequest(data, message){
             data.userinfo.token = token;
         }
 
-        connection.send(JSON.stringify(data.userinfo));
+        connection.send(JSON.stringify({type: 'recognition', data: data.userinfo}));
 
         handlePeriodicResponses(data);
 
         return true;
     }catch(err){
         console.log('failed to handle data request');
-        connection.send(JSON.parse({status: 'error', data: 'failed to process data request. Try again'}));
+        connection.send(JSON.parse({ type: 'request_failed', data: { message:'failed to process data request. Try again' } }));
     }
 }
 
