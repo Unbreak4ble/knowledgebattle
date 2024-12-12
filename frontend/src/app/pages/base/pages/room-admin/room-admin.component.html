@@ -3,9 +3,14 @@
         <div class="room-admin-board">
             <div class="room-admin-configs">
                 <div class="room-admin-configs-options">
-                    <input type="text" class="room-admin-configs-title" placeholder="room title"/>
-                    @for(option of options; track option){
-                        <app-toggle-switch #options [id]="option.id">{{ option.text }}</app-toggle-switch>
+                    @if(roomService._connected_pin){
+                        <app-pin [pin]="roomService._connected_pin"></app-pin>
+                    }
+                    @if(roomService.connected_room){
+                        <a class="room-admin-configs-title">{{ roomService.connected_room.name }}</a>
+                        @for(option of options; track option; let idx=$index){
+                            <app-toggle-switch #options [id]="option.id" [checked]="roomService.connected_room.settings[idx].allow">{{ option.text }}</app-toggle-switch>
+                        }
                     }
                 </div>
                 <div class="room-admin-configs-bottom">

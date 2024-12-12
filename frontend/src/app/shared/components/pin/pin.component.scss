@@ -1,0 +1,12 @@
+
+.pin {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
+    .pin-code {
+        padding: 1px 5px;
+        background: #00000010;
+        border-radius: 5px;
+    }
+}

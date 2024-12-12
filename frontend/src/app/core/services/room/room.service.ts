@@ -23,6 +23,7 @@ export class RoomService extends RoomCommands {
     started: false,
     start_question_timeout: 0,
   };
+  connected_room:IRoom|null = null;
 
   constructor(private storageService: StorageService, private messageBoxService: MessageboxService) {
     super();
@@ -108,6 +109,7 @@ export class RoomService extends RoomCommands {
 
     if(room == null) return null;
 
+    this.connected_room = await this.getRoomById(room.id);
     this._connected_pin = pin;
     this._connected_id = room?.id;
     this._ws = new WebSocket('/api/room/join/'+pin);

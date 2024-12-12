@@ -15,6 +15,7 @@ import { QuestionsListComponent } from './components/questions-list/questions-li
 import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.component';
 import { PinInputComponent } from './components/pin-input/pin-input.component';
 import { QuestionsListLiveComponent } from './components/questions-list-live/questions-list-live.component';
+import { PinComponent } from './components/pin/pin.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { QuestionsListLiveComponent } from './components/questions-list-live/que
     ToggleSwitchComponent,
     PinInputComponent,
     QuestionsListLiveComponent,
+    PinComponent,
   ],
   // to be used along imports
   exports: [
@@ -56,6 +58,7 @@ import { QuestionsListLiveComponent } from './components/questions-list-live/que
     ToggleSwitchComponent,
     PinInputComponent,
     QuestionsListLiveComponent,
+    PinComponent,
   ]
 })
 export class SharedModule { }

@@ -11,7 +11,7 @@ export class ToggleSwitchComponent {
   @Input('text') text:string = '';
   @Input('id') id:string = '';
   _document:Element|null = null;
-  checked:boolean = false;
+  @Input('checked') checked:boolean = false;
 
   constructor(){
 
@@ -19,6 +19,15 @@ export class ToggleSwitchComponent {
 
   ngAfterViewInit(){
     this._document = document.getElementById(this.uuid);
+    this.setup();
+  }
+
+  setup(){
+    const element = this._document?.querySelector('input');
+
+    if(element == null) return;
+
+    element.checked = this.checked;
   }
 
   toggle(){
