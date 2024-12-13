@@ -8,7 +8,7 @@
             <div class="live-question-view-body">
                 <div class="live-question-view-alternatives">
                     @for(alternative of question.alternatives; track alternative; let idx=$index){
-                        <div class="live-question-view-alternative">
+                        <div class="live-question-view-alternative" style="background: {{ question.correct == idx ? '#00ff0050' : '#00000020' }};">
                             <!-- <a>{{ idx }}</a> -->
                             <div class="live-question-view-alternative-pickers">
                             

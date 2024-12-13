@@ -6,6 +6,7 @@ const questionSchema = Joi.object({
     alternatives: Joi.array().items(Joi.object({
         text: Joi.string().min(2).max(2048)
     })).min(1).max(32),
+    correct: Joi.number().min(-1).max(32),
     finished: Joi.boolean()
 });
 

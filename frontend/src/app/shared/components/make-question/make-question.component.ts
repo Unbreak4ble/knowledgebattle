@@ -74,6 +74,12 @@ export class MakeQuestionComponent {
     this.onchange?.({type: 'alternatives', content: this.alternatives});
   }
 
+  markAlternative(index:number){
+    if(!this.question) return;
+
+    this.question.correct = index;
+  }
+
   setId(id:Number){
     this.id = id;
   }

@@ -34,6 +34,7 @@ export class RoomAdminComponent {
       alternatives: [
         {text: 'untitled alternative'}
       ],
+      correct: -1,
       finished: false
     }
   ];

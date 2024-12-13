@@ -59,17 +59,38 @@
                     white-space: break-spaces;
                 }
 
-                .make-question-alternative-remove {
+                .make-question-alternative-buttons {
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: column;
                     align-items: center;
-                    color: red;
-                    border-radius: 5px;
-                    padding: 5px;
-                    cursor: pointer;
+                    gap: 5px;
 
-                    &:hover {
-                        background: #ff000020;
+                    .make-question-alternative-remove {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        color: red;
+                        border-radius: 5px;
+                        padding: 5px;
+                        cursor: pointer;
+
+                        &:hover {
+                            background: #ff000020;
+                        }
+                    }
+
+                    .make-question-alternative-mark {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        color: green;
+                        border-radius: 5px;
+                        padding: 5px;
+                        cursor: pointer;
+
+                        &:hover {
+                            background: #00ff0040;
+                        }
                     }
                 }
             }

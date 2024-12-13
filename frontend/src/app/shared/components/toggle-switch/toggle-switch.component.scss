@@ -4,6 +4,8 @@
     align-items: center;
     gap: 5px;
     font-size: 20px;
+    overflow: hidden;
+    width: 100%;
 
     .toggle-switch-input  {
         border-radius: 10px;
@@ -13,6 +15,7 @@
         position: relative;
         padding: 1px;
         cursor: pointer;
+        overflow: hidden;
 
         input {
             display: none;
@@ -23,21 +26,30 @@
         }
 
         .toggle-switch-input-toggle {
-            border-radius: 10px;
+            border-radius: inherit;
             width: 45%;
             transition-property: width;
             transition-duration: 100ms;
             overflow: hidden;
             background: var(--color-background-secondary);
             position: absolute;
+            display:flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
 
             .toggle-switch-input-toggle-ball {
-                border-radius: 100%;
+                border: 1px solid white;
+                border-radius: 10px;
                 width: 1em;
                 height: 1em;
                 background: white;
                 float: right;
             }
         }
+    }
+
+    & > a {
+        width: calc(100% - 1em*2);
     }
 }

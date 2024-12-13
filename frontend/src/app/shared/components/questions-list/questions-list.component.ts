@@ -41,6 +41,7 @@ export class QuestionsListComponent {
       id: this.questions.length+1,
       text: "untitled",
       alternatives: [],
+      correct: -1,
       finished: false
     });
   }
