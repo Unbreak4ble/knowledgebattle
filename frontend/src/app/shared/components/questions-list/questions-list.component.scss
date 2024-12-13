@@ -77,6 +77,13 @@
             cursor: pointer;
             user-select: none;
             overflow: hidden;
+
+            &:hover {
+                background: #00000020;
+            }
+            &:active {
+                background: #00000030;
+            }
             
             .questions-list-question-number {
                 color: grey;

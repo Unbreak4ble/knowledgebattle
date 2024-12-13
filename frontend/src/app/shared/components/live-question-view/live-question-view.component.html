@@ -1,1 +1,25 @@
-<p>live-question-view works!</p>
+@if(question){
+    <div class="live-question-view">
+        <div class="live-question-view-content">
+            <div class="live-question-view-head">
+                <a class="live-question-view-id">{{ question.id }}</a>
+                <a class="live-question-view-text">{{ question.text }}</a>
+            </div>
+            <div class="live-question-view-body">
+                <div class="live-question-view-alternatives">
+                    @for(alternative of question.alternatives; track alternative; let idx=$index){
+                        <div class="live-question-view-alternative">
+                            <!-- <a>{{ idx }}</a> -->
+                            <div class="live-question-view-alternative-pickers">
+                            
+                            </div>
+                            <div class="live-question-view-alternative-content">
+                                <span>{{ alternative.text }}</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

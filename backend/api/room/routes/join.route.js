@@ -1,5 +1,5 @@
 const express = require('express');
-const { handleConnectionState } = require('../controllers/join.controller');
+const { handleConnectionState, handleClose } = require('../controllers/join.controller');
 const expressWs = require('express-ws');
 const uuid = require('uuid');
 const { getByPin } = require('../utils/database/room');
@@ -31,8 +31,8 @@ function setupEvents(ws, data){
 
     ws.on('close', () => {
         //console.log('connection '+data.userinfo.id+' closed');
-        removePlayer(data.room_id, data.userinfo.id);
         removeConnection(data.room_id, data.userinfo.id);
+        handleClose(data);
     });
 
     ws.on('error', () => {

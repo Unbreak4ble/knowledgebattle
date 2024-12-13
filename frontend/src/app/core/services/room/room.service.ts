@@ -266,6 +266,7 @@ export class RoomService extends RoomCommands {
   }
 
   async loadOptions(): Promise<any[]> {
+    // TODO: move this to a endpoint in GET api/room/options
     return [
       {
           id: 'ingame.visibility.result_poll',
@@ -282,6 +283,10 @@ export class RoomService extends RoomCommands {
       {
           id: 'ingame.allow_join',
           text: 'Allow join during game'
+      },
+      {
+          id: 'ingame.show_previous',
+          text: 'Show previous finished question'
       },
     ]
   }

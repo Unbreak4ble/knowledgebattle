@@ -1,5 +1,5 @@
 const { updateAppend, remove, get, updateSet } = require("./database/room");
-const { deletePlayersList } = require("./database/room_players");
+const { deletePlayersList, listPlayers } = require("./database/room_players");
 
 function generatePin(){
     return Math.floor(100000000 + Math.random()*900000000);
@@ -7,6 +7,12 @@ function generatePin(){
 
 async function updatePin(room_id, pin){
     await updateSet(room_id, 'pin', pin);
+}
+
+async function updatePlayersCount(room_id){
+    const count = (await listPlayers(room_id))?.length | 0;
+    
+    await updateSet(room_id, 'players_count', count);
 }
 
 async function updateSetting(room_id, setting){
@@ -35,5 +41,6 @@ module.exports = {
     fullDeleteRoom,
     updateSetting,
     generatePin,
-    updatePin
+    updatePin,
+    updatePlayersCount
 }

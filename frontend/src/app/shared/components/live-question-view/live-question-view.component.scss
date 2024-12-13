@@ -1,0 +1,81 @@
+
+.live-question-view {
+    .live-question-view-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width:calc(100% - 20px*2);
+        padding: 10px 20px;
+    
+        &>*{
+            width: 100%;
+        }
+
+        .live-question-view-head {
+            display: flex;
+            flex-direction: column;
+
+            .live-question-view-id {
+                user-select: none;
+                font-size: 25px;
+                color: grey;
+            }
+
+            .live-question-view-text {
+                font-size: 25px;
+            }
+        }
+
+        .live-question-view-body {
+            .live-question-view-alternatives {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+
+                .live-question-view-alternative {
+                    background: #00000010;
+                    padding: 5px 10px;
+                    width: calc(100% - 10px*2);
+                    border-radius: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 3px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #00000020;
+                    }
+                    &:active {
+                        background: #00000030;
+                    }
+
+                    .live-question-view-alternative-pickers {
+
+                    }
+
+                    .live-question-view-alternative-content {
+                        width: calc(100%);
+                        font-size: 18px;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        gap: 10px;
+
+                        a {
+                            color: grey;
+                            font-size: 20px;
+                        }
+
+                        span {
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

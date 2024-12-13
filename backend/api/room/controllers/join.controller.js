@@ -1,7 +1,8 @@
 const { validateToken } = require('../utils/token');
 const { listPlayers, addPlayer, removePlayer } = require('../utils/database/room_players');
-const { getByPin } = require('../utils/database/room');
+const { getByPin, get } = require('../utils/database/room');
 const { loadAdminCommands, loadUserCommands } = require('./commands.controller');
+const { updatePlayersCount } = require('../utils/room');
 
 /*
  * state:
@@ -11,6 +12,14 @@ const { loadAdminCommands, loadUserCommands } = require('./commands.controller')
 */
 async function handleDataRequest(data, message){
     const connection = data.connection;
+    const room = await get(data.room_id);
+
+    if(room.players_count >= room.max_players){
+        connection.send(JSON.stringify({type: 'request_failed', data: { message: "Room is full" }}));
+        
+        connection.close();
+    }
+
     try{
         const parsed_msg = JSON.parse(message);
 
@@ -36,6 +45,8 @@ async function handleDataRequest(data, message){
         connection.send(JSON.stringify({type: 'recognition', data: data.userinfo}));
 
         handlePeriodicResponses(data);
+
+        await updatePlayersCount(data.room_id);
 
         return true;
     }catch(err){
@@ -98,7 +109,12 @@ function handlePeriodicResponses(data){
     }
 }
 
+async function handleClose(data){
+    await removePlayer(data.room_id, data.userinfo.id);
+    await updatePlayersCount(data.room_id);
+}
 
 module.exports = {
-    handleConnectionState
+    handleConnectionState,
+    handleClose
 };
