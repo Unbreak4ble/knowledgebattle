@@ -21,17 +21,23 @@ export class RoomComponent {
   username:string = '';
   room_info:IRoom|null = null;
 
-  constructor(private roomService: RoomService, private router: Router, private route:ActivatedRoute, private messageboxService: MessageboxService){
+  constructor(public roomService: RoomService, private router: Router, private route:ActivatedRoute, private messageboxService: MessageboxService){
     this.setupRoomConnection();
   }
 
   ngAfterViewInit(){
     this.messageBoxComponent = this.messageboxService.getComponent();
-    //this.messageBoxComponent?.show("pin code", "room not found");
-    /*
-    this.messageBoxComponent?.confirm("choose the truth", "truth only", result => {
-      console.log('chose: ', result);
-    });*/
+    this.setupRoomEvent();
+  }
+
+  async setupRoomEvent(){
+    this.roomService.subscribeRoom(async(msg)=>{
+      if(msg.type != 'start') return false;
+
+      this.messageBoxComponent?.show('Starting', 'Get ready, the game is starting', msg.data?.timeout);
+
+      return true;
+    });
   }
 
   async setupRoomConnection(){

@@ -23,4 +23,20 @@
             font-size: 20px;
         }
     }
+
+    .room-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 100vh;
+
+        .room-content-message {
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 30px;
+            background: white;
+        }
+    }
 }

@@ -2,6 +2,7 @@ import { Component, ViewChild, ViewChildren } from '@angular/core';
 import { questions } from './questions-carousel.headers';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { QuestionComponent } from '../question/question.component';
+import { RoomService } from '../../../core/services/room/room.service';
 
 @Component({
   selector: 'app-questions-carousel',
@@ -22,7 +23,7 @@ export class QuestionsCarouselComponent {
   show_left_button:Boolean = true;
   show_right_button:Boolean = true;
 
-  constructor(){
+  constructor(private roomService: RoomService){
     this.setup();
   }
 

@@ -1,5 +1,6 @@
 const roomLib = require("./database/room");
 const { deletePlayersList, listPlayers } = require("./database/room_players");
+const { deleteQuestionsList } = require("./database/room_questions");
 
 function generatePin(){
     return Math.floor(100000000 + Math.random()*900000000);
@@ -39,6 +40,7 @@ async function appendQuestions(room_id, questions){
 async function fullDeleteRoom(room_id){
     await roomLib.remove(room_id);
     await deletePlayersList(room_id);
+    await deleteQuestionsList(room_id);
 }
 
 module.exports = {
