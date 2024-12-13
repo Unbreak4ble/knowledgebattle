@@ -126,6 +126,9 @@ export class RoomAdminComponent {
 
   onSubmit(questions:IQuestion[]){
     this.roomService.sendNewQuestion(questions);
+
+    if(this.makeQuestionComponent)
+      this.makeQuestionComponent.question = null;
   }
 
   onOptionChange(data:any){

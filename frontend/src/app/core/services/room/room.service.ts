@@ -110,6 +110,7 @@ export class RoomService extends RoomCommands {
     if(room == null) return null;
 
     this.connected_room = await this.getRoomById(room.id);
+    this.live_room_data.started = this.connected_room?.active;
     this._connected_pin = pin;
     this._connected_id = room?.id;
     this._ws = new WebSocket('/api/room/join/'+pin);

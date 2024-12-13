@@ -1,13 +1,5 @@
+const { hideProperties } = require('../../mappers/room');
 const redis = require('./base/redis');
-
-function hideProperties(room){
-    if(!room) return room;
-
-    room.questions = undefined;
-    room.settings = undefined;
-
-    return room;
-}
 
 async function listPublic(max=100, hide=true){
     const connection = await redis.connect();
@@ -159,7 +151,6 @@ async function remove(id){
 }
 
 module.exports = {
-    hideProperties,
     listPublic,
     create,
     get,

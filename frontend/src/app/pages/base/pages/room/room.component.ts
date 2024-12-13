@@ -18,6 +18,7 @@ export class RoomComponent {
   messageBoxComponent:MessageBoxComponent|null = null;
   @ViewChild("questions_carousel") questionsCarouselComponent:QuestionsCarouselComponent|null = null;
   pin:number|null = null;
+  username:string = '';
   room_info:IRoom|null = null;
 
   constructor(private roomService: RoomService, private router: Router, private route:ActivatedRoute, private messageboxService: MessageboxService){
@@ -47,6 +48,8 @@ export class RoomComponent {
     const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
 
     if(!username) return;
+
+    this.username = username;
 
     const connection = await this.roomService.joinRoom(pin);
     

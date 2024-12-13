@@ -12,7 +12,7 @@ export class QuestionsListLiveComponent {
   @Output('submit') onSubmit: EventEmitter<IQuestion[]> = new EventEmitter();
   _viewQuestion: ((question: IQuestion) => void)|undefined;
 
-  constructor(private changeDetectRf: ChangeDetectorRef, private roomService: RoomService){
+  constructor(private changeDetectRf: ChangeDetectorRef, public roomService: RoomService){
 
   }
 

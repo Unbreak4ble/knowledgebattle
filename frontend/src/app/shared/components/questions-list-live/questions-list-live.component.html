@@ -6,18 +6,20 @@
         </div>
     }
     <div class="questions-list-live-list">
-        @for(question of questions; track question; let idx=$index){
-            <div class="questions-list-live-question" (click)="viewQuestion(question)">
-                <div class="questions-list-live-question-number">
-                    <a>{{ question.id }}</a>
+        @if(roomService.connected_room){
+            @for(question of questions; track question; let idx=$index){
+                <div class="questions-list-live-question" (click)="viewQuestion(question)" style="background:  {{ roomService.connected_room.current_question_id >= question.id ? '#00000050' : '#00000010' }};">
+                    <div class="questions-list-live-question-number">
+                        <a>{{ question.id }}</a>
+                    </div>
+                    <div class="questions-list-live-question-text">
+                        <a>{{ question.text.slice(0, 64) }}</a>
+                        @if(question.text.length > 64){
+                            <a class="t3dots">...</a>
+                        }
+                    </div>
                 </div>
-                <div class="questions-list-live-question-text">
-                    <a>{{ question.text.slice(0, 64) }}</a>
-                    @if(question.text.length > 64){
-                        <a class="t3dots">...</a>
-                    }
-                </div>
-            </div>
+            }
         }
     </div>
 </div>

@@ -1,25 +1,31 @@
 const { fixQuestionsIds } = require("../fixers/room");
 const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
 const { get } = require("../utils/database/room");
-const { appendQuestions, updateSetting, generatePin, updatePin } = require("../utils/room");
+const { appendQuestions, updateSetting, generatePin, updatePin, updateActive } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
 
 function loadAdminCommands(data){
     return {
-        'start': () => {
+        'start': async () => {
             const response = {
                 type: 'start',
                 data: {
                     timeout: 10,
                 }
             };
+
+            await updateActive(data.room_id, true);
+
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
         },
-        'stop': () => {
+        'stop': async () => {
             const response = {
                 type: 'stop',
                 data: null
             };
+
+            await updateActive(data.room_id, false);
+
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
         },
         'kick_all': async (payload) => {

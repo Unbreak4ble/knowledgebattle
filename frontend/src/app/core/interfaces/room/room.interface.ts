@@ -10,4 +10,5 @@ export interface IRoom {
     max_players: number;
     creation_timestamp: number; //seconds
     active: boolean;
+    current_question_id: number;
 }

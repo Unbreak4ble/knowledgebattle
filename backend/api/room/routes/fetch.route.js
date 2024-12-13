@@ -1,6 +1,7 @@
 const express = require('express');
-const { get, getByPin, hideProperties } = require('../utils/database/room');
+const { get, getByPin } = require('../utils/database/room');
 const { authMiddleware } = require('../middlewares/auth.middleware');
+const { hideProperties } = require('../mappers/room');
 
 const router = express.Router();
 

@@ -50,8 +50,8 @@ async function handleDataRequest(data, message){
 
         return true;
     }catch(err){
-        console.log('failed to handle data request');
-        connection.send(JSON.parse({ type: 'request_failed', data: { message:'failed to process data request. Try again' } }));
+        console.log('failed to handle data request', err);
+        connection.send(JSON.stringify({ type: 'request_failed', data: { message:'failed to process data request. Try again' } }));
     }
 }
 
