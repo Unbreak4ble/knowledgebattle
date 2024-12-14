@@ -2,7 +2,7 @@ const { validateToken } = require('../utils/token');
 const { listPlayers, addPlayer, removePlayer } = require('../utils/database/room_players');
 const { getByPin, get } = require('../utils/database/room');
 const { loadAdminCommands, loadUserCommands } = require('./commands.controller');
-const { updatePlayersCount } = require('../utils/room');
+const { updatePlayersCount, getCurrentQuestion } = require('../utils/room');
 
 /*
  * state:
@@ -47,6 +47,8 @@ async function handleDataRequest(data, message){
         handlePeriodicResponses(data);
 
         await updatePlayersCount(data.room_id);
+
+        connection.send(JSON.stringify({type: 'question', data: await getCurrentQuestion(data.room_id, true)}));
 
         return true;
     }catch(err){

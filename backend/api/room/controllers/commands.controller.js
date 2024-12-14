@@ -1,6 +1,7 @@
 const { fixQuestionsIds } = require("../fixers/room");
 const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
 const { get } = require("../utils/database/room");
+const { setPlayerAnswer } = require("../utils/question");
 const { appendQuestions, updateSetting, generatePin, updatePin, updateActive } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
 
@@ -96,8 +97,18 @@ function loadAdminCommands(data){
 
 function loadUserCommands(data){
     return {
-        'answer_question': (payload) => {
+        'answer_question': async (payload) => {
+            const room_id = data.room_id;
 
+            const room = await get(room_id);
+
+            if(room == null) return;
+
+            const question_id = room.current_question_id;
+            const player_id = data.userinfo.id;
+            const alternative_id = payload.alternative_id;
+
+            await setPlayerAnswer(room_id, question_id, alternative_id, player_id);
         }
     }
 }

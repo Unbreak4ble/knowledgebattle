@@ -109,7 +109,11 @@ export class RoomService extends RoomCommands {
 
     if(room == null) return null;
 
-    this.connected_room = await this.getRoomById(room.id);
+    if(this.loadToken(room.id) == null)
+      this.connected_room = room;
+    else
+      this.connected_room = await this.getRoomById(room.id);
+
     this.live_room_data.started = this.connected_room?.active;
     this._connected_pin = pin;
     this._connected_id = room?.id;
@@ -267,28 +271,10 @@ export class RoomService extends RoomCommands {
   }
 
   async loadOptions(): Promise<any[]> {
-    // TODO: move this to a endpoint in GET api/room/options
-    return [
-      {
-          id: 'ingame.visibility.result_poll',
-          text: 'Result poll'
-      },
-      {
-          id: 'privacy.public',
-          text: 'Public'
-      },
-      {
-          id: 'ingame.time.wait_for_all',
-          text: 'Wait for all to finish'
-      },
-      {
-          id: 'ingame.allow_join',
-          text: 'Allow join during game'
-      },
-      {
-          id: 'ingame.show_previous',
-          text: 'Show previous finished question'
-      },
-    ]
+    const response = await fetch('/api/room/options');
+    
+    if(response.status != 200) return [];
+
+    return await response.json();
   }
 }

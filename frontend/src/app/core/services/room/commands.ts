@@ -54,4 +54,12 @@ export class RoomCommands {
         
         this.sendCommand(RequestCommandTypes.NEW_QUESTION, data);
     }
+
+    sendAnswer(alternative_id:number){
+        const data = {
+            alternative_id: alternative_id
+        };
+
+        this.sendCommand(RequestCommandTypes.ANSWER, data);
+    }
 }

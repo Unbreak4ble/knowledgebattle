@@ -24,14 +24,17 @@ export class QuestionsCarouselComponent {
   show_right_button:Boolean = true;
 
   constructor(private roomService: RoomService){
-    this.setup();
+    
   }
 
-  setup(){
-    this.jumpTo(1);
+  async setup(){
+    await this.setupEvent();
+
+    this.jumpTo(0);
   }
 
   ngAfterViewInit(){
+    /*
     const results:any[] = [
       {
         text: 'eae',
@@ -55,6 +58,9 @@ export class QuestionsCarouselComponent {
       },
     ];
     this.question_component?.setResult(results);
+    */
+    
+    this.setup();
   }
 
   jumpTo(index:number){
@@ -93,6 +99,21 @@ export class QuestionsCarouselComponent {
 
   onPickEvent(event:any){
     this.selected_list[event.question_id] = event.alternative_id;
+
     this.current_selected.id = event.alternative_id;
+
+    this.roomService.sendAnswer(event.alternative_id);
+
+    this.question_component?.lock();
+  }
+
+  async setupEvent(){
+    this.roomService.subscribeRoom(async(msg)=>{
+      if(msg.type != 'question') return false;
+
+      this.question = msg.data;
+
+      return true;
+    });
   }
 }

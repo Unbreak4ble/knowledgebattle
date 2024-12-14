@@ -10,6 +10,7 @@ export function convertRequestToString(command: RequestCommandTypes): string|nul
         [RequestCommandTypes.UPDATE_RULE]: 'update_rule',
         [RequestCommandTypes.UPDATE_PIN]: 'update_pin',
         [RequestCommandTypes.NEW_QUESTION]: 'new_question',
+        [RequestCommandTypes.ANSWER]: 'answer_question',
     };
 
     return commands[command];
@@ -25,6 +26,7 @@ export function convertResponseToString(command: ResponseCommandTypes): string|n
         [ResponseCommandTypes.UPDATE_PIN]: 'update_pin',
         [ResponseCommandTypes.NEW_QUESTION]: 'new_question',
         [ResponseCommandTypes.REQUEST_FAILED]: 'request_failed',
+        [ResponseCommandTypes.QUESTION]: 'question',
     };
 
     return commands[command];

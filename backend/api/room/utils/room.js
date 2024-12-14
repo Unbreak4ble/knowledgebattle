@@ -1,3 +1,4 @@
+const { hideProperties } = require("../mappers/question");
 const roomLib = require("./database/room");
 const { deletePlayersList, listPlayers } = require("./database/room_players");
 const { deleteQuestionsList } = require("./database/room_questions");
@@ -43,6 +44,19 @@ async function fullDeleteRoom(room_id){
     await deleteQuestionsList(room_id);
 }
 
+async function getCurrentQuestion(room_id, hide=false){
+    const room = await roomLib.get(room_id);
+
+    if(room == null) return null;
+
+    let question = room.questions[room.current_question_id];
+
+    if(hide)
+        question = await hideProperties(question);
+
+    return question;
+}
+
 module.exports = {
     appendQuestions,
     fullDeleteRoom,
@@ -51,4 +65,5 @@ module.exports = {
     updatePin,
     updatePlayersCount,
     updateActive,
+    getCurrentQuestion,
 }

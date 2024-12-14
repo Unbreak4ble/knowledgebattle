@@ -6,12 +6,20 @@
         </div>
     </div>
     <div class="room-content">
-        @if(roomService.live_room_data?.started){
-            <app-questions-carousel #questions_carousel></app-questions-carousel>
+        @if(roomService.live_room_data){
+            @if(roomService.live_room_data.started){
+                <app-questions-carousel #questions_carousel></app-questions-carousel>
+            }
+            @if(!roomService.live_room_data.started){
+                <div class="room-content-message">
+                    <a>Waiting for start</a>
+                </div>
+            }
         }
-        @if(!roomService.live_room_data?.started){
+
+        @if(roomService.live_room_data == null){
             <div class="room-content-message">
-                <a>Waiting for room start</a>
+                <a>Waiting for connection</a>
             </div>
         }
     </div>

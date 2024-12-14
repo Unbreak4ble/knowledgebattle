@@ -7,6 +7,7 @@ export enum RequestCommandTypes {
     UPDATE_RULE,
     UPDATE_PIN,
     NEW_QUESTION,
+    ANSWER,
 };
 
 export enum ResponseCommandTypes {
@@ -18,4 +19,5 @@ export enum ResponseCommandTypes {
     NEW_QUESTION,
     RECOGNITION,
     REQUEST_FAILED,
+    QUESTION,
 };

@@ -53,7 +53,10 @@ export class RoomComponent {
 
     const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
 
-    if(!username) return;
+    if(!username) {
+      this.setupRoomConnection();
+      return;
+    }
 
     this.username = username;
 
@@ -65,6 +68,6 @@ export class RoomComponent {
 
     this.roomService.sendRequest(username);
     
-    this.messageboxService.getComponent()?.show('Success', 'Connected to the room');
+    //this.messageboxService.getComponent()?.show('Success', 'Connected to the room');
   }
 }

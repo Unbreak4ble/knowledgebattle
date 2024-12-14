@@ -71,6 +71,10 @@ export class RoomAdminComponent {
     await new Promise((resolve:any) => setTimeout(resolve, 10));
 
     this.liveQuestionComponent?.setQuestion(question);
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    document.querySelector('.room-admin-question')?.scrollIntoView({behavior: 'smooth'});
   }
 
   async viewQuestion(question:IQuestion){
@@ -79,6 +83,10 @@ export class RoomAdminComponent {
     await new Promise((resolve:any) => setTimeout(resolve, 10));
 
     this.makeQuestionComponent?.setQuestion(question);
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    document.querySelector('.room-admin-question')?.scrollIntoView({behavior: 'smooth'});
   }
 
   getConfig(){

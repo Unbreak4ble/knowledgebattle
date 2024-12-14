@@ -71,6 +71,10 @@ export class MakeQuestionComponent {
 
   removeAlternative(index:number){
     this.alternatives.splice(index, 1);
+
+    if(this.question)
+      this.question.correct = -1;
+    
     this.onchange?.({type: 'alternatives', content: this.alternatives});
   }
 
