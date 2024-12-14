@@ -112,6 +112,16 @@ export class QuestionsCarouselComponent {
       if(msg.type != 'question') return false;
 
       this.question = msg.data;
+      this.question_component?.unlock();
+
+      return true;
+    });
+
+    this.roomService.subscribeRoom(async(msg)=>{
+      if(msg.type != 'question_result') return false;
+
+      this.question = msg.data;
+      this.question_component?.unlock();
 
       return true;
     });

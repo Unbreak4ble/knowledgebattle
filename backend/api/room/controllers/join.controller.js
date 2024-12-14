@@ -3,6 +3,7 @@ const { listPlayers, addPlayer, removePlayer } = require('../utils/database/room
 const { getByPin, get } = require('../utils/database/room');
 const { loadAdminCommands, loadUserCommands } = require('./commands.controller');
 const { updatePlayersCount, getCurrentQuestion } = require('../utils/room');
+const { getQuestionById } = require('../utils/database/room_questions');
 
 /*
  * state:
@@ -92,7 +93,17 @@ function sendPeriodicPlayers(data){
 }
 
 function handlePeriodicAdminResponses(data){
+    const connection = data.connection;
+    setInterval(async () => {
+        const room = await get(data.room_id);
+        const question = await getQuestionById(data.room_id, room.current_question_id);
 
+        if(question == null) return;
+
+        const question_response = {type:'question_update', data: question };
+
+        connection.send(JSON.stringify(question_response));
+    }, 1000);
 }
 
 function handlePeriodicUserResponses(data){

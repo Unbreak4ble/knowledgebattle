@@ -9,16 +9,44 @@ import { IQuestion } from '../../../core/interfaces/question/question.interface'
 })
 export class LiveQuestionViewComponent {
   question:IQuestion|null = null;
+  alternatives: any[] = [];
 
   constructor(private roomService:RoomService){
 
+  }
+
+  ngAfterViewInit(){
+    this.setup();
+  }
+
+  async setup(){
+    if(this.question == null) return;
+
+    const question_result = await this.roomService.getQuestionResult(this.question.id);
+
+    this.alternatives = question_result?.alternatives || [];
+
+    this.roomService.subscribeRoom(async(msg)=>{
+      if(msg.type != 'question_update') return false;
+      if(msg.data?.id != this.question?.id) return false;
+
+      this.alternatives = msg.data?.alternatives;
+
+      return true;
+    });
   }
 
   viewQuestion(id:number){
 
   }
 
-  setQuestion(question:IQuestion){
+  async setQuestion(question:IQuestion){
+    if(this.question == null) return;
+
+    const question_result = await this.roomService.getQuestionResult(this.question.id);
+
+    this.alternatives = question_result?.alternatives || [];
+
     this.question = question;
   }
 }

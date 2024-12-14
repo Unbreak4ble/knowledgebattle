@@ -4,6 +4,7 @@ const expressWs = require('express-ws');
 const uuid = require('uuid');
 const { getByPin } = require('../utils/database/room');
 const { removePlayer } = require('../utils/database/room_players');
+const { removeAlternative } = require('../utils/database/room_questions');
 
 const router = express.Router();
 
@@ -32,6 +33,7 @@ function setupEvents(ws, data){
     ws.on('close', () => {
         //console.log('connection '+data.userinfo.id+' closed');
         removeConnection(data.room_id, data.userinfo.id);
+        //removeAlternative(data.room_id, data.userinfo.id);
         handleClose(data);
     });
 

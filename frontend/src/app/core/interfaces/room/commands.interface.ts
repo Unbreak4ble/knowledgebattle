@@ -20,4 +20,6 @@ export enum ResponseCommandTypes {
     RECOGNITION,
     REQUEST_FAILED,
     QUESTION,
+    QUESTION_UPDATE,
+    QUESTION_RESULT,
 };

@@ -270,6 +270,14 @@ export class RoomService extends RoomCommands {
     return ids;
   }
 
+  async getQuestionResult(question_id:number){
+    const response = await fetch('/api/room/live/'+this._connected_id+'/'+question_id);
+
+    if(response.status != 200) return null;
+
+    return await response.json();
+  }
+
   async loadOptions(): Promise<any[]> {
     const response = await fetch('/api/room/options');
     

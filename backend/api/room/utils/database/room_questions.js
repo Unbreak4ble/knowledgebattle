@@ -113,6 +113,29 @@ async function addAlternative(room_id, question_id, alternative_data){
     await connection.quit();
 }
 
+async function removeAlternative(room_id, question_id, player_id){
+    if(!(room_id && room_id.length > 0)) return;
+    const key = 'rooms_questions_'+room_id;
+
+    if((await getQuestionById(room_id, question_id)) == null)
+        await addQuestion(room_id, question_id);
+
+    const connection = await redis.connect();
+
+    const index = await getIndex(room_id, question_id);
+
+    const alt_index = await getAlternativeIndex(room_id, question_id, player_id);
+
+    if(index < 0 || alt_index < 0){
+        await connection.quit();
+        return;
+    }
+
+    await connection.json.ARRPOP(key, '$.['+index+'].alternatives', alt_index);
+
+    await connection.quit();
+}
+
 async function setAlternative(room_id, question_id, alternative_data){
     if(!(room_id && room_id.length > 0)) return;
     const key = 'rooms_questions_'+room_id;
@@ -208,5 +231,6 @@ module.exports = {
     getQuestionById,
     getPlayerAlternative,
     addAlternative,
-    getIndex
+    getIndex,
+    removeAlternative,
 }

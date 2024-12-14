@@ -32,12 +32,8 @@
             </div>
         </div>
         <div class="room-admin-question">
-            @if(!view_live){
-                <app-make-question class="room-admin-questions-question" #make_question></app-make-question>
-            }
-            @if(view_live){
-                <app-live-question-view class="room-admin-questions-question" #live_question></app-live-question-view>
-            }
+            <app-make-question style="display: {{ view_live ? 'none' : 'block' }};" class="room-admin-questions-question" #make_question></app-make-question>
+            <app-live-question-view style="display: {{ !view_live ? 'none' : 'block' }};" class="room-admin-questions-question" #live_question></app-live-question-view>
         </div>
     </div>
 </div>

@@ -2,8 +2,21 @@ const express = require('express');
 const { get, getByPin } = require('../utils/database/room');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 const { hideProperties } = require('../mappers/room');
+const { getQuestionById } = require('../utils/database/room_questions');
 
 const router = express.Router();
+
+router.get('/live/:id/:question_id', async(req,res)=>{
+    const room_id = req.params.id;
+    const question_id = req.params.question_id;
+
+    const question = await getQuestionById(room_id, question_id);
+
+    if(question)
+        res.json(question);
+    else
+        res.status(404).send();
+});
 
 router.get('/:id', authMiddleware, async (req,res)=>{
     const id = req.params.id;
