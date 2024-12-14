@@ -4,13 +4,14 @@ const { setPlayerAlternative, setAlternative, getQuestionById, getPlayerAlternat
 async function setPlayerAnswer(room_id, question_id, alternative_id, player_id){
     const alternative_data = { player_id: player_id, alternative_id: alternative_id };
 
-    let last_alt = null;
-    if(!(last_alt = await getPlayerAlternative(room_id, question_id, player_id))){
-        //console.log('incrementing from: ', alternative_data.alternative_id);
-        await setAlternative(room_id, question_id, alternative_data, true); //increment
-    }else{
-        //console.log('decrementing from: ', last_alt.alternative_id);
-        await setAlternative(room_id, question_id, last_alt.alternative_id, false); //decrement
+    const last_alt = await getPlayerAlternative(room_id, question_id, player_id);
+
+    if(last_alt && last_alt.alternative_id == alternative_id) return;
+
+    await setAlternative(room_id, question_id, alternative_data, true); //increment
+
+    if(last_alt){
+        await setAlternative(room_id, question_id, last_alt, false); //decrement
     }
 
     await setPlayerAlternative(room_id, question_id, alternative_data);

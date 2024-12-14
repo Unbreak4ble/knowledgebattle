@@ -16,6 +16,7 @@ async function createRoom(data){
         pin: pin,
         name: data.text,
         questions: data.questions.map(x => (x.finished = false, x)),
+        question_timeout: 60,
         current_question_id: 0,
         settings: data.settings,
         creation_timestamp: Math.floor(new Date().getTime()/1000),

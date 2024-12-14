@@ -104,7 +104,7 @@ export class QuestionsCarouselComponent {
 
     this.roomService.sendAnswer(event.alternative_id);
 
-    this.question_component?.lock();
+    //this.question_component?.lock();
   }
 
   async setupEvent(){
@@ -112,7 +112,7 @@ export class QuestionsCarouselComponent {
       if(msg.type != 'question') return false;
 
       this.question = msg.data;
-      this.question_component?.unlock();
+      //this.question_component?.unlock();
 
       return true;
     });
@@ -121,7 +121,7 @@ export class QuestionsCarouselComponent {
       if(msg.type != 'question_result') return false;
 
       this.question = msg.data;
-      this.question_component?.unlock();
+      //this.question_component?.unlock();
 
       return true;
     });

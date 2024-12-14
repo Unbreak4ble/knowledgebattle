@@ -37,7 +37,10 @@ export class LiveQuestionViewComponent {
   }
 
   saveToAlternatives(data:any){
-    if(data == null) return;
+    if(data == null) {
+      this.alternatives = {};
+      return;
+    }
 
     const alternatives = data.alternatives || [];
     const pickers = data.players || [];

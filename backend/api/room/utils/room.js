@@ -36,7 +36,6 @@ async function updateSetting(room_id, setting){
 }
 
 async function appendQuestions(room_id, questions){
-    console.log('lib;',roomLib);
     for(const question of questions){
         await roomLib.updateAppend(room_id, 'questions', question);
     }
@@ -61,7 +60,12 @@ async function getCurrentQuestion(room_id, hide=false){
     return question;
 }
 
+async function updateTimeout(room_id, timeout){
+    await roomLib.updateSet(room_id, 'question_timeout', timeout);
+}
+
 module.exports = {
+    updateTimeout,
     appendQuestions,
     fullDeleteRoom,
     updateSetting,

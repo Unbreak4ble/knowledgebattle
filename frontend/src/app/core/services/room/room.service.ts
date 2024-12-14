@@ -218,9 +218,9 @@ export class RoomService extends RoomCommands {
       return true;
     });
 
-    // question update event
+    // question event
     this.subscribeRoom(async (msg) => {
-      if(msg.type != 'question_update') return false;
+      if(msg.type != 'question') return false;
       if(this.connected_room == null) return false;
       if(msg.data?.id == null) return false;
 
