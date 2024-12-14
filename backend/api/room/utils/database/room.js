@@ -66,7 +66,7 @@ async function updateSet(id, key, value){
 
     const index = await getIndex(id);
 
-    if(index < 0){
+    if(!(index >= 0)){
         await connection.quit();
         return false;
     }

@@ -8,7 +8,7 @@ import { RoomService } from '../../../core/services/room/room.service';
 })
 export class PlayersCountComponent {
   @Input('live') live_mode:boolean = true;
-  count:number = 0;
+  @Input('count') count:number = 0;
 
   constructor(public roomService: RoomService){
 

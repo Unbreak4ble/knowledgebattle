@@ -8,14 +8,14 @@ const router = express.Router();
 
 router.get('/live/:id/:question_id', async(req,res)=>{
     const room_id = req.params.id;
-    const question_id = req.params.question_id;
+    const question_id = +req.params.question_id-1;
 
     const question = await getQuestionById(room_id, question_id);
 
     if(question)
         res.json(question);
     else
-        res.status(404).send();
+        res.status(404).send("this question has not finished yet");
 });
 
 router.get('/:id', authMiddleware, async (req,res)=>{

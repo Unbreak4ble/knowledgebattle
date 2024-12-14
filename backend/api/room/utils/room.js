@@ -16,9 +16,13 @@ async function updateActive(room_id, active=false){
 }
 
 async function updatePlayersCount(room_id){
-    const count = (await listPlayers(room_id))?.length | 0;
+    const count = (await listPlayers(room_id))?.length || 0;
     
     await roomLib.updateSet(room_id, 'players_count', count);
+}
+
+async function updateCurrentQuestionId(room_id, question_id){
+    await roomLib.updateSet(room_id, 'current_question_id', question_id);
 }
 
 async function updateSetting(room_id, setting){
@@ -66,4 +70,5 @@ module.exports = {
     updatePlayersCount,
     updateActive,
     getCurrentQuestion,
+    updateCurrentQuestionId,
 }

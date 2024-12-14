@@ -15,6 +15,8 @@ async function handleDataRequest(data, message){
     const connection = data.connection;
     const room = await get(data.room_id);
 
+    if(room == null) return;
+
     if(room.players_count >= room.max_players){
         connection.send(JSON.stringify({type: 'request_failed', data: { message: "Room is full" }}));
         
@@ -96,14 +98,19 @@ function handlePeriodicAdminResponses(data){
     const connection = data.connection;
     setInterval(async () => {
         const room = await get(data.room_id);
-        const question = await getQuestionById(data.room_id, room.current_question_id);
 
-        if(question == null) return;
+        if(room == null) return;
+
+        const question = await getQuestionById(data.room_id, room.current_question_id);
 
         const question_response = {type:'question_update', data: question };
 
+        if(question == null) {
+            question_response.data = {id: room.current_question_id}; // just testing
+        }
+
         connection.send(JSON.stringify(question_response));
-    }, 1000);
+    }, 500);
 }
 
 function handlePeriodicUserResponses(data){

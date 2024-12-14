@@ -2,7 +2,7 @@ const { fixQuestionsIds } = require("../fixers/room");
 const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
 const { get } = require("../utils/database/room");
 const { setPlayerAnswer } = require("../utils/question");
-const { appendQuestions, updateSetting, generatePin, updatePin, updateActive } = require("../utils/room");
+const { appendQuestions, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
 
 function loadAdminCommands(data){
@@ -91,6 +91,17 @@ function loadAdminCommands(data){
             await updatePin(data.room_id, new_pin);
 
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+        },
+        'next_question': async (payload) => {
+            const room = await get(data.room_id);
+
+            if(room == null) return;
+
+            const id = ++room.current_question_id;
+
+            if(id >= room.questions.length) return;
+ 
+            await updateCurrentQuestionId(data.room_id, id);
         },
     };
 }

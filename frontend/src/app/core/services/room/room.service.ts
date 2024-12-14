@@ -217,6 +217,17 @@ export class RoomService extends RoomCommands {
 
       return true;
     });
+
+    // question update event
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'question_update') return false;
+      if(this.connected_room == null) return false;
+      if(msg.data?.id == null) return false;
+
+      this.connected_room.current_question_id = msg.data?.id;
+
+      return true;
+    });
   }
 
   sendRoom(data:any){
@@ -271,7 +282,7 @@ export class RoomService extends RoomCommands {
   }
 
   async getQuestionResult(question_id:number){
-    const response = await fetch('/api/room/live/'+this._connected_id+'/'+question_id);
+    const response = await fetch('/api/room/fetch/live/'+this._connected_id+'/'+question_id);
 
     if(response.status != 200) return null;
 

@@ -8,6 +8,7 @@ export enum RequestCommandTypes {
     UPDATE_PIN,
     NEW_QUESTION,
     ANSWER,
+    NEXT_QUESTION
 };
 
 export enum ResponseCommandTypes {

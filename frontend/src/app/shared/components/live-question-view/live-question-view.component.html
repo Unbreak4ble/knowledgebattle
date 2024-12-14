@@ -9,13 +9,13 @@
                 <div class="live-question-view-alternatives">
                     @for(alternative of question.alternatives; track alternative; let idx=$index){
                         <div class="live-question-view-alternative" style="background: {{ question.correct == idx ? '#00ff0050' : '#00000020' }};">
-                            <!-- <a>{{ idx }}</a> -->
                             <div class="live-question-view-alternative-pickers">
-                            
+                                <app-players-count class="live-question-view-alternative-pickers-count" [live]="false" [count]="alternatives[idx]?.count || 0"></app-players-count>
                             </div>
                             <div class="live-question-view-alternative-content">
                                 <span>{{ alternative.text }}</span>
                             </div>
+                            <div class="live-question-view-alternative-wrapper" style="width: {{ alternatives[idx]?.percent || 0 }}%"></div>
                         </div>
                     }
                 </div>

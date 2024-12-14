@@ -56,4 +56,8 @@ export class QuestionsListLiveComponent {
     this.questions = questions;
     this.changeDetectRf.detectChanges();
   }
+
+  nextQuestion(){
+    this.roomService.sendNextQuestion();
+  }
 }

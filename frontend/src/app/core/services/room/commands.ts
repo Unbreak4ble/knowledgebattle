@@ -62,4 +62,8 @@ export class RoomCommands {
 
         this.sendCommand(RequestCommandTypes.ANSWER, data);
     }
+
+    sendNextQuestion(){
+        this.sendCommand(RequestCommandTypes.NEXT_QUESTION);
+    }
 }

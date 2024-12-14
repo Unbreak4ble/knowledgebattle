@@ -41,9 +41,10 @@
                     width: calc(100% - 10px*2);
                     border-radius: 10px;
                     display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 3px;
+                    flex-direction: row;
+                    gap: 10px;
+                    position: relative;
+                    overflow: hidden;
                     cursor: pointer;
 
                     &:hover {
@@ -54,10 +55,19 @@
                     }
 
                     .live-question-view-alternative-pickers {
+                        z-index: 1;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+                        height: 100%;
+                        position: relative;
 
+                        .live-question-view-alternative-pickers-count {
+                        }
                     }
 
                     .live-question-view-alternative-content {
+                        z-index: 1;
                         width: calc(100%);
                         font-size: 18px;
                         display: flex;
@@ -73,6 +83,16 @@
                         span {
                             font-size: 20px;
                         }
+                    }
+
+                    .live-question-view-alternative-wrapper {
+                        top: 0;
+                        left: 0;
+                        z-index: 0;
+                        position: absolute;
+                        width: 0;
+                        height: 100%;
+                        background: #00000030;
                     }
                 }
             }

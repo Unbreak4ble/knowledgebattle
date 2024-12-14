@@ -11,6 +11,7 @@ export function convertRequestToString(command: RequestCommandTypes): string|nul
         [RequestCommandTypes.UPDATE_PIN]: 'update_pin',
         [RequestCommandTypes.NEW_QUESTION]: 'new_question',
         [RequestCommandTypes.ANSWER]: 'answer_question',
+        [RequestCommandTypes.NEXT_QUESTION]: 'next_question',
     };
 
     return commands[command];
