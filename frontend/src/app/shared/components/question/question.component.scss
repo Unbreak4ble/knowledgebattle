@@ -44,6 +44,10 @@
                 position: absolute;
                 z-index: 2;
                 height: 100%;
+                //width: 0;
+                transition-property: width;
+                transition-timing-function: linear;
+                transition-duration: 100ms;
                 left: 0;
                 top: 0;
             }

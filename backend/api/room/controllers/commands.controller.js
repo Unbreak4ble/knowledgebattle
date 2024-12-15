@@ -1,7 +1,9 @@
 const { fixQuestionsIds } = require("../fixers/room");
 const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
 const { get } = require("../utils/database/room");
-const { setPlayerAnswer } = require("../utils/question");
+const { listPlayers } = require("../utils/database/room_players");
+const { getQuestionById } = require("../utils/database/room_questions");
+const { setPlayerAnswer, getQuestionAlternatives } = require("../utils/question");
 const { appendQuestions, updateTimeout, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId, getCurrentQuestion } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
 
@@ -130,8 +132,57 @@ function loadUserCommands(data){
             const alternative_id = payload.alternative_id;
 
             await setPlayerAnswer(room_id, question_id, alternative_id, player_id);
+
+            const question_result = await getQuestionById(data.room_id, room.current_question_id);
+            const players_count = (await listPlayers(room_id))?.filter(x => (x.isAdmin == false)).length || 0;
+
+            if(question_result == null) return;
+
+            if(question_result.players?.length >= players_count){
+                await sendQuestionResult(data);
+            }
         }
     }
+}
+
+async function sendQuestionResult(data){
+    let room = await get(data.room_id);
+
+    if(room == null) return;
+
+    const result_response = {
+        type: 'question_result',
+        data: await getQuestionById(data.room_id, room.current_question_id)
+    };
+
+    sendBroadcast(data.wss, data.room_id, JSON.stringify(result_response));
+
+    await new Promise(resolve => setTimeout(resolve, 1000*5)); // send question after 5 seconds question_result
+
+    room = await get(data.room_id);
+
+    if(room == null) return;
+
+    const id = ++room.current_question_id;
+
+    if(id >= room.questions.length) return;
+
+    await updateCurrentQuestionId(data.room_id, id);
+    
+    const response = {
+        type: 'question',
+        data: await getCurrentQuestion(data.room_id, true)
+    };
+
+    sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+}
+
+async function sendRoomFinished(data){
+    let room = await get(data.room_id);
+
+    if(room == null) return;
+
+
 }
 
 module.exports = {

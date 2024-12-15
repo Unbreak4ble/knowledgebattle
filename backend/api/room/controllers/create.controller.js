@@ -10,7 +10,7 @@ async function createRoom(data){
 
     const id = uuid.v4().replaceAll('-', '');
     const pin = generatePin();
-
+    
     const room = {
         id: id,
         pin: pin,

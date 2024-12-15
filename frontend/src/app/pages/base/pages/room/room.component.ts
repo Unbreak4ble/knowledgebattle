@@ -38,6 +38,18 @@ export class RoomComponent {
 
       return true;
     });
+
+    this.roomService.subscribeRoom(async(msg)=>{
+      if(msg.type != 'request_failed') return false;
+
+      this.messageBoxComponent?.show('Connection failed', 'Check your username', 3);
+
+      await new Promise(resolve => setTimeout(resolve, 1000*3.5));
+      
+      await this.setupRoomConnection();
+
+      return true;
+    });
   }
 
   async setupRoomConnection(){
@@ -67,7 +79,5 @@ export class RoomComponent {
     }
 
     this.roomService.sendRequest(username);
-    
-    //this.messageboxService.getComponent()?.show('Success', 'Connected to the room');
   }
 }

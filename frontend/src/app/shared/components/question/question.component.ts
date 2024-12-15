@@ -1,6 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { EventEmitter } from '@angular/core';
+import { IAlternativeResult } from '../../../core/interfaces/room/alternatives_result.interface';
 
 @Component({
   selector: 'app-question',
@@ -13,7 +14,7 @@ export class QuestionComponent {
   @Output('onpick') onPickEmitter: EventEmitter<any> = new EventEmitter<any>;
   locked:Boolean = false;
   finished:Boolean = false;
-  results: {text: string, count: Number, percent: Number}[] = [];
+  results: IAlternativeResult = {};
 
   constructor(){
     
@@ -21,6 +22,10 @@ export class QuestionComponent {
 
   lock = () => this.locked = true;
   unlock = () => this.locked = false;
+  lockFor = (seconds:number) => {
+    this.lock();
+    setTimeout(this.unlock, seconds*1000);
+  };
 
   async onAlternativePick(id:Number|null){
     if(this.locked) return;
@@ -38,8 +43,14 @@ export class QuestionComponent {
     this.onPickEmitter.emit({question_id: this.question.id, alternative_id: id});
   }
 
-  setResult(results:any[]){
+  setQuestion(question: IQuestion|null){
+    this.question = question;
+    this.finished = false;
+    this.results = {};
+  }
+
+  setResult(alternatives_results:IAlternativeResult){
     this.finished = true;
-    this.results = results;
+    this.results = alternatives_results;
   }
 }

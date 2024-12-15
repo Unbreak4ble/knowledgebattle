@@ -4,26 +4,20 @@
             <a class="question-num">{{ question.id }}</a>
             <span class="question-text">{{ question.text }}</span>
         </div>
-        @if(!finished){
-            <div class="question-alternatives">
-                @for(alternative of question.alternatives; track alternative; let index = $index){
-                    <div class="question-alternative" (click)="onAlternativePick(index)">
+        <div class="question-alternatives">
+            @for(alternative of question.alternatives; track alternative; let index = $index){
+                <div class="question-alternative" (click)="!finished ? onAlternativePick(index) : undefined">
+                    <div class="question-alternative-wrap" style="width: {{ results[index]?.percent || 0 }}%"></div>
+                    @if(finished){
+                        <a class="question-alternative-text">{{ alternative.text }}</a>
+                        <a class="question-alternative-count">{{ results[index]?.percent || 0 }}%</a>
+                    }
+                    @if(!finished){
                         <input class="question-alternative-check" id="alternative_{{question.id}}_{{index}}" type="radio" name="alternative_{{ question.id }}" value="{{ index }}">
                         <a class="question-alternative-text">{{ alternative.text }}</a>
-                    </div>
-                }
-            </div>
-        }
-        @if(finished){
-            <div class="question-alternatives">
-                @for(alternative_result of results; track alternative_result){
-                    <div class="question-alternative">
-                        <div class="question-alternative-wrap" style="width: {{ alternative_result.percent }}%"></div>
-                        <a class="question-alternative-text">{{ alternative_result.text }}</a>
-                        <a class="question-alternative-count">{{ alternative_result.percent }}%</a>
-                    </div>
-                }
-            </div>
-        }
+                    }
+                </div>
+            }
+        </div>
     </div>
 }

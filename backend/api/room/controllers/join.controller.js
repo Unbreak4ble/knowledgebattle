@@ -4,6 +4,7 @@ const { getByPin, get } = require('../utils/database/room');
 const { loadAdminCommands, loadUserCommands } = require('./commands.controller');
 const { updatePlayersCount, getCurrentQuestion } = require('../utils/room');
 const { getQuestionById } = require('../utils/database/room_questions');
+const { validateUsername } = require('../validators/user');
 
 /*
  * state:
@@ -18,8 +19,10 @@ async function handleDataRequest(data, message){
     if(room == null) return;
 
     if(room.players_count >= room.max_players){
-        connection.send(JSON.stringify({type: 'request_failed', data: { message: "Room is full" }}));
+        await connection.send(JSON.stringify({type: 'request_failed', data: { message: "Room is full" }}));
         
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         connection.close();
     }
 
@@ -29,6 +32,12 @@ async function handleDataRequest(data, message){
         const token = parsed_msg.token;
 
         const name = parsed_msg.name;
+
+        if(!validateUsername(name)){
+            await connection.send(JSON.stringify({type: 'request_failed', data: { message: "Invalid username format" }}));
+            await new Promise(resolve => setTimeout(resolve, 100));
+            return connection.close();
+        }
 
         data.userinfo.name = name;
 

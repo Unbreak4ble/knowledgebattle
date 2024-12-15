@@ -3,6 +3,7 @@ import { questions } from './questions-carousel.headers';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { QuestionComponent } from '../question/question.component';
 import { RoomService } from '../../../core/services/room/room.service';
+import { convertToAlternativesResult } from '../../../core/mappers/room/room.mapper';
 
 @Component({
   selector: 'app-questions-carousel',
@@ -34,32 +35,6 @@ export class QuestionsCarouselComponent {
   }
 
   ngAfterViewInit(){
-    /*
-    const results:any[] = [
-      {
-        text: 'eae',
-        count: 123,
-        percent: 25
-      },
-      {
-        text: '123',
-        count: 100,
-        percent: 50
-      },
-      {
-        text: 'eae',
-        count: 123,
-        percent: 15
-      },
-      {
-        text: 'eae',
-        count: 123,
-        percent: 10
-      },
-    ];
-    this.question_component?.setResult(results);
-    */
-    
     this.setup();
   }
 
@@ -104,7 +79,7 @@ export class QuestionsCarouselComponent {
 
     this.roomService.sendAnswer(event.alternative_id);
 
-    //this.question_component?.lock();
+    this.question_component?.lockFor(1);
   }
 
   async setupEvent(){
@@ -112,7 +87,7 @@ export class QuestionsCarouselComponent {
       if(msg.type != 'question') return false;
 
       this.question = msg.data;
-      //this.question_component?.unlock();
+      this.question_component?.setQuestion(this.question);
 
       return true;
     });
@@ -120,8 +95,9 @@ export class QuestionsCarouselComponent {
     this.roomService.subscribeRoom(async(msg)=>{
       if(msg.type != 'question_result') return false;
 
-      this.question = msg.data;
-      //this.question_component?.unlock();
+      const alternative_result = convertToAlternativesResult(msg.data);
+
+      this.question_component?.setResult(alternative_result);
 
       return true;
     });

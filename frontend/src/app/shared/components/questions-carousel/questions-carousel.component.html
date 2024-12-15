@@ -10,7 +10,7 @@
                     </div>
                 }
 
-                <app-question #current_question [question]="question" [selected]="current_selected" (onpick)="onPickEvent($event)"></app-question>
+                <app-question #current_question [selected]="current_selected" (onpick)="onPickEvent($event)"></app-question>
 
                 @if(show_right_button){
                     <div class="questions-carousel-button" id="questions-carousel-button-next" (click)="jumpNext()">

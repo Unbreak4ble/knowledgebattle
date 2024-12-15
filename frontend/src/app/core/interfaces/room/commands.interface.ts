@@ -1,26 +1,26 @@
 
 export enum RequestCommandTypes {
-    START,
-    STOP,
-    KICK_ALL,
-    KICK,
-    UPDATE_RULE,
-    UPDATE_PIN,
-    NEW_QUESTION,
-    ANSWER,
-    NEXT_QUESTION
+    START, // star command
+    STOP, // stop command
+    KICK_ALL, // kick all command
+    KICK, // kick command
+    UPDATE_RULE, // update rule/option command
+    UPDATE_PIN, // update pin command
+    NEW_QUESTION, // add new question command
+    ANSWER, // answer question command
+    NEXT_QUESTION // go to next question command
 };
 
 export enum ResponseCommandTypes {
-    START,
-    STOP,
-    KICK,
-    UPDATE_RULE,
-    UPDATE_PIN,
-    NEW_QUESTION,
-    RECOGNITION,
-    REQUEST_FAILED,
-    QUESTION,
-    QUESTION_UPDATE,
-    QUESTION_RESULT,
+    START, // room started
+    STOP, // room stopped
+    KICK, // received kick
+    UPDATE_RULE, // rule updated
+    UPDATE_PIN, // pin updated
+    NEW_QUESTION, // new question added
+    RECOGNITION, // recogized
+    REQUEST_FAILED, // request failed
+    QUESTION, // current question data
+    QUESTION_UPDATE, // current question update. Available only for admins
+    QUESTION_RESULT, // current question result
 };

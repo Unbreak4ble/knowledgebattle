@@ -5,35 +5,13 @@ const joinRouter = require('./join.route');
 const fetchRouter = require('./fetch.route');
 const deleteRouter = require('./delete.route');
 const listRouter = require('./list.route');
+const { options } = require("../constants/room");
 
 const router = express.Router();
 
 router.get('/helloworld', (req,res) => res.send('hello world'));
 
-router.get('/options', (req,res)=>{
-    const options = [
-      {
-          id: 'ingame.visibility.result_poll',
-          text: 'Result poll'
-      },
-      {
-          id: 'privacy.public',
-          text: 'Public'
-      },
-      {
-          id: 'ingame.time.wait_for_all',
-          text: 'Wait for all to finish'
-      },
-      {
-          id: 'ingame.allow_join',
-          text: 'Allow join during game'
-      },
-      {
-          id: 'ingame.show_previous',
-          text: 'Show previous finished question'
-      },
-    ];
-    
+router.get('/options', (req,res)=> {
     res.json(options);
 });
 
