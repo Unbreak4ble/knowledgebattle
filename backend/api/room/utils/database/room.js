@@ -47,6 +47,8 @@ async function get(id){
 }
 
 async function getByPin(pin){
+    if(!/^[0-9]+$/gim.test(pin)) return;
+
     const connection = await redis.connect();
 
     if(!await connection.json.GET('rooms', '$'))
@@ -58,7 +60,7 @@ async function getByPin(pin){
 
     await connection.quit();
 
-    return data[0];
+    return data?.[0];
 }
 
 async function updateSet(id, key, value){

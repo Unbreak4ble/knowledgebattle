@@ -14,7 +14,7 @@ wss.connections = {};
 
 router.get('/', (req,res)=>res.send('working'));
 
-function removeConnection(room_id, id){
+wss.removeConnection = (room_id, id) => {
     const conn = wss.connections[room_id]?.filter(x => x.id == id)[0];
     const index = wss.connections[room_id]?.indexOf(conn) || -1;
     if (index != -1) {
@@ -32,7 +32,7 @@ function setupEvents(ws, data){
 
     ws.on('close', () => {
         //console.log('connection '+data.userinfo.id+' closed');
-        removeConnection(data.room_id, data.userinfo.id);
+        data.wss.removeConnection(data.room_id, data.userinfo.id);
         //removeAlternative(data.room_id, data.userinfo.id);
         handleClose(data);
     });

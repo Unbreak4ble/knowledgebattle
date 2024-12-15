@@ -1,1 +1,23 @@
-<p>ranking-list works!</p>
+<div class="ranking-list">
+    <div class="ranking-list-head">
+        <div class="ranking-list-head-title">
+            <a>Ranking List</a>
+        </div>
+    </div>
+    <div class="ranking-list-content">
+        <table class="ranking-list-table">
+            <tr>
+                <th>nº</th>
+                <th>name</th>
+                <th>score</th>
+            </tr>
+            @for(player of result; track player; let idx=$index){
+                <tr>
+                    <td>{{ idx+1 }}</td>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.count }}</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

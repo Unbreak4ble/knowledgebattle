@@ -38,7 +38,10 @@
                 }
             }
             @if(roomService.live_room_data.finished){
-                <app-room-ranking></app-room-ranking>
+                <div class="room-content-ranking">
+                    <app-room-ranking></app-room-ranking>
+                    <app-ranking-list></app-ranking-list>
+                </div>
             }
         }
 

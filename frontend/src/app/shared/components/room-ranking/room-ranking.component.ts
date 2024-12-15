@@ -10,9 +10,9 @@ import { toRankingList } from '../../../core/helpers/room/ranking.helper';
 export class RoomRankingComponent {
   result:any[] = [];
   background:string[] = [
-    "#FFD700",
-    "#B87333",
-    "#D3D3D3"
+    "#ffe249",
+    "#ffa755",
+    "#d1d1d1"
   ];
 
   constructor(private roomService:RoomService){

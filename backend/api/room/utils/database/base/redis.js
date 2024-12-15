@@ -2,7 +2,11 @@ const redis = require("redis");
 
 const connect = () => new Promise(async resolve => {
 	const client = redis.createClient({
-		url: "redis://redisdb"
+		url: "redis://redisdb",
+		legacyMode: false, 
+    	socket: {
+    	    connectTimeout: 10000
+    	}
 	});
 	let connected = false;
 

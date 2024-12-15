@@ -99,7 +99,15 @@ function handleConnectionState(data, message){
 
 function sendPeriodicPlayers(data){
     const connection = data.connection;
-    setInterval(async () => {
+    
+    let interval = setInterval(async () => {
+        if(connection._readyState != 1){
+            await data.wss.removeConnection(data.room_id, data.userinfo.id);
+            await handleClose(data);
+            clearInterval(interval);
+            return;
+        }
+
         const players = await listPlayers(data.room_id) || [];
         const players_response = {type:'players', data: players};
         connection.send(JSON.stringify(players_response));
@@ -108,7 +116,14 @@ function sendPeriodicPlayers(data){
 
 function handlePeriodicAdminResponses(data){
     const connection = data.connection;
-    setInterval(async () => {
+    let interval = setInterval(async () => {
+        if(connection._readyState != 1){
+            await data.wss.removeConnection(data.room_id, data.userinfo.id);
+            await handleClose(data);
+            clearInterval(interval);
+            return;
+        }
+
         const room = await get(data.room_id);
 
         if(room == null) return;
