@@ -1,0 +1,49 @@
+
+.room-ranking  {
+    background: transparent;
+
+    .room-ranking-content {
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+
+        .room-ranking-content-head {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .room-ranking-content-head-title {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 5px;
+                font-size: 30px;
+                background: white;
+                padding: 5px;
+                border-radius: 10px;
+            }
+        }
+
+        .room-ranking-content-list {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+
+            .room-ranking-player {
+                background: white;
+                padding: 5px;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+        }
+    }
+}

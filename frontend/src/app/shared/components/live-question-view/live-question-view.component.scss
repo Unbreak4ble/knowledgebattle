@@ -78,10 +78,16 @@
                         a {
                             color: grey;
                             font-size: 20px;
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                            overflow-wrap: break-word;
                         }
 
                         span {
                             font-size: 20px;
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                            overflow-wrap: break-word;
                         }
                     }
 

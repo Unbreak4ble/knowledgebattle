@@ -2,9 +2,20 @@ const express = require('express');
 const { get, getByPin } = require('../utils/database/room');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 const { hideProperties } = require('../mappers/room');
-const { getQuestionById } = require('../utils/database/room_questions');
+const { getQuestionById, listQuestions } = require('../utils/database/room_questions');
 
 const router = express.Router();
+
+router.get('/live/:id', async(req,res)=>{
+    const room_id = req.params.id;
+
+    const questions = await listQuestions(room_id);
+
+    if(questions)
+        res.json(questions);
+    else
+        res.status(404).send("this question has not finished yet");
+});
 
 router.get('/live/:id/:question_id', async(req,res)=>{
     const room_id = req.params.id;

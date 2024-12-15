@@ -34,7 +34,7 @@ export class RoomComponent {
     this.roomService.subscribeRoom(async(msg)=>{
       if(msg.type != 'start') return false;
 
-      this.messageBoxComponent?.show('Starting', 'Get ready, the game is starting', msg.data?.timeout);
+      this.messageBoxComponent?.show('Starting', 'Get ready, the game is starting');
 
       return true;
     });
@@ -54,7 +54,7 @@ export class RoomComponent {
     this.roomService.subscribeRoom(async(msg)=>{
       if(msg.type != 'room_finished') return false;
 
-      this.messageBoxComponent?.show('Room finished', 'Room already finished', 60*60*24);
+      //this.messageBoxComponent?.show('Great news!', 'Room finished', 60*60*24);
 
       return true;
     });
@@ -68,7 +68,10 @@ export class RoomComponent {
     const room = await this.roomService.getRoom(pin);
 
     if(room == null){
-      return this.messageboxService.getComponent()?.show('Error', 'Room not found with pin '+pin, 60*60*24);
+      this.messageboxService.getComponent()?.show('Error', 'Room not found with pin '+pin, 10);
+      await new Promise(resolve => setTimeout(resolve, 10*1000));
+      window.location.href = '/';
+      return;
     }
 
     const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');

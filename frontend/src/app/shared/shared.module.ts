@@ -17,6 +17,7 @@ import { PinInputComponent } from './components/pin-input/pin-input.component';
 import { QuestionsListLiveComponent } from './components/questions-list-live/questions-list-live.component';
 import { PinComponent } from './components/pin/pin.component';
 import { LiveQuestionViewComponent } from './components/live-question-view/live-question-view.component';
+import { RoomRankingComponent } from './components/room-ranking/room-ranking.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { LiveQuestionViewComponent } from './components/live-question-view/live-
     QuestionsListLiveComponent,
     PinComponent,
     LiveQuestionViewComponent,
+    RoomRankingComponent,
   ],
   // to be used along imports
   exports: [
@@ -61,6 +63,7 @@ import { LiveQuestionViewComponent } from './components/live-question-view/live-
     PinInputComponent,
     QuestionsListLiveComponent,
     PinComponent,
+    RoomRankingComponent,
     LiveQuestionViewComponent,
   ]
 })

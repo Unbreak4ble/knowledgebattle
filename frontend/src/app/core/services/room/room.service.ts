@@ -21,6 +21,8 @@ export class RoomService extends RoomCommands {
     players: [],
     players_count: 0,
     started: false,
+    finished: false,
+    questions_result: [],
     start_question_timeout: 0,
   };
   connected_room:IRoom|null = null;
@@ -182,6 +184,8 @@ export class RoomService extends RoomCommands {
 
       this.live_room_data.started = true;
       this.live_room_data.start_question_timeout = msg.data.timeout;
+      this.live_room_data.finished = false;
+
       return true;
     });
 
@@ -200,7 +204,9 @@ export class RoomService extends RoomCommands {
       this.live_room_data.started = false;
       this._ws = null;
 
-      this.messageBoxService.getComponent()?.show('Ops', 'You got kicked', 60*60);
+      this.messageBoxService.getComponent()?.show('Ops', 'You got kicked', 60);
+      await new Promise(resolve => setTimeout(resolve, 60*1000));
+      window.location.href = '/';
 
       return true;
     });
@@ -225,6 +231,17 @@ export class RoomService extends RoomCommands {
       if(msg.data?.id == null) return false;
 
       this.connected_room.current_question_id = msg.data?.id;
+
+      return true;
+    });
+
+    // room_finished event
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'room_finished') return false;
+      if(this.live_room_data == null) return false;
+
+      this.live_room_data.finished = true;
+      this.live_room_data.questions_result = msg.data.correct;
 
       return true;
     });
@@ -283,6 +300,14 @@ export class RoomService extends RoomCommands {
 
   async getQuestionResult(question_id:number){
     const response = await fetch('/api/room/fetch/live/'+this._connected_id+'/'+question_id);
+
+    if(response.status != 200) return null;
+
+    return await response.json();
+  }
+
+  async listQuestionResult(){
+    const response = await fetch('/api/room/fetch/live/'+this._connected_id);
 
     if(response.status != 200) return null;
 

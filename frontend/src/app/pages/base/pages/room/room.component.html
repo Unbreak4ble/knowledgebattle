@@ -7,13 +7,18 @@
     </div>
     <div class="room-content">
         @if(roomService.live_room_data){
-            @if(roomService.live_room_data.started){
-                <app-questions-carousel #questions_carousel></app-questions-carousel>
+            @if(!roomService.live_room_data.finished){
+                @if(roomService.live_room_data.started){
+                    <app-questions-carousel #questions_carousel></app-questions-carousel>
+                }
+                @if(!roomService.live_room_data.started){
+                    <div class="room-content-message">
+                        <a>Waiting for start</a>
+                    </div>
+                }
             }
-            @if(!roomService.live_room_data.started){
-                <div class="room-content-message">
-                    <a>Waiting for start</a>
-                </div>
+            @if(roomService.live_room_data.finished){
+                <app-room-ranking></app-room-ranking>
             }
         }
 

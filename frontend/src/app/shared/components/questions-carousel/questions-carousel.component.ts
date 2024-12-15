@@ -4,6 +4,7 @@ import { IQuestion } from '../../../core/interfaces/question/question.interface'
 import { QuestionComponent } from '../question/question.component';
 import { RoomService } from '../../../core/services/room/room.service';
 import { convertToAlternativesResult } from '../../../core/mappers/room/room.mapper';
+import { MessageboxService } from '../../../core/services/messagebox/messagebox.service';
 
 @Component({
   selector: 'app-questions-carousel',
@@ -24,7 +25,7 @@ export class QuestionsCarouselComponent {
   show_left_button:Boolean = true;
   show_right_button:Boolean = true;
 
-  constructor(private roomService: RoomService){
+  constructor(private roomService: RoomService, private messageboxService: MessageboxService){
     
   }
 
@@ -88,6 +89,8 @@ export class QuestionsCarouselComponent {
 
       this.question = msg.data;
       this.question_component?.setQuestion(this.question);
+      
+      //this.messageboxService.getComponent()?.hide();
 
       return true;
     });

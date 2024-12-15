@@ -23,6 +23,13 @@ function loadAdminCommands(data){
             await updateTimeout(data.room_id, timeout);
 
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+
+            const question_response = {
+                type: 'question',
+                data: await getCurrentQuestion(data.room_id, true)
+            };
+
+            sendBroadcast(data.wss, data.room_id, JSON.stringify(question_response));
         },
         'stop': async () => {
             const response = {
@@ -207,14 +214,17 @@ async function sendQuestionResult(data){
 }
 
 async function sendRoomFinished(data, broadcast=true){
-    console.log('sending room finished');
     let room = await get(data.room_id);
 
     if(room == null) return;
 
+    const questions = room.questions.map(x => ({id: x.id, alternative_id: x.correct}));
+
     const response = {
         type: 'room_finished',
-        data: null
+        data: {
+            correct: questions
+        }
     };
 
     if(broadcast)
