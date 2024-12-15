@@ -8,7 +8,8 @@ export enum RequestCommandTypes {
     UPDATE_PIN, // update pin command
     NEW_QUESTION, // add new question command
     ANSWER, // answer question command
-    NEXT_QUESTION // go to next question command
+    NEXT_QUESTION, // go to next question command
+    RESET_QUESTIONS, // reset questions live data
 };
 
 export enum ResponseCommandTypes {
@@ -23,4 +24,5 @@ export enum ResponseCommandTypes {
     QUESTION, // current question data
     QUESTION_UPDATE, // current question update. Available only for admins
     QUESTION_RESULT, // current question result
+    ROOM_FINISHED, // triggered when all questions were finished
 };

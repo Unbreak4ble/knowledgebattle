@@ -1,7 +1,7 @@
 const { validateToken } = require('../utils/token');
 const { listPlayers, addPlayer, removePlayer } = require('../utils/database/room_players');
 const { getByPin, get } = require('../utils/database/room');
-const { loadAdminCommands, loadUserCommands } = require('./commands.controller');
+const { loadAdminCommands, loadUserCommands, sendRoomFinished } = require('./commands.controller');
 const { updatePlayersCount, getCurrentQuestion } = require('../utils/room');
 const { getQuestionById } = require('../utils/database/room_questions');
 const { validateUsername } = require('../validators/user');
@@ -60,7 +60,10 @@ async function handleDataRequest(data, message){
 
         await updatePlayersCount(data.room_id);
 
-        connection.send(JSON.stringify({type: 'question', data: await getCurrentQuestion(data.room_id, true)}));
+        if(room.current_question_id < room.questions.length)
+            connection.send(JSON.stringify({type: 'question', data: await getCurrentQuestion(data.room_id, true)}));
+        else
+            await sendRoomFinished(data, false);
 
         return true;
     }catch(err){

@@ -1,12 +1,15 @@
 <div class="questions-list-live">
     @if(questions.length == 0){
         <div class="questions-list-live-head">
-            <a class="questions-list-live-head-message">Waiting for questions ...</a>
-            <a class="questions-list-live-head-message">NOTE: Once you submit questions, you can't remove them. Review the questions first, then submit.</a>
+            <div>
+                <a class="questions-list-live-head-message">Waiting for questions ...</a>
+                <a class="questions-list-live-head-message">NOTE: Once you submit questions, you can't remove them. Review the questions first, then submit.</a>
+            </div>
         </div>
     }
     @if(questions.length > 0){
         <div class="questions-list-live-head">
+            <button class="global-button" (click)="resetQuestions()">Reset</button>
             <button class="global-button" (click)="nextQuestion()">Force next</button>
         </div>
         <div class="questions-list-live-list">

@@ -50,6 +50,14 @@ export class RoomComponent {
 
       return true;
     });
+
+    this.roomService.subscribeRoom(async(msg)=>{
+      if(msg.type != 'room_finished') return false;
+
+      this.messageBoxComponent?.show('Room finished', 'Room already finished', 60*60*24);
+
+      return true;
+    });
   }
 
   async setupRoomConnection(){

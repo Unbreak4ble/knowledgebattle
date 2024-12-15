@@ -1,8 +1,8 @@
 const { fixQuestionsIds } = require("../fixers/room");
 const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
-const { get } = require("../utils/database/room");
+const { get, updateQuestionSet } = require("../utils/database/room");
 const { listPlayers } = require("../utils/database/room_players");
-const { getQuestionById } = require("../utils/database/room_questions");
+const { getQuestionById, resetQuestionsList, deleteQuestionsList } = require("../utils/database/room_questions");
 const { setPlayerAnswer, getQuestionAlternatives } = require("../utils/question");
 const { appendQuestions, updateTimeout, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId, getCurrentQuestion } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
@@ -115,6 +115,24 @@ function loadAdminCommands(data){
 
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
         },
+        'reset_questions': async (payload) => {
+            await deleteQuestionsList(data.room_id);
+            await updateCurrentQuestionId(data.room_id, 0);
+
+            const response = {
+                type: 'questions_reset',
+                data: null
+            };
+
+            data.connection?.send(JSON.stringify(response));
+
+            const global_response = {
+                type: 'question',
+                data: await getCurrentQuestion(data.room_id, true)
+            };
+
+            sendBroadcast(data.wss, data.room_id, JSON.stringify(global_response));
+        }
     };
 }
 
@@ -126,6 +144,8 @@ function loadUserCommands(data){
             const room = await get(room_id);
 
             if(room == null) return;
+
+            //if(room.questions[room.current_question_id].finished) return;
 
             const question_id = room.current_question_id;
             const player_id = data.userinfo.id;
@@ -150,42 +170,61 @@ async function sendQuestionResult(data){
 
     if(room == null) return;
 
-    const result_response = {
-        type: 'question_result',
-        data: await getQuestionById(data.room_id, room.current_question_id)
-    };
+    const id = room.current_question_id + 1;
 
-    sendBroadcast(data.wss, data.room_id, JSON.stringify(result_response));
+    if(id <= room.questions.length) {
+        const result_response = {
+            type: 'question_result',
+            data: await getQuestionById(data.room_id, room.current_question_id)
+        };
 
-    await new Promise(resolve => setTimeout(resolve, 1000*5)); // send question after 5 seconds question_result
+        sendBroadcast(data.wss, data.room_id, JSON.stringify(result_response));
 
-    room = await get(data.room_id);
+        await new Promise(resolve => setTimeout(resolve, 1000*5)); // send next question or finish all after 5 seconds question_result
 
-    if(room == null) return;
+        room = await get(data.room_id);
 
-    const id = ++room.current_question_id;
+        if(room == null) return;
+    }
 
-    if(id >= room.questions.length) return;
 
-    await updateCurrentQuestionId(data.room_id, id);
-    
-    const response = {
-        type: 'question',
-        data: await getCurrentQuestion(data.room_id, true)
-    };
+    if(id <= room.questions.length){
+        await updateCurrentQuestionId(data.room_id, id);
+    }
 
-    sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+    if(id < room.questions.length){
+        const response = {
+            type: 'question',
+            data: await getCurrentQuestion(data.room_id, true)
+        };
+
+        sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+    }
+
+    if(id >= room.questions?.length){
+        await sendRoomFinished(data);
+    }
 }
 
-async function sendRoomFinished(data){
+async function sendRoomFinished(data, broadcast=true){
+    console.log('sending room finished');
     let room = await get(data.room_id);
 
     if(room == null) return;
 
+    const response = {
+        type: 'room_finished',
+        data: null
+    };
 
+    if(broadcast)
+        sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+    else
+        data?.connection?.send(JSON.stringify(response));
 }
 
 module.exports = {
     loadAdminCommands,
-    loadUserCommands
+    loadUserCommands,
+    sendRoomFinished
 }

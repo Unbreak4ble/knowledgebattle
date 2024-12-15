@@ -150,7 +150,25 @@ async function remove(id){
     await connection.quit();
 }
 
+async function updateQuestionSet(id, question_id, key, value){
+    const connection = await redis.connect();
+
+    const index = await getIndex(id);
+
+    if(!(index >= 0)){
+        await connection.quit();
+        return false;
+    }
+
+    await connection.json.SET('rooms', '$.['+index+'].questions.['+(question_id)+'].'+key, value);
+
+    await connection.quit();
+    
+    return true;
+}
+
 module.exports = {
+    updateQuestionSet,
     listPublic,
     create,
     get,

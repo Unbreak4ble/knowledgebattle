@@ -1,8 +1,14 @@
+const { get } = require("./database/room");
 const { setPlayerAlternative, setAlternative, getQuestionById, getPlayerAlternative } = require("./database/room_questions");
 
 
 async function setPlayerAnswer(room_id, question_id, alternative_id, player_id){
     const alternative_data = { player_id: player_id, alternative_id: alternative_id };
+
+    const room = await get(room_id);
+
+    if(!room) return;
+    if(question_id >= room.questions?.length) return;
 
     const last_alt = await getPlayerAlternative(room_id, question_id, player_id);
 

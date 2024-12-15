@@ -60,4 +60,8 @@ export class QuestionsListLiveComponent {
   nextQuestion(){
     this.roomService.sendNextQuestion();
   }
+
+  resetQuestions(){
+    this.roomService.sendResetQuestions();
+  }
 }
