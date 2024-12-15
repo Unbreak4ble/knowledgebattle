@@ -1,15 +1,35 @@
 <div class="room">
     <div class="room-players">
         <app-players-count></app-players-count>
-        <div class="room-players-player-name">
-            <a>{{ username }}</a>
-        </div>
+        @if(username.length){
+            <div class="room-players-player-name">
+                <a>{{ username }}</a>
+            </div>
+        }
     </div>
     <div class="room-content">
         @if(roomService.live_room_data){
             @if(!roomService.live_room_data.finished){
                 @if(roomService.live_room_data.started){
-                    <app-questions-carousel #questions_carousel></app-questions-carousel>
+                    @if(finish_seconds_left >= 0){
+                        <div class="room-content-countdown">
+                            <a>Room finished. Ranking in {{ finish_seconds_left }} seconds</a>
+                        </div>
+                    }
+                    @if(next_seconds_left >= 0){
+                        <div class="room-content-countdown">
+                            <a>Next question in {{ next_seconds_left }} seconds</a>
+                        </div>
+                    }
+                    @if(next_seconds_left < 0){
+                        <div>
+                            <br/>
+                        </div>
+                    }
+                    
+                    <div class="room-content-questions">
+                        <app-questions-carousel #questions_carousel></app-questions-carousel>
+                    </div>
                 }
                 @if(!roomService.live_room_data.started){
                     <div class="room-content-message">

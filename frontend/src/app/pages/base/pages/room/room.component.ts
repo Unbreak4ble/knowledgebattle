@@ -19,6 +19,9 @@ export class RoomComponent {
   @ViewChild("questions_carousel") questionsCarouselComponent:QuestionsCarouselComponent|null = null;
   pin:number|null = null;
   username:string = '';
+  next_seconds_left:number = -1;
+  finish_seconds_left:number = -1;
+  coutdown_interval:any = null;
   room_info:IRoom|null = null;
 
   constructor(public roomService: RoomService, private router: Router, private route:ActivatedRoute, private messageboxService: MessageboxService){
@@ -52,9 +55,27 @@ export class RoomComponent {
     });
 
     this.roomService.subscribeRoom(async(msg)=>{
-      if(msg.type != 'room_finished') return false;
+      if(msg.type != 'question_result') return false;
 
-      //this.messageBoxComponent?.show('Great news!', 'Room finished', 60*60*24);
+      clearInterval(this.coutdown_interval);
+
+      if(msg.data?.next == false) {
+        this.finish_seconds_left = 5;
+
+        this.coutdown_interval = setInterval(()=> {
+          --this.finish_seconds_left;
+
+          if(this.finish_seconds_left < 0) clearInterval(this.coutdown_interval);
+        }, 800);
+      }else{
+        this.next_seconds_left = 5;
+
+        this.coutdown_interval = setInterval(()=> {
+          --this.next_seconds_left;
+
+          if(this.next_seconds_left < 0) clearInterval(this.coutdown_interval);
+        }, 800);
+      }
 
       return true;
     });

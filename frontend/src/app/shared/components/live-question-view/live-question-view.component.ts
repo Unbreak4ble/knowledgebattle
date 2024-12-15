@@ -37,12 +37,10 @@ export class LiveQuestionViewComponent {
   }
 
   saveToAlternatives(data:any){
-    if(data == null) {
-      this.alternatives = {};
-      return;
-    }
+    this.alternatives = {};
+    if(data == null) return;
 
-    const alternatives = data.alternatives || [];
+    const alternatives = data.alternatives || {};
     const pickers = data.players || [];
     const pickers_count = pickers.length;
 

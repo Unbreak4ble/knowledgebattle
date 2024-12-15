@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { RoomService } from '../../../core/services/room/room.service';
+import { MessageboxService } from '../../../core/services/messagebox/messagebox.service';
 
 @Component({
   selector: 'app-questions-list-live',
@@ -12,7 +13,7 @@ export class QuestionsListLiveComponent {
   @Output('submit') onSubmit: EventEmitter<IQuestion[]> = new EventEmitter();
   _viewQuestion: ((question: IQuestion) => void)|undefined;
 
-  constructor(private changeDetectRf: ChangeDetectorRef, public roomService: RoomService){
+  constructor(private changeDetectRf: ChangeDetectorRef, public roomService: RoomService, private messageService: MessageboxService){
 
   }
 
@@ -62,6 +63,11 @@ export class QuestionsListLiveComponent {
   }
 
   resetQuestions(){
+    if(this.roomService.live_room_data?.started){
+      this.messageService.getComponent()?.show('Stop the game first.', '', 3);
+      return;
+    }
+
     this.roomService.sendResetQuestions();
   }
 }

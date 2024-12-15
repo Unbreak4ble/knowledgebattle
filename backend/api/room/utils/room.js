@@ -42,9 +42,9 @@ async function appendQuestions(room_id, questions){
 }
 
 async function fullDeleteRoom(room_id){
-    await roomLib.remove(room_id);
     await deletePlayersList(room_id);
     await deleteQuestionsList(room_id);
+    await roomLib.remove(room_id);
 }
 
 async function getCurrentQuestion(room_id, hide=false){

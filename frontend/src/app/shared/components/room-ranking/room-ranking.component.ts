@@ -9,6 +9,11 @@ import { toRankingList } from '../../../core/helpers/room/ranking.helper';
 })
 export class RoomRankingComponent {
   result:any[] = [];
+  background:string[] = [
+    "#FFD700",
+    "#B87333",
+    "#D3D3D3"
+  ];
 
   constructor(private roomService:RoomService){
     this.setup();
@@ -22,7 +27,7 @@ export class RoomRankingComponent {
     const response = await this.roomService.listQuestionResult();
     const correct_questions = this.roomService.live_room_data?.questions_result || [];
 
-    this.result = toRankingList(response, correct_questions);
+    this.result = toRankingList(response, correct_questions).slice(0, 3);
   }
 
 }

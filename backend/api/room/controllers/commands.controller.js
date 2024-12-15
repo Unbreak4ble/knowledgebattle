@@ -1,4 +1,5 @@
 const { fixQuestionsIds } = require("../fixers/room");
+const { mountRequestFailed } = require("../helpers/room/commands.helper");
 const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket.helper");
 const { get, updateQuestionSet } = require("../utils/database/room");
 const { listPlayers } = require("../utils/database/room_players");
@@ -10,19 +11,21 @@ const { validateQuestionsRequest } = require("../validators/room");
 function loadAdminCommands(data){
     return {
         'start': async () => {
-            const timeout = 60*60;
+            const room = await get(data.room_id);
 
-            const response = {
-                type: 'start',
-                data: {
-                    timeout: timeout,
-                }
-            };
+            if(room == null) return;
+
+            if(room.current_question_id >= room.questions?.length){
+                data.connection?.send(JSON.stringify(mountRequestFailed('No question left to answer')));
+                return;
+            }
+
+            const timeout = 60*60;
 
             await updateActive(data.room_id, true);
             await updateTimeout(data.room_id, timeout);
 
-            sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+            await sendRoomStart(data, timeout);
 
             const question_response = {
                 type: 'question',
@@ -32,14 +35,7 @@ function loadAdminCommands(data){
             sendBroadcast(data.wss, data.room_id, JSON.stringify(question_response));
         },
         'stop': async () => {
-            const response = {
-                type: 'stop',
-                data: null
-            };
-
-            await updateActive(data.room_id, false);
-
-            sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+            await sendRoomStopped(data);
         },
         'kick_all': async (payload) => {
             const response = {
@@ -182,7 +178,10 @@ async function sendQuestionResult(data){
     if(id <= room.questions.length) {
         const result_response = {
             type: 'question_result',
-            data: await getQuestionById(data.room_id, room.current_question_id)
+            data: {
+                ...(await getQuestionById(data.room_id, room.current_question_id) || {}),
+                next: id < room.questions.length
+            }
         };
 
         sendBroadcast(data.wss, data.room_id, JSON.stringify(result_response));
@@ -210,6 +209,7 @@ async function sendQuestionResult(data){
 
     if(id >= room.questions?.length){
         await sendRoomFinished(data);
+        await sendRoomStopped(data);
     }
 }
 
@@ -231,6 +231,28 @@ async function sendRoomFinished(data, broadcast=true){
         sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
     else
         data?.connection?.send(JSON.stringify(response));
+}
+
+async function sendRoomStopped(data){
+    const response = {
+        type: 'stop',
+        data: null
+    };
+
+    await updateActive(data.room_id, false);
+
+    sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+}
+
+async function sendRoomStart(data, timeout){
+    const response = {
+        type: 'start',
+        data: {
+            timeout: timeout,
+        }
+    };
+
+    sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
 }
 
 module.exports = {

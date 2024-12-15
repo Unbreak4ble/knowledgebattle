@@ -26,6 +26,7 @@
                 background: white;
                 padding: 5px;
                 border-radius: 10px;
+                user-select: none;
             }
         }
 
@@ -43,6 +44,17 @@
                 flex-direction: column;
                 align-items: center;
                 gap: 5px;
+
+                .room-ranking-player-name {
+                    font-size: 20px;
+                }
+
+                .room-ranking-player-score {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 3px;
+                }
             }
         }
     }

@@ -99,7 +99,7 @@ async function getPlayerById(room_id, player_id){
 
     await connection.quit();
 
-    return data[0];
+    return data?.[0];
 }
 
 module.exports = {

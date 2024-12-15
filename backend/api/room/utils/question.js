@@ -1,9 +1,11 @@
 const { get } = require("./database/room");
+const { getPlayerById } = require("./database/room_players");
 const { setPlayerAlternative, setAlternative, getQuestionById, getPlayerAlternative } = require("./database/room_questions");
 
 
 async function setPlayerAnswer(room_id, question_id, alternative_id, player_id){
-    const alternative_data = { player_id: player_id, alternative_id: alternative_id };
+    const player = await getPlayerById(room_id, player_id);
+    const alternative_data = { player_id: player_id, alternative_id: alternative_id, player_name: player?.name || '[ghost]' };
 
     const room = await get(room_id);
 

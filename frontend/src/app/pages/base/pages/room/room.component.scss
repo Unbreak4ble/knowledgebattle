@@ -1,5 +1,11 @@
 
 .room {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
 
     .room-players {
         position: absolute;
@@ -26,17 +32,33 @@
 
     .room-content {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        //justify-content: space-between;
+        gap: 10px;
         width: 100%;
-        min-height: 60vh;
+        overflow: hidden;
+        min-height: 100vh;
 
         .room-content-message {
             padding: 10px;
             border-radius: 10px;
             font-size: 30px;
             background: white;
+        }
+
+        .room-content-questions {
+            position: relative;
+            width: 100%;
+            min-height: 50vh;
+        }
+
+        .room-content-countdown {
+            padding: 10px;
+            font-size: 20px;
+            border-radius: 10px;
+            background: white;
+            z-index: 10;
         }
     }
 }
