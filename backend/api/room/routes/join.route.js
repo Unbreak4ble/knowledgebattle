@@ -5,8 +5,18 @@ const uuid = require('uuid');
 const { getByPin } = require('../utils/database/room');
 const { removePlayer } = require('../utils/database/room_players');
 const { removeAlternative } = require('../utils/database/room_questions');
+const { rateLimit } = require('express-rate-limit');
+
+const limiter = rateLimit({
+	windowMs: 1 * 60 * 1000, // 1 minute
+	limit: 10, // 10 connections per 1 minute
+	standardHeaders: 'draft-8',
+	legacyHeaders: false
+});
 
 const router = express.Router();
+
+router.use(limiter);
 
 const wsInstance = expressWs(router);
 const wss = wsInstance.getWss();

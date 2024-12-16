@@ -4,6 +4,7 @@ const { sendBroadcast, kickBroadcast } = require("../helpers/websocket/websocket
 const { get, updateQuestionSet } = require("../utils/database/room");
 const { listPlayers } = require("../utils/database/room_players");
 const { getQuestionById, resetQuestionsList, deleteQuestionsList } = require("../utils/database/room_questions");
+const { randomNumber } = require("../utils/generator");
 const { setPlayerAnswer, getQuestionAlternatives } = require("../utils/question");
 const { appendQuestions, updateTimeout, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId, getCurrentQuestion } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
@@ -29,19 +30,12 @@ function loadAdminCommands(data){
 
             await sendRoomStart(data, timeout);
 
-            /*
-            const question_response = {
-                type: 'question',
-                data: await getCurrentQuestion(data.room_id, true)
-            };
-
-            sendBroadcast(data.wss, data.room_id, JSON.stringify(question_response));
-            */
-            auto_senders[data.room_id] = undefined;
+            auto_senders[data.room_id] = [];
             
             sendNewQuestion(data, true);
         },
         'stop': async () => {
+            auto_senders[data.room_id] = [];
             await sendRoomStopped(data);
         },
         'kick_all': async (payload) => {
@@ -170,13 +164,9 @@ function loadUserCommands(data){
 
             if(question_result == null) return;
 
-            //console.log(question_result.players?.length, players_count);
-
             if(question_result.players?.length >= players_count){
-                auto_senders[data.room_id] = undefined;
+                auto_senders[data.room_id] = [];
                 await sendQuestionResult(data);
-            }else{
-                //await sendNewQuestion(data, true);
             }
         }
     }
@@ -202,22 +192,10 @@ async function sendQuestionResult(data, auto=false){
 
         sendBroadcast(data.wss, data.room_id, JSON.stringify(result_response));
 
-        //await new Promise(resolve => setTimeout(resolve, 1000*5)); // send next question or finish all after 5 seconds question_result
-
         await updateCurrentQuestionId(data.room_id, id);
 
         await new Promise(resolve => setTimeout(resolve, 1000*5)); // send next question or finish all after 5 seconds question_result
     }
-
-    /*
-        room = await get(data.room_id);
-
-        if(room == null) return;
-
-        if(id <= room.questions.length){
-            await updateCurrentQuestionId(data.room_id, id);
-        }
-    */
 
     if(id >= room.questions?.length){
         await sendRoomFinished(data);
@@ -225,7 +203,6 @@ async function sendQuestionResult(data, auto=false){
         return;
     }
 
-    //console.log('sending new question from question result');
     await sendNewQuestion(data, true);
 }
 
@@ -276,13 +253,11 @@ async function sendRoomStart(data, timeout){
 
 async function sendNewQuestion(data, auto=false){
     if(data == null) return;
-    if(auto_senders[data.room_id] != null) return;
-    auto_senders[data.room_id] = true;
+    if(auto_senders[data.room_id]?.length !== 0) return;
+    const auto_sender_id = randomNumber(0, 100000000);
+    auto_senders[data.room_id] = [auto_sender_id];
 
-    //console.log('sending new question');
     const room = await get(data.room_id);
-
-    //console.log('room get');
 
     if(room == null) return;
     if(room.current_question_id >= room.questions.length) return;
@@ -294,30 +269,25 @@ async function sendNewQuestion(data, auto=false){
 
     sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
 
-    //console.log('new question sent. Waiting for ',room.question_timeout);
-
     const players_count = (await listPlayers(data.room_id))?.filter(x => (x.isAdmin == false)).length || 0;
     
     if(auto === true && players_count > 0){
         await new Promise(resolve => setTimeout(resolve, 1000*room.question_timeout));
 
-        auto_senders[data.room_id] = undefined;
+        if(!auto_senders[data.room_id]?.includes(auto_sender_id)) return;
+
+        auto_senders[data.room_id] = [];
 
         const room_updated = await get(data.room_id);
 
         if(!room_updated?.active) return;
-
-        //console.log('automatic sending question result');
         
         if(room.current_question_id == room_updated?.current_question_id){
-            //console.log('sending question result');
             sendQuestionResult(data, auto);
-        }else{
-            //console.log('cancelling question result send due to unmatched currenct_question_id');
         }
     }
     
-    auto_senders[data.room_id] = undefined;
+    auto_senders[data.room_id] = [];
 }
 
 module.exports = {

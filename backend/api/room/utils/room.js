@@ -26,7 +26,7 @@ async function updateCurrentQuestionId(room_id, question_id){
 }
 
 async function updateSetting(room_id, setting){
-    const room = await get(room_id);
+    const room = await roomLib.get(room_id);
 
     if(room == null) return;
 

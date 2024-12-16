@@ -3,8 +3,18 @@ const { get, getByPin } = require('../utils/database/room');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 const { hideProperties } = require('../mappers/room');
 const { getQuestionById, listQuestions } = require('../utils/database/room_questions');
+const { rateLimit } = require('express-rate-limit');
+
+const limiter = rateLimit({
+	windowMs: 1 * 1000, // 1 second
+	limit: 10, // 10 requests per 1 second
+	standardHeaders: 'draft-8',
+	legacyHeaders: false
+});
 
 const router = express.Router();
+
+router.use(limiter);
 
 router.get('/live/:id', async(req,res)=>{
     const room_id = req.params.id;
