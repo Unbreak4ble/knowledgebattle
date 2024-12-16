@@ -30,10 +30,12 @@
                             <a>Room finished. Ranking in {{ finish_seconds_left }} seconds</a>
                         </div>
                     }
-                    @if(next_seconds_left >= 0){
-                        <div class="room-content-countdown">
-                            <a>Next question in {{ next_seconds_left }} seconds</a>
-                        </div>
+                    @if(finish_seconds_left <= 0){
+                        @if(next_seconds_left >= 0){
+                            <div class="room-content-countdown">
+                                <a>Next question in {{ next_seconds_left }} seconds</a>
+                            </div>
+                        }
                     }
                     @if(next_seconds_left < 0){
                         <div>

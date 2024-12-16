@@ -269,11 +269,13 @@ async function sendNewQuestion(data, auto=false){
 
     sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
 
-    const players_count = (await listPlayers(data.room_id))?.filter(x => (x.isAdmin == false)).length || 0;
+    let players_count = (await listPlayers(data.room_id))?.filter(x => (x.isAdmin == false)).length || 0;    
     
     if(auto === true && players_count > 0){
         await new Promise(resolve => setTimeout(resolve, 1000*room.question_timeout));
+        players_count = (await listPlayers(data.room_id))?.filter(x => (x.isAdmin == false)).length || 0;
 
+        if(players_count == 0) return;
         if(!auto_senders[data.room_id]?.includes(auto_sender_id)) return;
 
         auto_senders[data.room_id] = [];
