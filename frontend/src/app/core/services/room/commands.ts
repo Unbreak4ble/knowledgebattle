@@ -1,8 +1,6 @@
 import { convertRequestToString } from "../../helpers/room/commands.helper";
 import { IQuestion } from "../../interfaces/question/question.interface";
 import { RequestCommandTypes } from "../../interfaces/room/commands.interface";
-import { RoomService } from "./room.service";
-
 
 export class RoomCommands {
     _cmd_ws:WebSocket|null = null;
@@ -27,8 +25,12 @@ export class RoomCommands {
         this.sendRawCommand(cmd_str, data);
     }
 
-    sendStart(){
-        this.sendCommand(RequestCommandTypes.START);
+    sendStart(timeout:number){
+        const payload = {
+            timeout: timeout
+        };
+
+        this.sendCommand(RequestCommandTypes.START, payload);
     }
 
     sendStop(){

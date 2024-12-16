@@ -11,4 +11,5 @@ export interface IRoom {
     creation_timestamp: number; //seconds
     active: boolean;
     current_question_id: number;
+    question_timeout: number;
 }

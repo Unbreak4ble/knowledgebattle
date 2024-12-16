@@ -20,6 +20,25 @@
         .question-text {
             font-size: 15px;
         }
+
+        .question-head-top {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            .question-head-top-timeout {
+                span {
+                    font-size: 10px;
+                }
+
+                a {
+                    color:grey;
+                    font-size: 7px;
+                }
+            }
+        }
     }
 
     .question-alternatives {

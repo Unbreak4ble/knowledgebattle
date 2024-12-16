@@ -1,7 +1,12 @@
 @if(question != null){
     <div class="question">
         <div class="question-head">
-            <a class="question-num">{{ question.id }}</a>
+            <div class="question-head-top">
+                <a class="question-num">{{ question.id }}</a>
+                <div class="question-head-top-timeout">
+                    <span>{{ timeout_left }}</span><a>s</a>
+                </div>
+            </div>
             <span class="question-text">{{ question.text }}</span>
         </div>
         <div class="question-alternatives">

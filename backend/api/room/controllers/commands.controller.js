@@ -10,7 +10,7 @@ const { validateQuestionsRequest } = require("../validators/room");
 
 function loadAdminCommands(data){
     return {
-        'start': async () => {
+        'start': async (payload) => {
             const room = await get(data.room_id);
 
             if(room == null) return;
@@ -20,19 +20,23 @@ function loadAdminCommands(data){
                 return;
             }
 
-            const timeout = 60*60;
+            const timeout = payload?.timeout || 60*60;
 
             await updateActive(data.room_id, true);
             await updateTimeout(data.room_id, timeout);
 
             await sendRoomStart(data, timeout);
 
+            /*
             const question_response = {
                 type: 'question',
                 data: await getCurrentQuestion(data.room_id, true)
             };
 
             sendBroadcast(data.wss, data.room_id, JSON.stringify(question_response));
+            */
+            
+            sendNewQuestion(data, true);
         },
         'stop': async () => {
             await sendRoomStopped(data);
@@ -111,12 +115,16 @@ function loadAdminCommands(data){
  
             await updateCurrentQuestionId(data.room_id, id);
 
+            /*
             const response = {
                 type: 'question',
                 data: await getCurrentQuestion(data.room_id, true)
             };
 
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+            */
+
+            sendNewQuestion(data, true);
         },
         'reset_questions': async (payload) => {
             await deleteQuestionsList(data.room_id);
@@ -148,8 +156,6 @@ function loadUserCommands(data){
 
             if(room == null) return;
 
-            //if(room.questions[room.current_question_id].finished) return;
-
             const question_id = room.current_question_id;
             const player_id = data.userinfo.id;
             const alternative_id = payload.alternative_id;
@@ -163,12 +169,16 @@ function loadUserCommands(data){
 
             if(question_result.players?.length >= players_count){
                 await sendQuestionResult(data);
+            }else{
+                ///await sendNewQuestion(data, true);
             }
         }
     }
 }
 
-async function sendQuestionResult(data){
+async function sendQuestionResult(data, auto=false){
+    if(data == null) return;
+
     let room = await get(data.room_id);
 
     if(room == null) return;
@@ -198,22 +208,17 @@ async function sendQuestionResult(data){
         await updateCurrentQuestionId(data.room_id, id);
     }
 
-    if(id < room.questions.length){
-        const response = {
-            type: 'question',
-            data: await getCurrentQuestion(data.room_id, true)
-        };
-
-        sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
-    }
-
     if(id >= room.questions?.length){
         await sendRoomFinished(data);
         await sendRoomStopped(data);
+        return;
     }
+
+    await sendNewQuestion(data, auto);
 }
 
 async function sendRoomFinished(data, broadcast=true){
+    if(data == null) return;
     let room = await get(data.room_id);
 
     if(room == null) return;
@@ -234,6 +239,7 @@ async function sendRoomFinished(data, broadcast=true){
 }
 
 async function sendRoomStopped(data){
+    if(data == null) return;
     const response = {
         type: 'stop',
         data: null
@@ -245,6 +251,7 @@ async function sendRoomStopped(data){
 }
 
 async function sendRoomStart(data, timeout){
+    if(data == null) return;
     const response = {
         type: 'start',
         data: {
@@ -253,6 +260,43 @@ async function sendRoomStart(data, timeout){
     };
 
     sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+}
+
+async function sendNewQuestion(data, auto=false){
+    if(data == null) return;
+    //console.log('sending new question');
+    const room = await get(data.room_id);
+
+    //console.log('room get');
+
+    if(room == null) return;
+    if(room.current_question_id >= room.questions.length) return;
+
+    const response = {
+        type: 'question',
+        data: await getCurrentQuestion(data.room_id, true)
+    };
+
+    sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+
+    //console.log('new question sent. Waiting for ',room.question_timeout);
+    
+    if(auto === true){
+        await new Promise(resolve => setTimeout(resolve, 1000*room.question_timeout));
+
+        const room_updated = await get(data.room_id);
+
+        if(!room_updated?.active) return;
+
+        //console.log('automatic sending question result');
+        
+        if(room.current_question_id == room_updated?.current_question_id){
+            //console.log('sending question result');
+            await sendQuestionResult(data, auto);
+        }else{
+            //console.log('cancelling question result send due to unmatched currenct_question_id');
+        }
+    }
 }
 
 module.exports = {

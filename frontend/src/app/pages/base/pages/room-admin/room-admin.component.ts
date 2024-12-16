@@ -10,6 +10,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { QuestionsListLiveComponent } from '../../../../shared/components/questions-list-live/questions-list-live.component';
 import { LiveQuestionViewComponent } from '../../../../shared/components/live-question-view/live-question-view.component';
+import { NumberInputComponent } from '../../../../shared/components/number-input/number-input.component';
 
 @Component({
   selector: 'app-room-admin',
@@ -20,6 +21,7 @@ import { LiveQuestionViewComponent } from '../../../../shared/components/live-qu
 })
 export class RoomAdminComponent {
   messageBoxComponent:MessageBoxComponent|null = null;
+  @ViewChild('timeout_input') timeoutInput:NumberInputComponent|null = null;
   @ViewChild('make_question') makeQuestionComponent:MakeQuestionComponent|null = null;
   @ViewChild('live_question') liveQuestionComponent:LiveQuestionViewComponent|null = null;
   @ViewChild('questions_list') questionsListComponent:QuestionsListComponent|null = null;
@@ -110,7 +112,9 @@ export class RoomAdminComponent {
   }
 
   async start(){
-    this.roomService.sendStart();
+    const timeout = this.timeoutInput?.value || 60*60;
+    
+    this.roomService.sendStart(timeout);
   }
 
   async stop(){

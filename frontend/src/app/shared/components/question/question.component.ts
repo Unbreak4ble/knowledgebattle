@@ -2,6 +2,7 @@ import { Component, Input, Output } from '@angular/core';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { EventEmitter } from '@angular/core';
 import { IAlternativeResult } from '../../../core/interfaces/room/alternatives_result.interface';
+import { RoomService } from '../../../core/services/room/room.service';
 
 @Component({
   selector: 'app-question',
@@ -15,8 +16,10 @@ export class QuestionComponent {
   locked:Boolean = false;
   finished:Boolean = false;
   results: IAlternativeResult = {};
+  timeout_left:number = 0;
+  interval:any = null;
 
-  constructor(){
+  constructor(private roomService:RoomService){
     
   }
 
@@ -26,6 +29,10 @@ export class QuestionComponent {
     this.lock();
     setTimeout(this.unlock, seconds*1000);
   };
+
+  ngAfterViewInit(){
+
+  }
 
   async onAlternativePick(id:Number|null){
     if(this.locked) return;
@@ -47,10 +54,23 @@ export class QuestionComponent {
     this.question = question;
     this.finished = false;
     this.results = {};
+
+    this.setupTimeout();
   }
 
   setResult(alternatives_results:IAlternativeResult){
     this.finished = true;
     this.results = alternatives_results;
+  }
+
+  setupTimeout(){
+    this.timeout_left = this.roomService?.connected_room?.question_timeout || 60;
+
+    clearInterval(this.interval);
+
+    this.interval = setInterval(() => {
+      --this.timeout_left;
+      if(this.timeout_left <= 0) clearInterval(this.interval);
+    }, 1000);
   }
 }

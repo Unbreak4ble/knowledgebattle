@@ -133,7 +133,6 @@ function handlePeriodicAdminResponses(data){
         const question_response = {type:'question_update', data: question };
 
         if(question == null) {
-            //question_response.data = {id: room.current_question_id}; // just testing
             return;
         }
 
