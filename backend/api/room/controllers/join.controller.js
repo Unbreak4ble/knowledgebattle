@@ -1,7 +1,7 @@
 const { validateToken } = require('../utils/token');
 const { listPlayers, addPlayer, removePlayer } = require('../utils/database/room_players');
 const { getByPin, get } = require('../utils/database/room');
-const { loadAdminCommands, loadUserCommands, sendRoomFinished } = require('./commands.controller');
+const { loadAdminCommands, loadUserCommands, sendRoomFinished, sendNewQuestion } = require('./commands.controller');
 const { updatePlayersCount, getCurrentQuestion } = require('../utils/room');
 const { getQuestionById } = require('../utils/database/room_questions');
 const { validateUsername } = require('../validators/user');
@@ -46,6 +46,7 @@ async function handleDataRequest(data, message){
             data.userinfo.isAdmin = true;
         }else{
             data.userinfo.isAdmin = false;
+            sendNewQuestion(data, true);
         }
 
         await addPlayer(data.room_id, {...data.userinfo});
