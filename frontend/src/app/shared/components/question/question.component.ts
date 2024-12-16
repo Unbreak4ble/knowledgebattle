@@ -64,7 +64,7 @@ export class QuestionComponent {
   }
 
   setupTimeout(){
-    this.timeout_left = this.roomService?.connected_room?.question_timeout || 60;
+    this.timeout_left = this.roomService?.live_room_data?.start_question_timeout || this.roomService?.connected_room?.question_timeout || 0;
 
     clearInterval(this.interval);
 
