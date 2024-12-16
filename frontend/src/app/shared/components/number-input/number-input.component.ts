@@ -25,15 +25,26 @@ export class NumberInputComponent {
     this.setupEvents();
   }
 
+  setNumber(number:number){
+    const input:any = this._document?.querySelector('.number-input-input');
+    const text_element:any = this._document?.querySelector('.number-input-text');
+
+    if(input == null || text_element == null) return;
+
+    input.value = this.value = Math.min(this.maximum||number, Math.max(this.minimum || 0, number));
+    text_element.innerHTML = input.value;
+  }
+
   setupEvents(){
     const input:any = this._document?.querySelector('.number-input-input');
     const text_element:any = this._document?.querySelector('.number-input-text');
     
-    if(input == null) return;
-    if(text_element == null) return;
+    if(input == null || text_element == null) return;
 
-    input.value = this.value = this.minimum || 0;
-    text_element.innerHTML = input.value;
+    if(this.value == 0){
+      input.value = this.value = this.minimum || 0;
+      text_element.innerHTML = input.value;
+    }
     
 
     input.addEventListener('keyup', (evt:any) => {
@@ -88,6 +99,9 @@ export class NumberInputComponent {
       if(!(evt.keyCode >= 0x30 && evt.keyCode <= 0x39 || evt.keyCode == 0x8)){
         return evt.preventDefault();
       }
+
+      if(evt.key.length == 1)
+        text_element.innerHTML = value;
     });
   }
 }

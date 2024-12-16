@@ -59,7 +59,9 @@ export class RoomAdminComponent {
 
     this.options = await this.roomService.loadOptions();
 
-    this.setupRoomConnection();
+    await this.setupRoomConnection();
+
+    this.timeoutInput?.setNumber(this.roomService?.connected_room?.question_timeout || 0);
   }
 
   initEvents(){

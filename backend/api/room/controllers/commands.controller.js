@@ -170,10 +170,13 @@ function loadUserCommands(data){
 
             if(question_result == null) return;
 
+            //console.log(question_result.players?.length, players_count);
+
             if(question_result.players?.length >= players_count){
+                auto_senders[data.room_id] = undefined;
                 await sendQuestionResult(data);
             }else{
-                ///await sendNewQuestion(data, true);
+                //await sendNewQuestion(data, true);
             }
         }
     }

@@ -1,11 +1,25 @@
 <div class="room">
-    <div class="room-players">
-        <app-players-count></app-players-count>
-        @if(username.length){
-            <div class="room-players-player-name">
-                <a>{{ username }}</a>
+    <div class="room-head">
+        <div class="global-row">
+            <div class="room-head-pin">
+                <div class="room-head-back">
+                    <app-pin [live]="false" [pin]="pin"></app-pin>
+                </div>
             </div>
-        }
+            <div class="room-head-name">
+                @if(roomService.connected_room){
+                    <a>{{ roomService.connected_room.name }}</a>
+                }
+            </div>
+        </div>
+        <div class="room-head-players">
+            <app-players-count></app-players-count>
+            @if(username.length){
+                <div class="room-head-players-player-name">
+                    <a>{{ username }}</a>
+                </div>
+            }
+        </div>
     </div>
     <div class="room-content">
         @if(roomService.live_room_data){

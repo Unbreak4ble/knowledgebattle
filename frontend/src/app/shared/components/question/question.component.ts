@@ -31,7 +31,7 @@ export class QuestionComponent {
   };
 
   ngAfterViewInit(){
-
+    this.setupEvents();
   }
 
   async onAlternativePick(id:Number|null){
@@ -72,5 +72,15 @@ export class QuestionComponent {
       --this.timeout_left;
       if(this.timeout_left <= 0) clearInterval(this.interval);
     }, 1000);
+  }
+
+  setupEvents(){
+    this.roomService.subscribeRoom(async(msg) => {
+      if(msg.type != 'question_result') return false;
+
+      clearInterval(this.interval);
+
+      return true;
+    });
   }
 }
