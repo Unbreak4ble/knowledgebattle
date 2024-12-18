@@ -1,6 +1,14 @@
 .global-row {
     display: flex;
     flex-direction: row;
-    //align-items: center;
+    gap: 5px;
+    position: relative;
+}
+
+.global-row-center {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 5px;
 }

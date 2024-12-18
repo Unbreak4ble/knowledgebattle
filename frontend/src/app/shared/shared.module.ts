@@ -20,6 +20,8 @@ import { LiveQuestionViewComponent } from './components/live-question-view/live-
 import { RoomRankingComponent } from './components/room-ranking/room-ranking.component';
 import { RankingListComponent } from './components/ranking-list/ranking-list.component';
 import { NumberInputComponent } from './components/number-input/number-input.component';
+import { CoutdownComponent } from './components/coutdown/coutdown.component';
+import { NoteBubbleComponent } from './components/note-bubble/note-bubble.component';
 
 
 @NgModule({
@@ -48,9 +50,12 @@ import { NumberInputComponent } from './components/number-input/number-input.com
     RoomRankingComponent,
     RankingListComponent,
     NumberInputComponent,
+    CoutdownComponent,
+    NoteBubbleComponent,
   ],
   // to be used along imports
   exports: [
+    NoteBubbleComponent,
     RoomListComponent,
     PlayersListComponent,
     CreateRoomInputComponent,
@@ -71,6 +76,7 @@ import { NumberInputComponent } from './components/number-input/number-input.com
     LiveQuestionViewComponent,
     RankingListComponent,
     NumberInputComponent,
+    CoutdownComponent,
   ]
 })
 export class SharedModule { }

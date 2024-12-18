@@ -6,6 +6,7 @@ const { getByPin } = require('../utils/database/room');
 const { removePlayer } = require('../utils/database/room_players');
 const { removeAlternative } = require('../utils/database/room_questions');
 const { rateLimit } = require('express-rate-limit');
+const { messageThrottle } = require('../helpers/websocket/websocket.helper');
 
 const limiter = rateLimit({
 	windowMs: 1 * 60 * 1000, // 1 minute
@@ -35,13 +36,11 @@ wss.removeConnection = (room_id, id) => {
 function setupEvents(ws, data){
     if(ws == null) return;
 
-    ws.on('message', msg => {
-        //console.log('message ['+data.userinfo.id+']: ', msg);
+    ws.on('message', messageThrottle(msg => {
         if(handleConnectionState(data, msg)) ++data.state;
-    });
+    }, 500));
 
     ws.on('close', () => {
-        //console.log('connection '+data.userinfo.id+' closed');
         data.wss.removeConnection(data.room_id, data.userinfo.id);
         //removeAlternative(data.room_id, data.userinfo.id);
         handleClose(data);

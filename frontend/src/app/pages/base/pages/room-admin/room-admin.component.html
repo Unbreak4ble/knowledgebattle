@@ -3,6 +3,14 @@
         <div class="room-admin-board">
             <div class="room-admin-configs">
                 <div class="room-admin-configs-options">
+                    @if(roomService.connected_room){
+                        <div class="global-row-center">
+                            <app-note-bubble text="room expiration"></app-note-bubble>
+
+                            <app-countdown note="room expiration" [time-from]="roomService.connected_room?.creation_timestamp || 0" [time-to]="roomService.connected_room?.expire_timestamp || 0"></app-countdown>
+                        </div>
+                    }
+                    
                     @if(roomService._connected_pin){
                         <app-pin [live]="true" [gen_button]="true" (generate)="onNewPin($event)"></app-pin>
                     }

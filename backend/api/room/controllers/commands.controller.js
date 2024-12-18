@@ -35,7 +35,7 @@ function loadAdminCommands(data){
             sendNewQuestion(data, true);
         },
         'stop': async () => {
-            auto_senders[data.room_id] = [];
+            auto_senders[data.room_id] = undefined;
             await sendRoomStopped(data);
         },
         'kick_all': async (payload) => {
@@ -127,15 +127,6 @@ function loadAdminCommands(data){
 
             data.connection?.send(JSON.stringify(response));
 
-            /*
-            const global_response = {
-                type: 'question',
-                data: await getCurrentQuestion(data.room_id, true)
-            };
-
-            sendBroadcast(data.wss, data.room_id, JSON.stringify(global_response));
-            */
-
             auto_senders[data.room_id] = [];
             sendNewQuestion(data, true);
         },
@@ -148,6 +139,7 @@ function loadAdminCommands(data){
 
             await deleteQuestionsList(data.room_id);
             await updateCurrentQuestionId(data.room_id, 0);
+            auto_senders[data.room_id] = [];
 
             await resetRoomQuestions(data.room_id);
 

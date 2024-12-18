@@ -1,4 +1,15 @@
 
+function messageThrottle(func, timeFrame) {
+    var lastTime = 0;
+    return function(event) {
+      let now = new Date().getTime();
+      if (now - lastTime >= timeFrame) {
+        func(event);
+        lastTime = now;
+      }
+    };
+}
+
 async function sendBroadcast(wss, room_id, message){
     const clients = wss.connections[room_id] || [];
 
@@ -16,6 +27,7 @@ async function kickBroadcast(wss, room_id){
 }
 
 module.exports =  {
+    messageThrottle,
     sendBroadcast,
     kickBroadcast
 }
