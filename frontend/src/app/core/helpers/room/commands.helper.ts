@@ -12,6 +12,7 @@ export function convertRequestToString(command: RequestCommandTypes): string|nul
         [RequestCommandTypes.NEW_QUESTION]: 'new_question',
         [RequestCommandTypes.ANSWER]: 'answer_question',
         [RequestCommandTypes.NEXT_QUESTION]: 'next_question',
+        [RequestCommandTypes.RESTART_QUESTIONS]: 'restart_questions',
         [RequestCommandTypes.RESET_QUESTIONS]: 'reset_questions',
     };
 

@@ -9,7 +9,8 @@ export enum RequestCommandTypes {
     NEW_QUESTION, // add new question command
     ANSWER, // answer question command
     NEXT_QUESTION, // go to next question command
-    RESET_QUESTIONS, // reset questions live data
+    RESET_QUESTIONS, // reset live questions
+    RESTART_QUESTIONS, // restart questions
 };
 
 export enum ResponseCommandTypes {

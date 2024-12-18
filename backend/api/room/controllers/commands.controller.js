@@ -6,7 +6,7 @@ const { listPlayers } = require("../utils/database/room_players");
 const { getQuestionById, resetQuestionsList, deleteQuestionsList } = require("../utils/database/room_questions");
 const { randomNumber } = require("../utils/generator");
 const { setPlayerAnswer, getQuestionAlternatives } = require("../utils/question");
-const { appendQuestions, updateTimeout, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId, getCurrentQuestion } = require("../utils/room");
+const { appendQuestions, updateTimeout, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId, getCurrentQuestion, resetRoomQuestions } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
 
 const auto_senders = {};
@@ -111,21 +111,45 @@ function loadAdminCommands(data){
             if(id >= room.questions.length) return;
  
             await updateCurrentQuestionId(data.room_id, id);
+            
+            auto_senders[data.room_id] = [];
+
+            sendNewQuestion(data, true);
+        },
+        'restart_questions': async (payload) => {
+            await deleteQuestionsList(data.room_id);
+            await updateCurrentQuestionId(data.room_id, 0);
+
+            const response = {
+                type: 'questions_restart',
+                data: null
+            };
+
+            data.connection?.send(JSON.stringify(response));
 
             /*
-            const response = {
+            const global_response = {
                 type: 'question',
                 data: await getCurrentQuestion(data.room_id, true)
             };
 
-            sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
+            sendBroadcast(data.wss, data.room_id, JSON.stringify(global_response));
             */
 
+            auto_senders[data.room_id] = [];
             sendNewQuestion(data, true);
         },
         'reset_questions': async (payload) => {
+            const room = await get(data.room_id);
+
+            if(room == null) return;
+
+            if(room.active) return;
+
             await deleteQuestionsList(data.room_id);
             await updateCurrentQuestionId(data.room_id, 0);
+
+            await resetRoomQuestions(data.room_id);
 
             const response = {
                 type: 'questions_reset',
@@ -133,13 +157,6 @@ function loadAdminCommands(data){
             };
 
             data.connection?.send(JSON.stringify(response));
-
-            const global_response = {
-                type: 'question',
-                data: await getCurrentQuestion(data.room_id, true)
-            };
-
-            sendBroadcast(data.wss, data.room_id, JSON.stringify(global_response));
         }
     };
 }

@@ -1,3 +1,4 @@
+<!--<app-question #current_question [selected]="current_selected" (onpick)="onPickEvent($event)"></app-question>-->
 <div class="questions-carousel">
     <div class="questions-carousel-content">
         <div class="questions-carousel-absolute">
@@ -10,8 +11,10 @@
                     </div>
                 }
 
-                <app-question #current_question [selected]="current_selected" (onpick)="onPickEvent($event)"></app-question>
-
+                <div class="questions-carousel-current-question">
+                    <app-question #current_question [selected]="current_selected" (onpick)="onPickEvent($event)"></app-question>
+                </div>
+                
                 @if(show_right_button){
                     <div class="questions-carousel-button" id="questions-carousel-button-next" (click)="jumpNext()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">

@@ -20,6 +20,7 @@ async function createRoom(data){
         current_question_id: 0,
         settings: data.settings,
         creation_timestamp: Math.floor(new Date().getTime()/1000),
+        expire_timestamp: Math.floor(new Date().getTime()/1000 + 60*60*24),
         max_players: 100,
         players_count: 0,
         active: false // the owner can active it on admin page

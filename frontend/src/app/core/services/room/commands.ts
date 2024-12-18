@@ -72,4 +72,8 @@ export class RoomCommands {
     sendResetQuestions(){
         this.sendCommand(RequestCommandTypes.RESET_QUESTIONS);
     }
+
+    sendRestartQuestions(){
+        this.sendCommand(RequestCommandTypes.RESTART_QUESTIONS);
+    }
 }

@@ -235,6 +235,17 @@ export class RoomService extends RoomCommands {
       return true;
     });
 
+    // questions reset event
+    this.subscribeRoom(async (msg) => {
+      if(msg.type != 'questions_reset') return false;
+      if(this.connected_room == null) return false;
+
+      this.connected_room.current_question_id = 0;
+      this.connected_room.questions = [];
+
+      return true;
+    });
+
     // room_finished event
     this.subscribeRoom(async (msg) => {
       if(msg.type != 'room_finished') return false;

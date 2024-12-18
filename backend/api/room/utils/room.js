@@ -64,7 +64,12 @@ async function updateTimeout(room_id, timeout){
     await roomLib.updateSet(room_id, 'question_timeout', timeout);
 }
 
+async function resetRoomQuestions(room_id){
+    await roomLib.updateSet(room_id, 'questions', []);
+}
+
 module.exports = {
+    resetRoomQuestions,
     updateTimeout,
     appendQuestions,
     fullDeleteRoom,

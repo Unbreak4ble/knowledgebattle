@@ -47,6 +47,16 @@ export class QuestionsListLiveComponent {
 
       return true;
     });
+
+    this.roomService.subscribeRoom(async (msg)=>{
+      if(msg.type != 'questions_reset') return false;
+
+      this.questions = [];
+
+      this.changeDetectRf.detectChanges();
+
+      return true;
+    });
   }
 
   viewQuestion(question: IQuestion){
@@ -62,11 +72,19 @@ export class QuestionsListLiveComponent {
     this.roomService.sendNextQuestion();
   }
 
-  resetQuestions(){
+  restartQuestions(){
+    this.roomService.sendRestartQuestions();
+  }
+
+  async resetQuestions(){
     if(this.roomService.live_room_data?.started){
       this.messageService.getComponent()?.show('Stop the game first.', '', 3);
       return;
     }
+
+    const result = await new Promise(resolve => this.messageService.getComponent()?.confirm("", "Do you really want to reset questions ?", resolve));
+
+    if(!result) return;
 
     this.roomService.sendResetQuestions();
   }

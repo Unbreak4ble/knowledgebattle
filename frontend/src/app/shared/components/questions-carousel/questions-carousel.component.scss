@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 50vh;
+    //min-height: 50vh;
 
     .questions-carousel-content {
         display: flex;
@@ -19,6 +19,8 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+            //width: 100%;
+            max-width: 90%;
 
             .questions-carousel-current {
                 position: relative;
@@ -26,8 +28,12 @@
                 flex-direction: row;
                 align-items: center;
                 gap: 5px;
-                transform: scale(2);
+                transform: scale(1);
                 z-index: 2;
+
+                .questions-carousel-current-question {
+                    
+                }
 
                 .questions-carousel-button {
                     border-radius: 100%;

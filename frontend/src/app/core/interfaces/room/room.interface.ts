@@ -9,6 +9,7 @@ export interface IRoom {
     players_count: number;
     max_players: number;
     creation_timestamp: number; //seconds
+    expire_timestamp: number; //seconds
     active: boolean;
     current_question_id: number;
     question_timeout: number;

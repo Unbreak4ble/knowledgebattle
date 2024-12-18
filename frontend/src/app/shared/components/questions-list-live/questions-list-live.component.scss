@@ -12,11 +12,19 @@
     .questions-list-live-head {
         user-select: none;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        width: 90%;
+        width: 100%;
         gap: 10px;
+
+        .questions-list-live-head-buttons {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+        }
 
         .questions-list-live-head-message {
             color: grey;
