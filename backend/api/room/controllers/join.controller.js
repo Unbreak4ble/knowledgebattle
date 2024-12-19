@@ -2,7 +2,7 @@ const { validateToken } = require('../utils/token');
 const { listPlayers, addPlayer, removePlayer } = require('../utils/database/room_players');
 const { getByPin, get } = require('../utils/database/room');
 const { loadAdminCommands, loadUserCommands, sendRoomFinished, sendNewQuestion } = require('./commands.controller');
-const { updatePlayersCount, getCurrentQuestion } = require('../utils/room');
+const { updatePlayersCount, getCurrentQuestion, getRoom } = require('../utils/room');
 const { getQuestionById } = require('../utils/database/room_questions');
 const { validateUsername } = require('../validators/user');
 
@@ -14,7 +14,7 @@ const { validateUsername } = require('../validators/user');
 */
 async function handleDataRequest(data, message){
     const connection = data.connection;
-    const room = await get(data.room_id);
+    const room = await getRoom(data.room_id);
 
     if(room == null) return;
 
@@ -125,7 +125,7 @@ function handlePeriodicAdminResponses(data){
             return;
         }
 
-        const room = await get(data.room_id);
+        const room = await getRoom(data.room_id);
 
         if(room == null) return;
 

@@ -26,7 +26,7 @@ async function updateCurrentQuestionId(room_id, question_id){
 }
 
 async function updateSetting(room_id, setting){
-    const room = await roomLib.get(room_id);
+    const room = await getRoom(room_id);
 
     if(room == null) return;
 
@@ -48,7 +48,7 @@ async function fullDeleteRoom(room_id){
 }
 
 async function getCurrentQuestion(room_id, hide=false){
-    const room = await roomLib.get(room_id);
+    const room = await getRoom(room_id);
 
     if(room == null) return null;
 
@@ -68,7 +68,24 @@ async function resetRoomQuestions(room_id){
     await roomLib.updateSet(room_id, 'questions', []);
 }
 
+async function getRoom(room_id){
+    const data = await roomLib.get(room_id);
+
+    if(data == null) return null;
+
+    const now = Math.floor(Date.now()/1000);
+
+    if(now >= data.expire_timestamp){
+        await fullDeleteRoom(room_id);
+        
+        return null;
+    }
+
+    return data;
+}
+
 module.exports = {
+    getRoom,
     resetRoomQuestions,
     updateTimeout,
     appendQuestions,

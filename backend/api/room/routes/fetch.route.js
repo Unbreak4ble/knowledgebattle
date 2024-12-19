@@ -4,6 +4,7 @@ const { authMiddleware } = require('../middlewares/auth.middleware');
 const { hideProperties } = require('../mappers/room');
 const { getQuestionById, listQuestions } = require('../utils/database/room_questions');
 const { rateLimit } = require('express-rate-limit');
+const { getRoom } = require('../utils/room');
 
 const limiter = rateLimit({
 	windowMs: 1 * 1000, // 1 second
@@ -44,7 +45,7 @@ router.get('/:id', authMiddleware, async (req,res)=>{
 
     if(!id) return res.status(400).json({error: 'missing id path'});
 
-    const room = await get(id);
+    const room = await getRoom(id);
 
     if(room)
         res.json(room);

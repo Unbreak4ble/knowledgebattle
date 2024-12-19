@@ -6,7 +6,7 @@ const { listPlayers } = require("../utils/database/room_players");
 const { getQuestionById, resetQuestionsList, deleteQuestionsList } = require("../utils/database/room_questions");
 const { randomNumber } = require("../utils/generator");
 const { setPlayerAnswer, getQuestionAlternatives } = require("../utils/question");
-const { appendQuestions, updateTimeout, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId, getCurrentQuestion, resetRoomQuestions } = require("../utils/room");
+const { appendQuestions, updateTimeout, updateSetting, generatePin, updatePin, updateActive, updateCurrentQuestionId, getCurrentQuestion, resetRoomQuestions, getRoom } = require("../utils/room");
 const { validateQuestionsRequest } = require("../validators/room");
 
 const auto_senders = {};
@@ -14,7 +14,7 @@ const auto_senders = {};
 function loadAdminCommands(data){
     return {
         'start': async (payload) => {
-            const room = await get(data.room_id);
+            const room = await getRoom(data.room_id);
 
             if(room == null) return;
 
@@ -60,7 +60,7 @@ function loadAdminCommands(data){
                 return data.connection?.send(JSON.stringify({type: 'request_failed', data: { type: 'new_question', from: data.userinfo.id, message: "Invalid questions list" }}));
             }
 
-            const room = await get(data.room_id);
+            const room = await getRoom(data.room_id);
 
             if(room == null) {
                 return data.connection?.send(JSON.stringify({type: 'request_failed', data: { type: 'new_question', from: data.userinfo.id, message: "Room not found" }}));
@@ -102,7 +102,7 @@ function loadAdminCommands(data){
             sendBroadcast(data.wss, data.room_id, JSON.stringify(response));
         },
         'next_question': async (payload) => {
-            const room = await get(data.room_id);
+            const room = await getRoom(data.room_id);
 
             if(room == null) return;
 
@@ -131,7 +131,7 @@ function loadAdminCommands(data){
             sendNewQuestion(data, true);
         },
         'reset_questions': async (payload) => {
-            const room = await get(data.room_id);
+            const room = await getRoom(data.room_id);
 
             if(room == null) return;
 
@@ -158,7 +158,7 @@ function loadUserCommands(data){
         'answer_question': async (payload) => {
             const room_id = data.room_id;
 
-            const room = await get(room_id);
+            const room = await getRoom(room_id);
 
             if(room == null) return;
 
@@ -184,7 +184,7 @@ function loadUserCommands(data){
 async function sendQuestionResult(data, auto=false){
     if(data == null) return;
 
-    let room = await get(data.room_id);
+    let room = await getRoom(data.room_id);
 
     if(room == null) return;
 
@@ -217,7 +217,7 @@ async function sendQuestionResult(data, auto=false){
 
 async function sendRoomFinished(data, broadcast=true){
     if(data == null) return;
-    let room = await get(data.room_id);
+    let room = await getRoom(data.room_id);
 
     if(room == null) return;
 
@@ -266,7 +266,7 @@ async function sendNewQuestion(data, auto=false){
     const auto_sender_id = randomNumber(0, 100000000);
     auto_senders[data.room_id] = [auto_sender_id];
 
-    const room = await get(data.room_id);
+    const room = await getRoom(data.room_id);
 
     if(room == null) return;
     if(room.current_question_id >= room.questions.length) return;
@@ -289,7 +289,7 @@ async function sendNewQuestion(data, auto=false){
 
         auto_senders[data.room_id] = [];
 
-        const room_updated = await get(data.room_id);
+        const room_updated = await getRoom(data.room_id);
 
         if(!room_updated?.active) return;
         

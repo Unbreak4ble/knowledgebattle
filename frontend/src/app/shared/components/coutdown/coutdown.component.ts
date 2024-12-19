@@ -47,15 +47,24 @@ export class CoutdownComponent {
 
     this.changeDf.detectChanges();
 
-    const times = parseTime(this.seconds_now).reverse();
     const times_format_reverse = times_formats.reverse();
-    for(let i=0; i<times.length; i++){
-      const x = times[i];
-      if(x > 0){
-        this.parsed_time_left = x+times_format_reverse[i];
-        break;
+
+    const updateText = () => {
+      const now = Math.floor(Date.now()/1000);
+      this.seconds_now = this.timestamp_to - now;
+      const times = parseTime(this.seconds_now).reverse();
+      for(let i=0; i<times.length; i++){
+        const x = times[i];
+        if(x > 0){
+          this.parsed_time_left = x+times_format_reverse[i];
+          break;
+        }
       }
     };
+    
+    updateText();
+
+    setInterval(updateText,1000);
   }
 
   startCountdown(){
