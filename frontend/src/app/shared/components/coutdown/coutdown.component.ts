@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Input, ɵɵsanitizeUrlOrResourceUrl } from '@angular/core';
 import { setgroups } from 'process';
 import { v4 } from 'uuid';
+import { parseTime, times_formats } from '../../../core/utils/time_parser';
 
 @Component({
   selector: 'app-countdown',
@@ -16,6 +17,7 @@ export class CoutdownComponent {
   @Input('note') note:string = '';
   seconds:number = 0;
   seconds_now:number = 0;
+  parsed_time_left:string = '';
   _document:Element|null = null;
   interval:any = null;
 
@@ -44,6 +46,16 @@ export class CoutdownComponent {
     element.style.setProperty('--progress', ''+current_percent);
 
     this.changeDf.detectChanges();
+
+    const times = parseTime(this.seconds_now).reverse();
+    const times_format_reverse = times_formats.reverse();
+    for(let i=0; i<times.length; i++){
+      const x = times[i];
+      if(x > 0){
+        this.parsed_time_left = x+times_format_reverse[i];
+        break;
+      }
+    };
   }
 
   startCountdown(){
