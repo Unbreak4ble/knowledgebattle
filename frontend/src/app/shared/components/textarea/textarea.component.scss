@@ -30,6 +30,7 @@
         white-space: normal;
     }
     p {
+        word-break: break-all;
         visibility: hidden;
         white-space: pre-wrap;
         word-wrap: break-word;

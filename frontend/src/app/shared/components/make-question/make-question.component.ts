@@ -2,6 +2,7 @@ import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IAlternative } from '../../../core/interfaces/question/alternative.interface';
 import { IQuestion } from '../../../core/interfaces/question/question.interface';
 import { TextareaComponent } from '../textarea/textarea.component';
+import { MessageboxService } from '../../../core/services/messagebox/messagebox.service';
 
 @Component({
   selector: 'app-make-question',
@@ -16,7 +17,7 @@ export class MakeQuestionComponent {
   onchange: ((data:any) => void)|null =  null;
   question:IQuestion|null = null;
 
-  constructor(){
+  constructor(private messageService: MessageboxService){
 
   }
 
@@ -69,12 +70,15 @@ export class MakeQuestionComponent {
     this.onchange?.({type: 'alternatives', content: this.alternatives});
   }
 
-  removeAlternative(index:number){
+  async removeAlternative(index:number){
+    const prompt = await new Promise(resolve => this.messageService.getComponent()?.confirm("", "Do you really want to delete this alternative?", resolve));
+    if(!prompt) return;
+
     this.alternatives.splice(index, 1);
 
     if(this.question)
       this.question.correct = -1;
-    
+
     this.onchange?.({type: 'alternatives', content: this.alternatives});
   }
 

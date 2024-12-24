@@ -10,10 +10,19 @@
         display: flex;
         flex-direction: column;
         gap: 5px;
+        position: relative;
 
         .make-question-number {
             color: grey;
             font-size: 20px;
+        }
+
+        .make-question-head-counter {
+            position: absolute;
+            bottom: -10px;
+            left: 0px;
+            font-size:18px;
+            color: grey;
         }
     }
 
@@ -54,9 +63,17 @@
                 flex-direction: row;
                 align-items: center;
                 gap: 5px;
+                position: relative;
 
                 span {
                     white-space: break-spaces;
+                }
+
+                .make-question-alternative-counter {
+                    position: absolute;
+                    bottom: 0px;
+                    right: 10px;
+                    color: grey;
                 }
 
                 .make-question-alternative-buttons {

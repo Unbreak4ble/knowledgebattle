@@ -2,7 +2,7 @@ const Joi = require('joi');
 const { questionSchema } = require("./question.model");
 const { settingSchema } = require('./setting.model');
 
-const reg_name = /^[a-zA-Z]+$/;
+const reg_name = /^[a-zA-Z\s]+$/;
 
 const roomSchema = Joi.object({
     text: Joi.string().max(32).min(2).regex(reg_name).required(),

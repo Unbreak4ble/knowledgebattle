@@ -3,8 +3,10 @@
         <div class="make-question">
             <div class="make-question-head">
                 <a class="make-question-number">{{ question ? question.id : id }}</a>
-                <!-- <textarea id="make-question-text" class="make-question-textarea" placeholder="question title"></textarea> -->
                 <app-textarea [text]="question.text" font-size="30px" placeholder="question text" (onvalue)='handleTextInput($event)'></app-textarea>
+                <div class="make-question-head-counter" style="color: {{ (4096 - question.text.length - 1) < 0 ? 'red' : 'grey' }};">
+                    <a>{{ 4096 - question.text.length - 1 }}</a>
+                </div>
             </div>
             <div class="make-question-body">
                 <div class="make-question-alternatives">
@@ -24,6 +26,9 @@
                                         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
                                     </svg>
                                 </div>
+                            </div>
+                            <div class="make-question-alternative-counter" style="color: {{ (2048 - alternative.text.length - 1) < 0 ? 'red' : 'grey' }};">
+                                <a>{{ 2048 - alternative.text.length - 1 }}</a>
                             </div>
                             <app-textarea style="width: 100%;" [id]="'alternative-'+idx" [text]="alternative.text" font-size="25px" placeholder="alternative text" (onvalue)='handleAlternativeTextInput($event)'></app-textarea>
                         </div>
