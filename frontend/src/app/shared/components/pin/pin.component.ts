@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard'
 import { RoomService } from '../../../core/services/room/room.service';
 
 @Component({
@@ -9,13 +10,14 @@ import { RoomService } from '../../../core/services/room/room.service';
 export class PinComponent {
   @Input('live') live:boolean = false;
   @Input('gen_button') gen_button:boolean = false;
+  @Input('copy_button') copy_button:boolean = false;
   @Output('generate') ongenerate:EventEmitter<any> = new EventEmitter();
   @Input('pin') pin:number|null = null;
   @Input('font-size') font_size:number = 20;
   @Input('delimiter') delimiter:number = 3;
   pin_codes:string[] = [];
 
-  constructor(private roomService:RoomService){}
+  constructor(private roomService:RoomService, private clipboard: Clipboard){}
 
   ngOnInit(){
     this.setupLive();
@@ -43,6 +45,10 @@ export class PinComponent {
 
   onNew(){
     this.ongenerate.emit();
+  }
+
+  onCopy(){
+    this.clipboard.copy(this.pin_codes.join(' '));
   }
 
   async setupLive(){

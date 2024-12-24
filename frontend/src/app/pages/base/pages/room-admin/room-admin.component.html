@@ -12,7 +12,10 @@
                     }
                     
                     @if(roomService._connected_pin){
-                        <app-pin [live]="true" [gen_button]="true" (generate)="onNewPin($event)"></app-pin>
+                        <div class="room-admin-configs-copy">
+                            <app-pin [live]="true" [gen_button]="true" [copy_button]="true" (generate)="onNewPin($event)"></app-pin>
+                            <button class="global-button" (click)="copyLink()">Copy link</button>
+                        </div>
                     }
                     @if(roomService.connected_room){
                         <a class="room-admin-configs-title">{{ roomService.connected_room.name }}</a>

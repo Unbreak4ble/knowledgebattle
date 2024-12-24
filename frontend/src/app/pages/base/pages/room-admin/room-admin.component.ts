@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 import { QuestionsListLiveComponent } from '../../../../shared/components/questions-list-live/questions-list-live.component';
 import { LiveQuestionViewComponent } from '../../../../shared/components/live-question-view/live-question-view.component';
 import { NumberInputComponent } from '../../../../shared/components/number-input/number-input.component';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { toRoomPin } from '../../../../core/helpers/room/url.helper';
 
 @Component({
   selector: 'app-room-admin',
@@ -41,7 +43,7 @@ export class RoomAdminComponent {
     }
   ];
 
-  constructor(public roomService: RoomService, private messageboxService:MessageboxService, private route:ActivatedRoute){
+  constructor(public roomService: RoomService, private messageboxService:MessageboxService, private route:ActivatedRoute, private clipboard: Clipboard){
 
   }
 
@@ -175,5 +177,12 @@ export class RoomAdminComponent {
     }
 
     this.roomService.sendRequestAsAdmin(username, id);
+  }
+
+  copyLink(){
+    if(!this.roomService._connected_pin) return;
+
+    const url = toRoomPin(this.roomService._connected_pin);
+    this.clipboard.copy(url);
   }
 }

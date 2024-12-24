@@ -32,7 +32,14 @@
                     <app-pin [pin]="room.pin" [font-size]="15"></app-pin>
                 </div>
                 <div class="rooms-room-body">
-                    <div></div>
+                    <div class="rooms-room-body-activity" style="color: {{ room.active ? 'green' : 'grey'}};">
+                        @if(room.active){
+                            <a>live</a>
+                        }
+                        @if(!room.active){
+                            <a>finished</a>
+                        }
+                    </div>
                     <div class="players_count">
                         <a>{{ room.players_count }}</a>
                         <a class="delim">/</a>

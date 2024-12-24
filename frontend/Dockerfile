@@ -9,7 +9,7 @@ COPY . .
 RUN npm install --force
 
 # dev mode
-#CMD npm start
+CMD npm start
 
 # prod/deploy mode
-CMD bash run_ssr.sh
+#CMD bash run_ssr.sh
