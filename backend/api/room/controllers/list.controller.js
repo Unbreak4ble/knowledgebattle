@@ -1,7 +1,7 @@
-const { listPublic } = require("../utils/database/room")
+const { listPublicRooms } = require("../utils/room");
 
 async function listController(){
-    const rooms = await listPublic();
+    const rooms = await listPublicRooms();
 
     return rooms;
 }

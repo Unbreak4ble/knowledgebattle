@@ -65,6 +65,9 @@ services:
     restart: always
     networks:
       - infra-interface
+    ports:
+      - "8080"
+      - "4000:8080"
     volumes:
       - "./frontend/src:/home/src"
 

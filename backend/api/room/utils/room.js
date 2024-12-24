@@ -84,7 +84,12 @@ async function getRoom(room_id){
     return data;
 }
 
+async function listPublicRooms(){
+    return await roomLib.listPublic();
+}
+
 module.exports = {
+    listPublicRooms,
     getRoom,
     resetRoomQuestions,
     updateTimeout,
