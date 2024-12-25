@@ -6,6 +6,7 @@ import { MessageBoxComponent } from '../../../../shared/components/message-box/m
 import { IRoom } from '../../../../core/interfaces/room/room.interface';
 import { QuestionsCarouselComponent } from '../../../../shared/components/questions-carousel/questions-carousel.component';
 import { MessageboxService } from '../../../../core/services/messagebox/messagebox.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-room',
@@ -24,13 +25,18 @@ export class RoomComponent {
   coutdown_interval:any = null;
   room_info:IRoom|null = null;
 
-  constructor(public roomService: RoomService, private router: Router, private route:ActivatedRoute, private messageboxService: MessageboxService){
+  constructor(private pageTitle:Title, private meta: Meta,public roomService: RoomService, private router: Router, private route:ActivatedRoute, private messageboxService: MessageboxService){
     this.setupRoomConnection();
   }
 
   ngAfterViewInit(){
     this.messageBoxComponent = this.messageboxService.getComponent();
     this.setupRoomEvent();
+  }
+
+  setupTags(name:string){
+    this.pageTitle.setTitle("QuizRoom - "+name);
+    this.meta.updateTag({name: 'title', content: "QuizRoom - "+name});
   }
 
   async setupRoomEvent(){
@@ -94,6 +100,8 @@ export class RoomComponent {
       window.location.href = '/';
       return;
     }
+
+    this.setupTags(room.name);
 
     const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
 

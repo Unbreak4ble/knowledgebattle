@@ -8,6 +8,7 @@ import { options } from './create-room.header';
 import { RoomService } from '../../../../core/services/room/room.service';
 import { MessageboxService } from '../../../../core/services/messagebox/messagebox.service';
 import { MessageBoxComponent } from '../../../../shared/components/message-box/message-box.component';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-create-room',
@@ -34,8 +35,8 @@ export class CreateRoomComponent {
     }
   ];
 
-  constructor(private roomService: RoomService, private messageboxService:MessageboxService){
-
+  constructor(private pageTitle:Title, private meta: Meta, private roomService: RoomService, private messageboxService:MessageboxService){
+    this.setupTags();
   }
 
   ngAfterViewInit(){
@@ -50,6 +51,11 @@ export class CreateRoomComponent {
     this.questionsListComponent?.setQuestions(this.questions);
 
     this.options = await this.roomService.loadOptions();
+  }
+
+  setupTags(){
+    this.pageTitle.setTitle("QuizRoom Create");
+    this.meta.updateTag({name: 'title', content: "QuizRoom Create"});
   }
 
   initEvents(){

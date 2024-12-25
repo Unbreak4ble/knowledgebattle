@@ -13,6 +13,7 @@ import { LiveQuestionViewComponent } from '../../../../shared/components/live-qu
 import { NumberInputComponent } from '../../../../shared/components/number-input/number-input.component';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { toRoomPin } from '../../../../core/helpers/room/url.helper';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-room-admin',
@@ -43,7 +44,7 @@ export class RoomAdminComponent {
     }
   ];
 
-  constructor(public roomService: RoomService, private messageboxService:MessageboxService, private route:ActivatedRoute, private clipboard: Clipboard){
+  constructor(private pageTitle:Title, private meta: Meta, public roomService: RoomService, private messageboxService:MessageboxService, private route:ActivatedRoute, private clipboard: Clipboard){
 
   }
 
@@ -64,6 +65,11 @@ export class RoomAdminComponent {
     await this.setupRoomConnection();
 
     this.timeoutInput?.setNumber(this.roomService?.connected_room?.question_timeout || 0);
+  }
+
+  setupTags(name:string){
+    this.pageTitle.setTitle("QuizRoom Admin - "+name);
+    this.meta.updateTag({name: 'title', content: "QuizRoom Admin - "+name});
   }
 
   initEvents(){
@@ -164,6 +170,8 @@ export class RoomAdminComponent {
     if(room == null){
       return this.messageboxService.getComponent()?.show('Error', 'Room not found with id '+id, 60*60*24);
     }
+
+    this.setupTags(room.name);
 
     //const username = await this.messageboxService.getComponent()?.showInput('Enter username', 'username');
     const username = 'admin';
