@@ -19,8 +19,9 @@ function loadAdminCommands(data){
             if(room == null) return;
 
             if(room.current_question_id >= room.questions?.length){
-                data.connection?.send(JSON.stringify(mountRequestFailed('No question left to answer')));
-                return;
+                await updateCurrentQuestionId(data.room_id, 0);
+                //data.connection?.send(JSON.stringify(mountRequestFailed('No question left to answer')));
+                //return;
             }
 
             const timeout = payload?.timeout || 60*60;
