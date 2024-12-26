@@ -15,6 +15,6 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: General testing
-      run: pwd; ls
+      run: pwd; cd ..; ls
     - name: General testing
       run: ./test.sh
