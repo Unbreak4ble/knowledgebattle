@@ -14,7 +14,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
-    - name: General testing
-      run: pwd; cd ..; ls
+    - name: Dir test
+      run: cd ..; pwd; ls
+    - name: Dir test 2
+      run: cd ../..; pwd; ls
     - name: General testing
       run: ./test.sh
