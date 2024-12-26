@@ -8,7 +8,7 @@ const { getRoom } = require('../utils/room');
 
 const limiter = rateLimit({
 	windowMs: 1 * 1000, // 1 second
-	limit: 10, // 10 requests per 1 second
+	limit: 20, // 20 requests per 1 second
 	standardHeaders: 'draft-8',
 	legacyHeaders: false
 });

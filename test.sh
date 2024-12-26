@@ -13,8 +13,8 @@ docker stop $(docker container ps -a -q);
 echo "starting services"
 ./run.sh;
 
-echo "giving services a breath time of 30 seconds"
-sleep 30;
+echo "giving services a breath time of 10 seconds"
+sleep 10;
 
 echo "flushing redis"
 ./commands/flush_redis.sh
