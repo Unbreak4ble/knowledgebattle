@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ $(whoami) != "root" ]]; then
 	echo "enter root session to run.";
