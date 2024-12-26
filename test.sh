@@ -7,11 +7,28 @@ fi
 
 echo "preparing to run tests"
 
-echo "restarting room api"
-docker restart room_api
+echo "stopping running services (if exist)"
+docker stop $(docker container ps -a -q);
+
+echo "starting services"
+./run.sh;
+
+echo "giving services a breath time of 30 seconds"
+sleep 30;
 
 echo "flushing redis"
 ./commands/flush_redis.sh
 
 echo "running tests"
-(cd tests && npm start);
+
+cd tests;
+
+npm start;
+test_signal=$?
+
+echo "stopping services"
+docker stop $(docker container ps -a -q);
+
+echo "test finished"
+
+exit $test_signal
