@@ -14,9 +14,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     # Runs a single command using the runners shell
-    - name: Dir test
-      run: cd ..; pwd; ls
-    - name: Dir test 2
-      run: cd ../..; pwd; ls
     - name: General testing
       run: ./test.sh
