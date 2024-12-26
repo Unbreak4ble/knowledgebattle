@@ -21,9 +21,7 @@ echo "flushing redis"
 
 echo "running tests"
 
-cd tests;
-
-npm start;
+cd tests && npm install && npm start;
 test_signal=$?
 
 echo "stopping services"
