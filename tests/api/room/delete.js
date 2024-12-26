@@ -7,6 +7,8 @@ module.exports = (global_data) => {
     describe(endpoint, function() {
         it("should delete created rooms", async() => {
             for(const created_room of global_data.output.created_rooms){
+                //console.log('deleting', created_room.id);
+
                 const request = {
                     method: "DELETE",
                     url: global_data.target_url+endpoint+'/'+created_room.id,

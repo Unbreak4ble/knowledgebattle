@@ -19,6 +19,10 @@ sleep 10;
 echo "flushing redis"
 ./commands/flush_redis.sh
 
+clear
+
+echo "console cleaned"
+
 echo "running tests"
 
 cd tests && npm install && npm start;
