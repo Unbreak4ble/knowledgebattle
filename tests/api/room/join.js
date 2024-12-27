@@ -34,6 +34,30 @@ module.exports = (global_data) => {
             assert.equal(global_data.output.join_stats.received, global_data.output.admins_connections.length);
         }).timeout(1000*10);
 
+        it("should authenticate as admin", async() => {
+            for(const connection of global_data.output.admins_connections){
+                connection.connection.on('message', (msg) => {
+                    const msg_utf8 = Buffer.from(msg).toString('utf-8');
+                    const parsed = JSON.parse(msg_utf8);
+
+                    if(parsed.type != 'recognition') return;
+
+                    ++global_data.output.join_stats.recognized;
+                });
+
+                const payload = {
+                    name: 'testingAdmin',
+                    token: connection.room.token
+                };
+
+                connection.connection.send(JSON.stringify(payload));
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 5*1000));
+
+            assert.equal(global_data.output.join_stats.recognized, global_data.output.admins_connections.length);
+        }).timeout(1000*10);
+
         it("should close connections", async() => {
             let closed = 0;
             for(const connection of global_data.output.admins_connections){

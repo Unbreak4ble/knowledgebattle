@@ -2,7 +2,8 @@ var global_data = {
     target_url: 'http://localhost:8080',
     output: {
         join_stats: {
-            received: 0
+            received: 0,
+            recognized: 0
         },
         created_rooms: [],
         admins_connections: [],
